@@ -34,5 +34,5 @@ build/
 
 
 ### Project ###
-*.pom.xml
-*.application.properties
+*/pom.xml/*
+*/application.properties/*

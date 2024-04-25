@@ -30,11 +30,11 @@ public class Studiengang {
 
     @ManyToOne
     @JoinColumn(name="leiter_id")
-    private Nutzer leiter;
+    private Mitarbeiter leiter;
 
     @ManyToOne
     @JoinColumn(name="stellvertretenderLeiter_id")
-    private Nutzer stellvertretenderLeiter;
+    private Mitarbeiter stellvertretenderLeiter;
     
     @ManyToOne
     @JoinColumn(name="fachbereich_id")

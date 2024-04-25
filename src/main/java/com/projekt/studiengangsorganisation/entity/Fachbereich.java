@@ -1,16 +1,12 @@
 package com.projekt.studiengangsorganisation.entity;
 
-import java.util.Set;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,7 +22,7 @@ public class Fachbereich{
         return referent;
     }
 
-    public void setReferent(Nutzer referent) {
+    public void setReferent(Mitarbeiter referent) {
         this.referent = referent;
     }
 
@@ -34,29 +30,17 @@ public class Fachbereich{
         return stellvertreter;
     }
 
-    public void setStellvertreter(Nutzer stellvertreter) {
+    public void setStellvertreter(Mitarbeiter stellvertreter) {
         this.stellvertreter = stellvertreter;
-    }
-
-    public void setFachgruppen(Set<Fachgruppe> fachgruppen) {
-        this.fachgruppen = fachgruppen;
-    }
-
-    public Set<Fachgruppe> getFachgruppen() {
-        return fachgruppen;
     }
 
     @ManyToOne()
     @Column(name = "fachbereich_referent")
     @JoinColumn(name = "referent_id")
-    private Nutzer referent;
+    private Mitarbeiter referent;
 
-    @ManyToMany()
+    @ManyToOne()
     @Column(name = "fachbereich_stellvertreter")
     @JoinColumn(name = "stellvertreter_id")
-    private Nutzer stellvertreter;
-
-    @ManyToMany
-    @JoinColumn(name = "fachgruppe_id")
-    Set<Fachgruppe> fachgruppen;
+    private Mitarbeiter stellvertreter;
 }

@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,7 +28,20 @@ public class Studiengang {
     @Column(name="studiengang_regelstudienzeit")
     private int regelstudienzeit;
 
-    @Column(name="studiengang_studiengangsleiter")
-    private Nutzer studiengangsLeiter;
+    @ManyToOne
+    @JoinColumn(name="leiter_id")
+    private Nutzer leiter;
+
+    @ManyToOne
+    @JoinColumn(name="stellvertretenderLeiter_id")
+    private Nutzer stellvertretenderLeiter;
     
+    @ManyToOne
+    @JoinColumn(name="fachbereich_id")
+    private Fachbereich fachbereich;
+
+    @ManyToOne
+    @JoinColumn(name="pruefungsordnung_id")
+    private Pruefungsordnung pruefungsordung;
+
 }

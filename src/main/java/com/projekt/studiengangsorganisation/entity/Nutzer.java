@@ -48,6 +48,4 @@ public abstract class Nutzer {
     public void setVorname(String vorname) {
         this.vorname = vorname;
     }
-
-    
 }

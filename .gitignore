@@ -36,3 +36,5 @@ build/
 ### Project ###
 */pom.xml
 */application.properties
+src/main/resources/application.properties
+pom.xml

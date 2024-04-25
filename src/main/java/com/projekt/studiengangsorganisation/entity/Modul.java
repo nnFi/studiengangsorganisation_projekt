@@ -155,4 +155,10 @@ public class Modul{
     public void setFreigegeben(boolean freigegeben) {
         this.freigegeben = freigegeben;
     }
+
+    @Column(name = "fachgruppe")
+    private Fachgruppe fachgruppe;
+
+    @Column(name = "modulbeauftragter")
+    private Nutzer modulbeauftrager;
 }

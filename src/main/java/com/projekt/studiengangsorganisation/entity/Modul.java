@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Modul")
-public class Modul{
+public class Modul {
 
     @Id
     @Column(name = "modul_id")
@@ -66,17 +66,6 @@ public class Modul{
 
     public void setCredits(int credits) {
         this.credits = credits;
-    }
-
-    @Column(name = "semester")
-    private int semester;
-
-    public int getSemester() {
-        return semester;
-    }
-
-    public void setSemester(int semester) {
-        this.semester = semester;
     }
 
     @Column(name = "dauer")

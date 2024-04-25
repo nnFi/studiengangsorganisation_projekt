@@ -17,7 +17,7 @@ public class TestEntity{
     private Long id;
 
     @Column(name = "test_name")
-    private String testname;
+    private String testname; // hahahaha
 
     public Long getId() {
         return id;

@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -37,12 +38,12 @@ public class Fachbereich{
         this.stellvertreter = stellvertreter;
     }
 
-    public Set<Fachgruppe> getFachgruppen() {
-        return fachgruppen;
-    }
-
     public void setFachgruppen(Set<Fachgruppe> fachgruppen) {
         this.fachgruppen = fachgruppen;
+    }
+
+    public Set<Fachgruppe> getFachgruppen() {
+        return fachgruppen;
     }
 
     @ManyToOne()

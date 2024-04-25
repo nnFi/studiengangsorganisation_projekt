@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,7 +19,45 @@ public class Modul {
     private Long id;
 
     @Column(name = "name")
-    private String testname; // hahahaha
+    private String name;
+
+    @Column(name = "kuerzel")
+    private String kuerzel;
+
+    @Column(name = "workload")
+    private int workload;
+
+    @Column(name = "credits")
+    private int credits;
+
+    @Column(name = "dauer")
+    private int dauer;
+
+    @Column(name = "Art")
+    private String art;
+
+    @Column(name = "abschluss")
+    private String abschluss;
+
+    @Column(name = "beschreibung")
+    private String beschreibung;
+
+    @Column(name = "lehrveranstaltungsort")
+    private String lehrveranstaltungsort;
+
+    @Column(name = "sprache")
+    private String sprache;
+
+    @Column(name = "freigegeben")
+    private boolean freigegeben;
+
+    @ManyToOne
+    @JoinColumn(name = "fachgruppe_id")
+    private Fachgruppe fachgruppe;
+
+    @ManyToOne
+    @JoinColumn(name = "modulbeauftragter_id")
+    private Mitarbeiter modulbeauftragter;
 
     public Long getId() {
         return id;
@@ -27,16 +67,13 @@ public class Modul {
         this.id = id;
     }
 
-    public String getTestname() {
-        return testname;
+    public String getName() {
+        return name;
     }
 
-    public void setTestname(String testname) {
-        this.testname = testname;
+    public void setName(String name) {
+        this.name = name;
     }
-
-    @Column(name = "kuerzel")
-    private String kuerzel;
 
     public String getKuerzel() {
         return kuerzel;
@@ -46,9 +83,6 @@ public class Modul {
         this.kuerzel = kuerzel;
     }
 
-    @Column(name = "workload")
-    private int workload;
-
     public int getWorkload() {
         return workload;
     }
@@ -56,9 +90,6 @@ public class Modul {
     public void setWorkload(int workload) {
         this.workload = workload;
     }
-
-    @Column(name = "credits")
-    private int credits;
 
     public int getCredits() {
         return credits;
@@ -68,9 +99,6 @@ public class Modul {
         this.credits = credits;
     }
 
-    @Column(name = "dauer")
-    private int dauer;
-
     public int getDauer() {
         return dauer;
     }
@@ -78,9 +106,6 @@ public class Modul {
     public void setDauer(int dauer) {
         this.dauer = dauer;
     }
-
-    @Column(name = "Art")
-    private String art;
 
     public String getArt() {
         return art;
@@ -90,9 +115,6 @@ public class Modul {
         this.art = art;
     }
 
-    @Column(name = "abschluss")
-    private String abschluss;
-
     public String getAbschluss() {
         return abschluss;
     }
@@ -100,9 +122,6 @@ public class Modul {
     public void setAbschluss(String abschluss) {
         this.abschluss = abschluss;
     }
-
-    @Column(name = "beschreibung")
-    private String beschreibung;
 
     public String getBeschreibung() {
         return beschreibung;
@@ -112,9 +131,6 @@ public class Modul {
         this.beschreibung = beschreibung;
     }
 
-    @Column(name = "lehrveranstaltungsort")
-    private String lehrveranstaltungsort;
-
     public String getLehrveranstaltungsort() {
         return lehrveranstaltungsort;
     }
@@ -122,9 +138,6 @@ public class Modul {
     public void setLehrveranstaltungsort(String lehrveranstaltungsort) {
         this.lehrveranstaltungsort = lehrveranstaltungsort;
     }
-
-    @Column(name = "sprache")
-    private String sprache;
 
     public String getSprache() {
         return sprache;
@@ -134,9 +147,6 @@ public class Modul {
         this.sprache = sprache;
     }
 
-    @Column(name = "freigegeben")
-    private boolean freigegeben;
-
     public boolean getFreigegeben() {
         return freigegeben;
     }
@@ -144,12 +154,6 @@ public class Modul {
     public void setFreigegeben(boolean freigegeben) {
         this.freigegeben = freigegeben;
     }
-
-    @Column(name = "fachgruppe")
-    private Fachgruppe fachgruppe;
-
-    @Column(name = "modulbeauftragter")
-    private Nutzer modulbeauftrager;
 
     public Fachgruppe getFachgruppe() {
         return fachgruppe;
@@ -159,11 +163,11 @@ public class Modul {
         this.fachgruppe = fachgruppe;
     }
 
-    public Nutzer getModulbeauftrager() {
-        return modulbeauftrager;
+    public Nutzer getModulbeauftragter() {
+        return modulbeauftragter;
     }
 
-    public void setModulbeauftrager(Nutzer modulbeauftrager) {
-        this.modulbeauftrager = modulbeauftrager;
+    public void setModulbeauftragter(Mitarbeiter modulbeauftragter) {
+        this.modulbeauftragter = modulbeauftragter;
     }
 }

@@ -16,7 +16,7 @@ public class Pruefung {
     PruefungKey id;
 
     @ManyToOne
-    @MapsId("moduliI")
+    @MapsId("modulId")
     @JoinColumn(name = "modul_id")
     private Modul modul;
 

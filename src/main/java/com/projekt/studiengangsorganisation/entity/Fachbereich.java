@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "fachbereich")
-public class Fachbereich{
+public class Fachbereich {
 
     @Id
     @Column(name = "fachbereich_id")
@@ -38,12 +38,10 @@ public class Fachbereich{
     }
 
     @ManyToOne()
-    @Column(name = "fachbereich_referent")
     @JoinColumn(name = "referent_id")
     private Mitarbeiter referent;
 
     @ManyToOne()
-    @Column(name = "fachbereich_stellvertreter")
     @JoinColumn(name = "stellvertreter_id")
     private Mitarbeiter stellvertreter;
 }

@@ -44,4 +44,70 @@ public class Studiengang {
     @JoinColumn(name="pruefungsordnung_id")
     private Pruefungsordnung pruefungsordung;
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAbschluss() {
+        return abschluss;
+    }
+
+    public void setAbschluss(String abschluss) {
+        this.abschluss = abschluss;
+    }
+
+    public int getRegelstudienzeit() {
+        return regelstudienzeit;
+    }
+
+    public void setRegelstudienzeit(int regelstudienzeit) {
+        this.regelstudienzeit = regelstudienzeit;
+    }
+
+    public Mitarbeiter getLeiter() {
+        return leiter;
+    }
+
+    public void setLeiter(Mitarbeiter leiter) {
+        this.leiter = leiter;
+    }
+
+    public Mitarbeiter getStellvertretenderLeiter() {
+        return stellvertretenderLeiter;
+    }
+
+    public void setStellvertretenderLeiter(Mitarbeiter stellvertretenderLeiter) {
+        this.stellvertretenderLeiter = stellvertretenderLeiter;
+    }
+
+    public Fachbereich getFachbereich() {
+        return fachbereich;
+    }
+
+    public void setFachbereich(Fachbereich fachbereich) {
+        this.fachbereich = fachbereich;
+    }
+
+    public Pruefungsordnung getPruefungsordung() {
+        return pruefungsordung;
+    }
+
+    public void setPruefungsordung(Pruefungsordnung pruefungsordung) {
+        this.pruefungsordung = pruefungsordung;
+    }
+
+    
+
 }

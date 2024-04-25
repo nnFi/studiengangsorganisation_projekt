@@ -5,11 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "fachgruppe")
-public class Fachgruppe{
+public class Fachgruppe {
 
     @Id
     @Column(name = "fachgruppe_id")
@@ -17,15 +19,18 @@ public class Fachgruppe{
     private Long id;
 
     @Column(name = "name")
-    private String name; 
+    private String name;
 
-    @Column(name = "referent")
-    private Nutzer referent;
+    @ManyToOne
+    @JoinColumn(name = "referent")
+    private Mitarbeiter referent;
 
-    @Column(name = "stellvertreter")
-    private Nutzer stellvertreter;
+    @ManyToOne
+    @JoinColumn(name = "stellvertreter_id")
+    private Mitarbeiter stellvertreter;
 
-    @Column(name = "fachbereich")
+    @ManyToOne
+    @JoinColumn(name = "fachbereich_id")
     private Fachbereich fachbereich;
 
     public Long getId() {

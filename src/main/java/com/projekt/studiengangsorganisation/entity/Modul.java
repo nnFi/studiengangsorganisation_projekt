@@ -161,4 +161,20 @@ public class Modul{
 
     @Column(name = "modulbeauftragter")
     private Nutzer modulbeauftrager;
+
+    public Fachgruppe getFachgruppe() {
+        return fachgruppe;
+    }
+
+    public void setFachgruppe(Fachgruppe fachgruppe) {
+        this.fachgruppe = fachgruppe;
+    }
+
+    public Nutzer getModulbeauftrager() {
+        return modulbeauftrager;
+    }
+
+    public void setModulbeauftrager(Nutzer modulbeauftrager) {
+        this.modulbeauftrager = modulbeauftrager;
+    }
 }

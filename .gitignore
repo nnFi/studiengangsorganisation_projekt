@@ -34,6 +34,3 @@ build/
 
 
 ### Project ###
-src/main/resources/application.properties
-.gitignore
-pom.xml

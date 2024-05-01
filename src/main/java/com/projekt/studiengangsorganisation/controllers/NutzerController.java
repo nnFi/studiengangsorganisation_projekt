@@ -7,21 +7,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projekt.studiengangsorganisation.entity.Nutzer;
-import com.projekt.studiengangsorganisation.service.NutzerService;
+import com.projekt.studiengangsorganisation.entity.Mitarbeiter;
+import com.projekt.studiengangsorganisation.service.MitarbeiterService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-@RequestMapping("/nutzer")
+@RequestMapping("/mitarbeiter")
 @RestController
 public class NutzerController {
 
     @Autowired
-    NutzerService nutzerService;
+    MitarbeiterService mitarbeiterService;
 
     @GetMapping("")
-    public List<Nutzer> getAll(HttpServletResponse response) {
-        List<Nutzer> list = nutzerService.getNutzer();
+    public List<Mitarbeiter> getAll(HttpServletResponse response) {
+        List<Mitarbeiter> list = mitarbeiterService.getMitarbeiter();
         response.setHeader("Content-Range", "1-" + list.size());
         return list;
     }

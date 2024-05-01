@@ -65,6 +65,10 @@ public class Modul {
     @OneToMany(mappedBy = "modul")
     Set<Pruefung> pruefungen;
 
+    @ManyToOne
+    @JoinColumn(name = "modulgruppe_id")
+    private Modulgruppe modulgruppe;
+
     public Long getId() {
         return id;
     }

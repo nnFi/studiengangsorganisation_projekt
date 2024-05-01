@@ -20,7 +20,7 @@ public class NutzerService {
     }
 
     public List<Nutzer> getNutzer() {
-    return nutzerRepository.findAll();
+        return nutzerRepository.findAll();
     }
 
 

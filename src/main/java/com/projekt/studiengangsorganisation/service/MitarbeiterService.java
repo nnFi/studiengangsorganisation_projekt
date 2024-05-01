@@ -27,11 +27,13 @@ public class MitarbeiterService {
         return mitarbeiterRepository.findById(Long.parseLong(id));
     }
 
-    public void insertTestData() {
+    public Mitarbeiter insertTestData() {
         Mitarbeiter mitarbeiter = new Mitarbeiter();
         mitarbeiter.setVorname("Max");
         mitarbeiter.setNachname("Mustermann");
 
-        mitarbeiterRepository.save(mitarbeiter);
+        mitarbeiterRepository.saveAndFlush(mitarbeiter);
+
+        return mitarbeiter;
     }
 }

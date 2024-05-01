@@ -33,6 +33,6 @@ public class StudiengangService {
         studiengang.setAbschluss("Bachelor");
         studiengang.setRegelstudienzeit(6);
 
-        studiengangRepository.save(studiengang);
+        studiengangRepository.saveAndFlush(studiengang);
     }
 }

@@ -12,22 +12,19 @@ import com.projekt.studiengangsorganisation.repository.NutzerRepository;
 @Service
 public class NutzerService {
     
-@Autowired
-NutzerRepository nutzerRepository;
+    @Autowired
+    NutzerRepository nutzerRepository;
 
-public NutzerService() {
+    public NutzerService() {
 
-}
+    }
 
-public List<Nutzer> getNutzer() {
-return nutzerRepository.findAll();
-}
-
-
-public Optional<Nutzer> getNutzer(String id) {
-    return nutzerRepository.findById(Long.parseLong(id));
-}
+    public List<Nutzer> getNutzer() {
+    return nutzerRepository.findAll();
+    }
 
 
-    
+    public Optional<Nutzer> getNutzer(String id) {
+        return nutzerRepository.findById(Long.parseLong(id));
+    }  
 }

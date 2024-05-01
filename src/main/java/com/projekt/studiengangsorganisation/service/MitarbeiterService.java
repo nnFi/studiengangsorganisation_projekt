@@ -19,6 +19,10 @@ public class MitarbeiterService {
 
     }
 
+    public Optional<Mitarbeiter> getMitarbeiter(String id) {
+        return mitarbeiterRepository.findById(Long.parseLong(id));
+    }
+
     public List<Mitarbeiter> getMitarbeiter() {
         return mitarbeiterRepository.findAll();
     }

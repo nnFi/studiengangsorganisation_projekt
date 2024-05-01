@@ -1,6 +1,7 @@
 package com.projekt.studiengangsorganisation.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,12 @@ public class StudentService {
     public StudentService() {
 
     }
-    
-    public List<Student> getStudenten () {
+
+    public Optional<Student> getStudent(String id) {
+        return studentRepository.findById(Long.parseLong(id));
+    }
+
+    public List<Student> getStudenten() {
         return studentRepository.findAll();
     }
 

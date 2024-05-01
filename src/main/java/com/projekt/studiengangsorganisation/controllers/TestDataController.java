@@ -1,7 +1,5 @@
 package com.projekt.studiengangsorganisation.controllers;
 
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +12,7 @@ import com.projekt.studiengangsorganisation.entity.Modul;
 import com.projekt.studiengangsorganisation.entity.Modulgruppe;
 import com.projekt.studiengangsorganisation.entity.Pruefung;
 import com.projekt.studiengangsorganisation.entity.Pruefungsordnung;
+import com.projekt.studiengangsorganisation.entity.Student;
 import com.projekt.studiengangsorganisation.entity.Studiengang;
 import com.projekt.studiengangsorganisation.service.FachbereichService;
 import com.projekt.studiengangsorganisation.service.FachgruppeService;
@@ -22,6 +21,7 @@ import com.projekt.studiengangsorganisation.service.ModulService;
 import com.projekt.studiengangsorganisation.service.ModulgruppeService;
 import com.projekt.studiengangsorganisation.service.PruefungService;
 import com.projekt.studiengangsorganisation.service.PruefungsordnungService;
+import com.projekt.studiengangsorganisation.service.StudentService;
 import com.projekt.studiengangsorganisation.service.StudiengangService;
 
 @RequestMapping("/testdata")
@@ -41,6 +41,9 @@ public class TestDataController {
     MitarbeiterService mitarbeiterService;
 
     @Autowired
+    StudentService studentService;
+
+    @Autowired
     ModulgruppeService modulgruppeService;
 
     @Autowired
@@ -57,6 +60,8 @@ public class TestDataController {
 
         Mitarbeiter mitarbeiter1 = mitarbeiterService.insertTestData();
         Mitarbeiter mitarbeiter2 = mitarbeiterService.insertTestData();
+
+        Student student = studentService.insertTestData();
 
         Fachbereich fachbereich = fachbereichService.insertTestData(mitarbeiter1, mitarbeiter2);
 

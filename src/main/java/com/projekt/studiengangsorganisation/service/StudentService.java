@@ -27,11 +27,13 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public void insertTestData() {
+    public Student insertTestData() {
         Student student = new Student();
         student.setVorname("Max");
         student.setNachname("Mustermann");
 
-        studentRepository.save(student);
+        studentRepository.saveAndFlush(student);
+
+        return student;
     }
 }

@@ -16,11 +16,11 @@ public class PruefungsordnungService {
 
     public PruefungsordnungService() {}
 
-    public List<Pruefungsordnung> getFachgruppen() {
+    public List<Pruefungsordnung> getPruefungsordnungen() {
         return pruefungsordnungRepository.findAll();
     }
 
-    public Optional<Pruefungsordnung> getFachgruppe(String id) {
+    public Optional<Pruefungsordnung> getPruefungsordnung(String id) {
         return pruefungsordnungRepository.findById(Long.parseLong(id));
     }
 

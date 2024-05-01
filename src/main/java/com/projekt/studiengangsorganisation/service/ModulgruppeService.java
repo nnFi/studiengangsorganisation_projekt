@@ -22,7 +22,7 @@ public class ModulgruppeService {
         return modulgruppeRepository.findAll();
     }
 
-    public Optional<Modulgruppe> getFachbereich(String id) {
+    public Optional<Modulgruppe> getModulgruppe(String id) {
         return modulgruppeRepository.findById(Long.parseLong(id));
     }
 

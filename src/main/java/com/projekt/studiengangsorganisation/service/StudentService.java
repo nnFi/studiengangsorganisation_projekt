@@ -1,7 +1,6 @@
 package com.projekt.studiengangsorganisation.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,11 +22,6 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public Optional<Student> getStudent(String id) {
-        return studentRepository.findById(Long.parseLong(id));
-    }
-
-
     public void insertTestData() {
         Student student = new Student();
         student.setVorname("Max");
@@ -35,5 +29,4 @@ public class StudentService {
 
         studentRepository.save(student);
     }
-
 }

@@ -23,10 +23,6 @@ public class MitarbeiterService {
         return mitarbeiterRepository.findAll();
     }
 
-    public Optional<Mitarbeiter> getMitarbeiter(String id) {
-        return mitarbeiterRepository.findById(Long.parseLong(id));
-    }
-
     public Mitarbeiter insertTestData() {
         Mitarbeiter mitarbeiter = new Mitarbeiter();
         mitarbeiter.setVorname("Max");

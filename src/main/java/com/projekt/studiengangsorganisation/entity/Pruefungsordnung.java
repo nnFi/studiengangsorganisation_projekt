@@ -2,6 +2,8 @@ package com.projekt.studiengangsorganisation.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,6 +34,7 @@ public class Pruefungsordnung {
     private Studiengang studiengang;
 
     @OneToMany(mappedBy = "pruefungsordnung")
+    @JsonIgnore
     Set<Pruefung> pruefungen;
 
     public Long getId() {

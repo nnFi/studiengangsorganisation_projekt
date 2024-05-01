@@ -2,6 +2,8 @@ package com.projekt.studiengangsorganisation.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -63,6 +65,7 @@ public class Modul {
     private Mitarbeiter modulbeauftragter;
 
     @OneToMany(mappedBy = "modul")
+    @JsonIgnore
     Set<Pruefung> pruefungen;
 
     @ManyToOne

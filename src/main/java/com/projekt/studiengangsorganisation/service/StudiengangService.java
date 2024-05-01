@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.projekt.studiengangsorganisation.entity.Mitarbeiter;
 import com.projekt.studiengangsorganisation.entity.Studiengang;
 import com.projekt.studiengangsorganisation.repository.StudiengangRepository;
 
@@ -27,12 +28,16 @@ public class StudiengangService {
         return studiengangRepository.findById(Long.parseLong(id));
     }
 
-    public void insertTestData() {
+    public Studiengang insertTestData(Mitarbeiter leiter, Mitarbeiter stellvertreter) {
         Studiengang studiengang = new Studiengang();
         studiengang.setName("Informatik");
         studiengang.setAbschluss("Bachelor");
         studiengang.setRegelstudienzeit(6);
+        studiengang.setLeiter(leiter);
+        studiengang.setStellvertretenderLeiter(stellvertreter);
 
         studiengangRepository.saveAndFlush(studiengang);
+
+        return studiengang;
     }
 }

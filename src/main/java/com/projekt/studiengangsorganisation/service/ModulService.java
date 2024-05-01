@@ -2,11 +2,16 @@ package com.projekt.studiengangsorganisation.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.projekt.studiengangsorganisation.entity.Fachgruppe;
+import com.projekt.studiengangsorganisation.entity.Mitarbeiter;
 import com.projekt.studiengangsorganisation.entity.Modul;
+import com.projekt.studiengangsorganisation.entity.Modulgruppe;
+import com.projekt.studiengangsorganisation.entity.Pruefung;
 import com.projekt.studiengangsorganisation.repository.ModulRepository;
 
 @Service
@@ -18,7 +23,7 @@ public class ModulService {
 
     }
 
-    public List<Modul> getModul() {
+    public List<Modul> getModule() {
         return modulRepository.findAll();
     }
 
@@ -26,7 +31,8 @@ public class ModulService {
         return modulRepository.findById(Long.parseLong(id));
     }
 
-    public void insertTestData() {
+    public Modul insertTestData(Fachgruppe fachgruppe, Mitarbeiter beauftragter, Set<Pruefung> pruefungen,
+            Modulgruppe modulgruppe) {
         Modul modul = new Modul();
         modul.setName("Programmieren");
         modul.setKuerzel("5 WIF 22");
@@ -39,7 +45,14 @@ public class ModulService {
         modul.setFreigegeben(true);
         modul.setLehrveranstaltungsort("D2");
 
-        modulRepository.save(modul);
+        modul.setFachgruppe(fachgruppe);
+        modul.setModulbeauftragter(beauftragter);
+        modul.setPruefungen(pruefungen);
+        modul.setModulgruppe(modulgruppe);
+
+        modulRepository.saveAndFlush(modul);
+
+        return modul;
 
     }
 }

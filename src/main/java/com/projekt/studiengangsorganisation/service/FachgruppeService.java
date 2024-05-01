@@ -29,7 +29,7 @@ public class FachgruppeService {
         return fachgruppeRepository.findById(Long.parseLong(id));
     }
 
-    public void insertTestData(Mitarbeiter referent, Mitarbeiter stellvertreter, Fachbereich fachbereich) {
+    public Fachgruppe insertTestData(Mitarbeiter referent, Mitarbeiter stellvertreter, Fachbereich fachbereich) {
         Fachgruppe fachgruppe = new Fachgruppe();
         fachgruppe.setName("Marketing");
         fachgruppe.setFachbereich(fachbereich);
@@ -37,6 +37,8 @@ public class FachgruppeService {
         fachgruppe.setStellvertreter(stellvertreter);
 
         fachgruppeRepository.saveAndFlush(fachgruppe);
+
+        return fachgruppe;
     }
 
 }

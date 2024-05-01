@@ -14,7 +14,8 @@ public class PruefungsordnungService {
     @Autowired
     PruefungsordnungRepository pruefungsordnungRepository;
 
-    public PruefungsordnungService() {}
+    public PruefungsordnungService() {
+    }
 
     public List<Pruefungsordnung> getPruefungsordnungen() {
         return pruefungsordnungRepository.findAll();
@@ -24,11 +25,13 @@ public class PruefungsordnungService {
         return pruefungsordnungRepository.findById(Long.parseLong(id));
     }
 
-    public void insertTestData() {
+    public Pruefungsordnung insertTestData() {
         Pruefungsordnung pruefungsordnung = new Pruefungsordnung();
         pruefungsordnung.setFreigegeben(false);
         pruefungsordnung.setVersion("1");
 
-        pruefungsordnungRepository.save(pruefungsordnung);
+        pruefungsordnungRepository.saveAndFlush(pruefungsordnung);
+
+        return pruefungsordnung;
     }
 }

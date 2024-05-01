@@ -30,8 +30,8 @@ public class StudentService {
 
     public void insertTestData() {
         Student student = new Student();
-        student.setVorname("Max");
-        student.setNachname("Mustermann");
+        student.setVorname("Maria");
+        student.setNachname("Musterfrau");
 
         studentRepository.save(student);
     }

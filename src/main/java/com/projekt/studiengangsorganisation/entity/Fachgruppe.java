@@ -48,4 +48,28 @@ public class Fachgruppe {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Mitarbeiter getReferent() {
+        return referent;
+    }
+
+    public void setReferent(Mitarbeiter referent) {
+        this.referent = referent;
+    }
+
+    public Mitarbeiter getStellvertreter() {
+        return stellvertreter;
+    }
+
+    public void setStellvertreter(Mitarbeiter stellvertreter) {
+        this.stellvertreter = stellvertreter;
+    }
+
+    public Fachbereich getFachbereich() {
+        return fachbereich;
+    }
+
+    public void setFachbereich(Fachbereich fachbereich) {
+        this.fachbereich = fachbereich;
+    }
 }

@@ -70,5 +70,4 @@ public class Pruefung {
     public void setFachsemester(int fachsemester) {
         this.fachsemester = fachsemester;
     }
-
 }

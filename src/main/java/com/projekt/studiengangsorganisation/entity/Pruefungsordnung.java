@@ -66,4 +66,11 @@ public class Pruefungsordnung {
         this.studiengang = studiengang;
     }
 
+    public Set<Pruefung> getPruefungen() {
+        return pruefungen;
+    }
+
+    public void setPruefungen(Set<Pruefung> pruefungen) {
+        this.pruefungen = pruefungen;
+    }
 }

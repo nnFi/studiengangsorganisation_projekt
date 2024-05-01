@@ -94,5 +94,4 @@ public class Studiengang {
     public void setFachbereich(Fachbereich fachbereich) {
         this.fachbereich = fachbereich;
     }
-
 }

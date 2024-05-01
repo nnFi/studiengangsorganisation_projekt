@@ -33,6 +33,10 @@ public class Fachbereich {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -56,5 +60,4 @@ public class Fachbereich {
     public void setStellvertreter(Mitarbeiter stellvertreter) {
         this.stellvertreter = stellvertreter;
     }
-
 }

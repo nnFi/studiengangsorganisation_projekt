@@ -23,7 +23,6 @@ public class NutzerService {
         return nutzerRepository.findAll();
     }
 
-
     public Optional<Nutzer> getNutzer(String id) {
         return nutzerRepository.findById(Long.parseLong(id));
     }  

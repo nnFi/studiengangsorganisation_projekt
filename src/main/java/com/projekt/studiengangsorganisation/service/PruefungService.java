@@ -19,4 +19,11 @@ public class PruefungService {
     public List<Pruefung> getPruefungen() {
         return pruefungRepository.findAll();
     }
+
+    public void insertTestData() {
+        Pruefung pruefung = new Pruefung();
+        pruefung.setPruefungsnummer(1);
+
+        pruefungRepository.save(pruefung);
+    }
 }

@@ -23,4 +23,12 @@ public class PruefungsordnungService {
     public Optional<Pruefungsordnung> getFachgruppe(String id) {
         return pruefungsordnungRepository.findById(Long.parseLong(id));
     }
+
+    public void insertTestData() {
+        Pruefungsordnung pruefungsordnung = new Pruefungsordnung();
+        pruefungsordnung.setFreigegeben(false);
+        pruefungsordnung.setVersion("1");
+
+        pruefungsordnungRepository.save(pruefungsordnung);
+    }
 }

@@ -1,8 +1,8 @@
 package com.projekt.studiengangsorganisation.service;
 
+import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.mapping.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class MitarbeiterService {
     public MitarbeiterService() {
 
     }
-    
+
     public List<Mitarbeiter> getMitarbeiter() {
         return mitarbeiterRepository.findAll();
     }
@@ -26,7 +26,6 @@ public class MitarbeiterService {
     public Optional<Mitarbeiter> getMitarbeiter(String id) {
         return mitarbeiterRepository.findById(Long.parseLong(id));
     }
-
 
     public void insertTestData() {
         Mitarbeiter mitarbeiter = new Mitarbeiter();

@@ -29,7 +29,6 @@ public class ModulService {
     public void insertTestData() {
         Modul modul = new Modul();
         modul.setName("Programmieren");
-        modul.setId(1l);
         modul.setKuerzel("5 WIF 22");
         modul.setWorkload(180);
         modul.setAbschluss("B. Sc.");

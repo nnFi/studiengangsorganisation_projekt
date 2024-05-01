@@ -25,4 +25,11 @@ public class ModulgruppeService {
     public Optional<Modulgruppe> getFachbereich(String id) {
         return modulgruppeRepository.findById(Long.parseLong(id));
     }
+
+    public void insertTestData() {
+        Modulgruppe modulgruppe = new Modulgruppe();
+        modulgruppe.setName("IBM");
+
+        modulgruppeRepository.save(modulgruppe);
+    }
 }

@@ -15,6 +15,8 @@ import org.springframework.web.server.ResponseStatusException;
 import com.projekt.studiengangsorganisation.entity.Studiengang;
 import com.projekt.studiengangsorganisation.service.StudiengangService;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 @RequestMapping("/studiengang")
 @RestController
 public class StudiengangController {
@@ -34,15 +36,10 @@ public class StudiengangController {
     }
 
     @GetMapping("")
-    public List<Studiengang> getMethodName() {
-        return studiengangService.getStudiengaenge();
-    }
-
-    @PostMapping("/insertTest")
-    public String createTestData() {
-        studiengangService.insertTestData();
-
-        return "Testdaten wurden erfolgreich erstellt!";
+    public List<Studiengang> getAll(HttpServletResponse response) {
+        List<Studiengang> list = studiengangService.getStudiengaenge();
+        response.setHeader("Content-Range", "1-" + list.size());
+        return list;
     }
 
 }

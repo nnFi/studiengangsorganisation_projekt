@@ -18,18 +18,20 @@ public class ModulgruppeService {
 
     }
 
-    public List<Modulgruppe> getModulgruppe() {
+    public List<Modulgruppe> getModulgruppen() {
         return modulgruppeRepository.findAll();
     }
 
-    public Optional<Modulgruppe> getFachbereich(String id) {
+    public Optional<Modulgruppe> getModulgruppe(String id) {
         return modulgruppeRepository.findById(Long.parseLong(id));
     }
 
-    public void insertTestData() {
+    public Modulgruppe insertTestData() {
         Modulgruppe modulgruppe = new Modulgruppe();
         modulgruppe.setName("IBM");
 
-        modulgruppeRepository.save(modulgruppe);
+        modulgruppeRepository.saveAndFlush(modulgruppe);
+
+        return modulgruppe;
     }
 }

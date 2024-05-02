@@ -2,6 +2,8 @@ package com.projekt.studiengangsorganisation.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -63,6 +65,7 @@ public class Modul {
     private Mitarbeiter modulbeauftragter;
 
     @OneToMany(mappedBy = "modul")
+    @JsonIgnore
     Set<Pruefung> pruefungen;
 
     @ManyToOne
@@ -157,7 +160,7 @@ public class Modul {
         this.sprache = sprache;
     }
 
-    public boolean getFreigegeben() {
+    public boolean isFreigegeben() {
         return freigegeben;
     }
 
@@ -173,11 +176,27 @@ public class Modul {
         this.fachgruppe = fachgruppe;
     }
 
-    public Nutzer getModulbeauftragter() {
+    public Mitarbeiter getModulbeauftragter() {
         return modulbeauftragter;
     }
 
     public void setModulbeauftragter(Mitarbeiter modulbeauftragter) {
         this.modulbeauftragter = modulbeauftragter;
+    }
+
+    public Set<Pruefung> getPruefungen() {
+        return pruefungen;
+    }
+
+    public void setPruefungen(Set<Pruefung> pruefungen) {
+        this.pruefungen = pruefungen;
+    }
+
+    public Modulgruppe getModulgruppe() {
+        return modulgruppe;
+    }
+
+    public void setModulgruppe(Modulgruppe modulgruppe) {
+        this.modulgruppe = modulgruppe;
     }
 }

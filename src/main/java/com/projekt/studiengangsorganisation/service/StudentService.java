@@ -18,22 +18,22 @@ public class StudentService {
     public StudentService() {
 
     }
-    
-    public List<Student> getStudenten () {
-        return studentRepository.findAll();
-    }
 
     public Optional<Student> getStudent(String id) {
         return studentRepository.findById(Long.parseLong(id));
     }
 
+    public List<Student> getStudenten() {
+        return studentRepository.findAll();
+    }
 
-    public void insertTestData() {
+    public Student insertTestData() {
         Student student = new Student();
         student.setVorname("Maria");
         student.setNachname("Musterfrau");
 
-        studentRepository.save(student);
-    }
+        studentRepository.saveAndFlush(student);
 
+        return student;
+    }
 }

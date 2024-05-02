@@ -14,21 +14,24 @@ public class PruefungsordnungService {
     @Autowired
     PruefungsordnungRepository pruefungsordnungRepository;
 
-    public PruefungsordnungService() {}
+    public PruefungsordnungService() {
+    }
 
-    public List<Pruefungsordnung> getFachgruppen() {
+    public List<Pruefungsordnung> getPruefungsordnungen() {
         return pruefungsordnungRepository.findAll();
     }
 
-    public Optional<Pruefungsordnung> getFachgruppe(String id) {
+    public Optional<Pruefungsordnung> getPruefungsordnung(String id) {
         return pruefungsordnungRepository.findById(Long.parseLong(id));
     }
 
-    public void insertTestData() {
+    public Pruefungsordnung insertTestData() {
         Pruefungsordnung pruefungsordnung = new Pruefungsordnung();
         pruefungsordnung.setFreigegeben(false);
         pruefungsordnung.setVersion("1");
 
-        pruefungsordnungRepository.save(pruefungsordnung);
+        pruefungsordnungRepository.saveAndFlush(pruefungsordnung);
+
+        return pruefungsordnung;
     }
 }

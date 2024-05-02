@@ -19,19 +19,21 @@ public class MitarbeiterService {
 
     }
 
-    public List<Mitarbeiter> getMitarbeiter() {
-        return mitarbeiterRepository.findAll();
-    }
-
     public Optional<Mitarbeiter> getMitarbeiter(String id) {
         return mitarbeiterRepository.findById(Long.parseLong(id));
     }
 
-    public void insertTestData() {
+    public List<Mitarbeiter> getMitarbeiter() {
+        return mitarbeiterRepository.findAll();
+    }
+
+    public Mitarbeiter insertTestData() {
         Mitarbeiter mitarbeiter = new Mitarbeiter();
         mitarbeiter.setVorname("Max");
         mitarbeiter.setNachname("Mustermann");
 
-        mitarbeiterRepository.save(mitarbeiter);
+        mitarbeiterRepository.saveAndFlush(mitarbeiter);
+
+        return mitarbeiter;
     }
 }

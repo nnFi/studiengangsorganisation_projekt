@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.projekt.studiengangsorganisation.entity.Modul;
 import com.projekt.studiengangsorganisation.entity.Pruefung;
+import com.projekt.studiengangsorganisation.entity.PruefungKey;
+import com.projekt.studiengangsorganisation.entity.Pruefungsordnung;
 import com.projekt.studiengangsorganisation.repository.PruefungRepository;
 
 @Service
@@ -14,16 +17,27 @@ public class PruefungService {
     @Autowired
     PruefungRepository pruefungRepository;
 
-    public PruefungService() {}
+    public PruefungService() {
+    }
 
     public List<Pruefung> getPruefungen() {
         return pruefungRepository.findAll();
     }
 
-    public void insertTestData() {
+    public Pruefung insertTestData(Pruefungsordnung pruefungsordnung, Modul modul) {
         Pruefung pruefung = new Pruefung();
         pruefung.setPruefungsnummer(1);
+        pruefung.setFachsemester(1);
+        pruefung.setPruefungsordnung(pruefungsordnung);
+        pruefung.setModul(modul);
+        PruefungKey key = new PruefungKey();
+        key.setModulId(modul.getId());
+        key.setPruefungsordnungId(pruefungsordnung.getId());
 
-        pruefungRepository.save(pruefung);
+        pruefung.setId(key);
+
+        pruefungRepository.saveAndFlush(pruefung);
+
+        return pruefung;
     }
 }

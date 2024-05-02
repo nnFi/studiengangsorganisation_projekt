@@ -20,9 +20,8 @@ public class NutzerService {
     }
 
     public List<Nutzer> getNutzer() {
-    return nutzerRepository.findAll();
+        return nutzerRepository.findAll();
     }
-
 
     public Optional<Nutzer> getNutzer(String id) {
         return nutzerRepository.findById(Long.parseLong(id));

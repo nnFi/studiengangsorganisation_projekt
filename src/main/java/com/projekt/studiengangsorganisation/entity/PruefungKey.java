@@ -29,5 +29,4 @@ public class PruefungKey implements Serializable {
     public void setPruefungsordnungId(Long pruefungsordnungId) {
         this.pruefungsordnungId = pruefungsordnungId;
     }
-
 }

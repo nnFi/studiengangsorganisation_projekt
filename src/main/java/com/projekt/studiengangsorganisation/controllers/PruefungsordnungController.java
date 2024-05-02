@@ -11,32 +11,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.projekt.studiengangsorganisation.entity.Studiengang;
-import com.projekt.studiengangsorganisation.service.StudiengangService;
+import com.projekt.studiengangsorganisation.entity.Pruefungsordnung;
+import com.projekt.studiengangsorganisation.service.PruefungsordnungService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-@RequestMapping("/studiengang")
+@RequestMapping("/pruefungsordnung")
 @RestController
-public class StudiengangController {
-
+public class PruefungsordnungController {
+    
     @Autowired
-    StudiengangService studiengangService;
+    PruefungsordnungService pruefungsordnungService;
 
     @GetMapping("/{id}")
-    public Studiengang getOne(@PathVariable String id) {
-        Optional<Studiengang> studiengang = studiengangService.getStudiengang(id);
+    public Pruefungsordnung getOne(@PathVariable String id) {
+        Optional<Pruefungsordnung> pruefungsordnung = pruefungsordnungService.getPruefungsordnung(id);
 
-        if (studiengang.isPresent()) {
-            return studiengang.get();
+        if (pruefungsordnung.isPresent()) {
+            return pruefungsordnung.get();
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("")
-    public List<Studiengang> getAll(HttpServletResponse response) {
-        List<Studiengang> list = studiengangService.getStudiengaenge();
+    public List<Pruefungsordnung> getAll(HttpServletResponse response) {
+        List<Pruefungsordnung> list = pruefungsordnungService.getPruefungsordnungen();
         response.setHeader("Content-Range", "1-" + list.size());
         return list;
     }

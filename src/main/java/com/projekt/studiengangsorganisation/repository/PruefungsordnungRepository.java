@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PruefungsordnungRepository
-        extends JpaRepository<com.projekt.studiengangsorganisation.entity.Pruefungsordnung, Long> {
+public interface PruefungsordnungRepository extends JpaRepository<com.projekt.studiengangsorganisation.entity.Pruefungsordnung, Long> {
 
 }

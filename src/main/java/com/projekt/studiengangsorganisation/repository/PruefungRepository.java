@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.projekt.studiengangsorganisation.entity.PruefungKey;
 
 @Repository
-public interface PruefungRepository extends JpaRepository<com.projekt.studiengangsorganisation.entity.Pruefung, PruefungKey> {
+public interface PruefungRepository extends JpaRepository<com.projekt.studiengangsorganisation.entity.Pruefung, Long> {
 
 }

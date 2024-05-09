@@ -2,7 +2,10 @@ package com.projekt.studiengangsorganisation.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +18,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Table(name = "Modul")
 public class Modul {
 
@@ -57,10 +61,12 @@ public class Modul {
     private boolean freigegeben;
 
     @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "fachgruppe_id")
     private Fachgruppe fachgruppe;
 
     @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "modulbeauftragter_id")
     private Mitarbeiter modulbeauftragter;
 
@@ -69,6 +75,7 @@ public class Modul {
     Set<Pruefung> pruefungen;
 
     @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "modulgruppe_id")
     private Modulgruppe modulgruppe;
 

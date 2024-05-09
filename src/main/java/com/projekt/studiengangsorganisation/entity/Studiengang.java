@@ -1,5 +1,9 @@
 package com.projekt.studiengangsorganisation.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Table(name = "studiengang")
 public class Studiengang {
 
@@ -27,15 +32,18 @@ public class Studiengang {
     @Column(name = "studiengang_regelstudienzeit")
     private int regelstudienzeit;
 
+    @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne
     @JoinColumn(name = "leiter_id")
     private Mitarbeiter leiter;
 
     @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "stellvertretenderLeiter_id")
     private Mitarbeiter stellvertretenderLeiter;
 
     @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "fachbereich_id")
     private Fachbereich fachbereich;
 

@@ -40,5 +40,4 @@ public class FachgruppeService {
 
         return fachgruppe;
     }
-
 }

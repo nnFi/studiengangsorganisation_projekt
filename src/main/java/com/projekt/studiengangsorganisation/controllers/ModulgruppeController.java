@@ -40,5 +40,4 @@ public class ModulgruppeController {
         response.setHeader("Content-Range", "1-" + list.size());
         return list;
     }
-
 }

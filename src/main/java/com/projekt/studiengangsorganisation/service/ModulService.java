@@ -53,6 +53,5 @@ public class ModulService {
         modulRepository.saveAndFlush(modul);
 
         return modul;
-
     }
 }

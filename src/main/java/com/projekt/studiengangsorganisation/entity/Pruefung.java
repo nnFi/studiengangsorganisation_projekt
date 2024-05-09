@@ -1,27 +1,39 @@
 package com.projekt.studiengangsorganisation.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Table(name = "pruefung")
 public class Pruefung {
 
-    @EmbeddedId
-    PruefungKey id;
+    /* @EmbeddedId */
+    /* PruefungKey id; */
+    @Id
+    @Column(name = "pruefung_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
-    @MapsId("modulId")
+    // @MapsId("modulId")
+    @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "modul_id")
     private Modul modul;
 
     @ManyToOne
-    @MapsId("pruefungsordnungId")
+    // @MapsId("pruefungsordnungId")
+    @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "pruefungsordnung_id")
     private Pruefungsordnung pruefungsordnung;
 
@@ -31,11 +43,11 @@ public class Pruefung {
     @Column(name = "fachsemester")
     private int fachsemester;
 
-    public PruefungKey getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(PruefungKey id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

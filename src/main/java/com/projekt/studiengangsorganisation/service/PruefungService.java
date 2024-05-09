@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.projekt.studiengangsorganisation.entity.Modul;
 import com.projekt.studiengangsorganisation.entity.Pruefung;
-import com.projekt.studiengangsorganisation.entity.PruefungKey;
 import com.projekt.studiengangsorganisation.entity.Pruefungsordnung;
 import com.projekt.studiengangsorganisation.repository.PruefungRepository;
 
@@ -30,11 +29,13 @@ public class PruefungService {
         pruefung.setFachsemester(1);
         pruefung.setPruefungsordnung(pruefungsordnung);
         pruefung.setModul(modul);
-        PruefungKey key = new PruefungKey();
-        key.setModulId(modul.getId());
-        key.setPruefungsordnungId(pruefungsordnung.getId());
+        /*
+         * PruefungKey key = new PruefungKey();
+         * key.setModulId(modul.getId());
+         * key.setPruefungsordnungId(pruefungsordnung.getId());
+         */
 
-        pruefung.setId(key);
+        pruefung.setId(1l);
 
         pruefungRepository.saveAndFlush(pruefung);
 

@@ -15,7 +15,7 @@ import com.projekt.studiengangsorganisation.service.FachbereichService;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RequestMapping("/fachbereich")
 @RestController
@@ -25,7 +25,7 @@ public class FachbereichController {
     FachbereichService fachbereichService;
 
     @GetMapping("/{id}")
-    public Fachbereich getOne(@RequestParam String id) {
+    public Fachbereich getOne(@PathVariable String id) {
         Optional<Fachbereich> fachbereich = fachbereichService.getFachbereich(id);
 
         if (fachbereich.isPresent()) {

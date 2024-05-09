@@ -75,7 +75,7 @@ public class TestDataController {
 
         Pruefung pruefung = pruefungService.insertTestData(pruefungsordnung, modul);
 
-        Studiengang studiengang = studiengangService.insertTestData(mitarbeiter1, mitarbeiter2);
+        Studiengang studiengang = studiengangService.insertTestData(mitarbeiter1, mitarbeiter2, fachbereich);
 
         return "Testdaten wurden erfolgreich erstellt!";
     }

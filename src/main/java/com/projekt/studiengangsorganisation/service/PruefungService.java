@@ -1,6 +1,7 @@
 package com.projekt.studiengangsorganisation.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,10 @@ public class PruefungService {
     PruefungRepository pruefungRepository;
 
     public PruefungService() {
+    }
+
+    public Optional<Pruefung> getPruefung(String id) {
+        return pruefungRepository.findById(Long.parseLong(id));
     }
 
     public List<Pruefung> getPruefungen() {

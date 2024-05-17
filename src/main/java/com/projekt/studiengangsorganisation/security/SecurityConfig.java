@@ -19,44 +19,44 @@ import jakarta.servlet.http.HttpServletResponse;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        AuthenticationManager authenticationManager = authenticationManager(
-                http.getSharedObject(AuthenticationConfiguration.class));
-        CustomUsernamePasswordAuthenticationFilter customAuthenticationFilter = new CustomUsernamePasswordAuthenticationFilter(
-                authenticationManager);
-        customAuthenticationFilter.setFilterProcessesUrl("/auth/login");
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                AuthenticationManager authenticationManager = authenticationManager(
+                                http.getSharedObject(AuthenticationConfiguration.class));
+                CustomUsernamePasswordAuthenticationFilter customAuthenticationFilter = new CustomUsernamePasswordAuthenticationFilter(
+                                authenticationManager);
+                customAuthenticationFilter.setFilterProcessesUrl("/auth/login");
 
-        http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/auth/login", "/auth/register/mitarbeiter", "/auth/register/student",
-                                "/auth/logout")
-                        .permitAll()
-                        .anyRequest().authenticated())
-                .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-                .logout(logout -> logout
-                        .logoutUrl("/auth/logout")
-                        .deleteCookies("JSESSIONID")
-                        .invalidateHttpSession(true)
-                        .clearAuthentication(true)
-                        .logoutSuccessHandler((request, response, authentication) -> {
-                            response.setStatus(HttpServletResponse.SC_OK);
-                        }));
+                http
+                                .csrf(AbstractHttpConfigurer::disable)
+                                .authorizeHttpRequests(authz -> authz
+                                                .requestMatchers("/auth/login", "/auth/register/admin",
+                                                                "/auth/logout")
+                                                .permitAll()
+                                                .anyRequest().authenticated())
+                                .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                                .sessionManagement(session -> session
+                                                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                                .logout(logout -> logout
+                                                .logoutUrl("/auth/logout")
+                                                .deleteCookies("JSESSIONID")
+                                                .invalidateHttpSession(true)
+                                                .clearAuthentication(true)
+                                                .logoutSuccessHandler((request, response, authentication) -> {
+                                                        response.setStatus(HttpServletResponse.SC_OK);
+                                                }));
 
-        return http.build();
-    }
+                return http.build();
+        }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-            throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+        @Bean
+        public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+                        throws Exception {
+                return authenticationConfiguration.getAuthenticationManager();
+        }
 }

@@ -11,4 +11,9 @@ import jakarta.persistence.Table;
 @Table(name = "Student")
 public class Student extends Nutzer {
 
+    public Student() {
+        super();
+        this.setRole("STUDENT");
+    }
+
 }

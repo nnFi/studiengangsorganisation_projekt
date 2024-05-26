@@ -4,6 +4,8 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
@@ -15,9 +17,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "pruefungsordnung")
 public class Pruefungsordnung {
 
@@ -37,10 +41,18 @@ public class Pruefungsordnung {
     @JoinColumn(name = "studiengang_id")
     private Studiengang studiengang;
 
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String studiengangId;
+
     @OneToMany(mappedBy = "pruefungsordnung")
     @JsonIdentityReference(alwaysAsId = true)
     // @JsonIgnore
     Set<Pruefung> pruefungen;
+
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String pruefungId;
 
     @Column(name = "auslafend")
     private boolean auslaufend;
@@ -91,5 +103,25 @@ public class Pruefungsordnung {
 
     public void setAuslaufend(boolean auslaufend) {
         this.auslaufend = auslaufend;
+    }
+
+    public String getStudiengangId() {
+        return studiengangId;
+    }
+
+    public void setStudiengangId(String studiengangId) {
+        this.studiengangId = studiengangId;
+    }
+
+    public String getPruefungId() {
+        return pruefungId;
+    }
+
+    public void setPruefungId(String pruefungId) {
+        this.pruefungId = pruefungId;
+    }
+
+    public void addPruefung(Pruefung pruefung) {
+        this.pruefungen.add(pruefung);
     }
 }

@@ -19,14 +19,17 @@ public class MitarbeiterService {
 
     }
 
+    // Methode zum Abrufen eines Mitarbeiters anhand seiner ID
     public Optional<Mitarbeiter> getMitarbeiter(String id) {
         return mitarbeiterRepository.findById(Long.parseLong(id));
     }
 
+    // Methode zum Abrufen aller Mitarbeiter
     public List<Mitarbeiter> getMitarbeiter() {
         return mitarbeiterRepository.findAll();
     }
 
+    // Methode zum Speichern eines Mitarbeiters in die Datenbank und sofortigem Aktualisieren der Änderungen in der Datenbank
     public Mitarbeiter saveAndFlush(Mitarbeiter mitarbeiter) {
         return mitarbeiterRepository.saveAndFlush(mitarbeiter);
     }

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.projekt.studiengangsorganisation.entity.Admin;
 import com.projekt.studiengangsorganisation.entity.Nutzer;
-import com.projekt.studiengangsorganisation.repository.AdminRepository;
-import com.projekt.studiengangsorganisation.repository.NutzerRepository;
+import com.projekt.studiengangsorganisation.service.AdminService;
+import com.projekt.studiengangsorganisation.service.NutzerService;
 
 @RestController
 @RequestMapping("/auth")
@@ -23,23 +23,23 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private NutzerRepository nutzerRepository;
+    private NutzerService nutzerService;
 
     @Autowired
-    private AdminRepository adminRepository;
+    private AdminService adminService;
 
     @PostMapping("/register/admin")
     public String registerUser(@RequestBody Admin user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setUsername(user.getVorname().toLowerCase() + "." + user.getNachname().toLowerCase());
-        adminRepository.save(user);
+        adminService.saveAndFlush(user);
         return "User registered successfully";
     }
 
     @GetMapping("/info")
     public Nutzer getUserInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Nutzer nutzer = nutzerRepository.findByUsername(authentication.getName()).get();
+        Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName()).get();
         return nutzer;
     }
 }

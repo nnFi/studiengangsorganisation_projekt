@@ -19,7 +19,6 @@ import org.springframework.web.server.ResponseStatusException;
 import com.projekt.studiengangsorganisation.entity.Fachbereich;
 import com.projekt.studiengangsorganisation.entity.Mitarbeiter;
 import com.projekt.studiengangsorganisation.entity.Nutzer;
-import com.projekt.studiengangsorganisation.repository.FachbereichRepository;
 import com.projekt.studiengangsorganisation.service.FachbereichService;
 import com.projekt.studiengangsorganisation.service.MitarbeiterService;
 import com.projekt.studiengangsorganisation.service.NutzerService;
@@ -35,9 +34,6 @@ public class FachbereichController {
 
     @Autowired
     NutzerService nutzerService;
-
-    @Autowired
-    FachbereichRepository fachbereichRepository;
 
     @Autowired
     MitarbeiterService mitarbeiterService;
@@ -80,7 +76,7 @@ public class FachbereichController {
 
         fachbereich.setReferent(referent);
         fachbereich.setStellvertreter(stellvertreter);
-        fachbereichRepository.saveAndFlush(fachbereich);
+        fachbereichService.saveAndFlush(fachbereich);
 
         return new ResponseEntity<>(fachbereich, HttpStatus.CREATED);
     }

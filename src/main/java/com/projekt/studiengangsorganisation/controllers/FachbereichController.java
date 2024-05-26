@@ -20,9 +20,9 @@ import com.projekt.studiengangsorganisation.entity.Fachbereich;
 import com.projekt.studiengangsorganisation.entity.Mitarbeiter;
 import com.projekt.studiengangsorganisation.entity.Nutzer;
 import com.projekt.studiengangsorganisation.repository.FachbereichRepository;
-import com.projekt.studiengangsorganisation.repository.MitarbeiterRepository;
-import com.projekt.studiengangsorganisation.repository.NutzerRepository;
 import com.projekt.studiengangsorganisation.service.FachbereichService;
+import com.projekt.studiengangsorganisation.service.MitarbeiterService;
+import com.projekt.studiengangsorganisation.service.NutzerService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -34,13 +34,13 @@ public class FachbereichController {
     FachbereichService fachbereichService;
 
     @Autowired
-    NutzerRepository nutzerRepository;
+    NutzerService nutzerService;
 
     @Autowired
     FachbereichRepository fachbereichRepository;
 
     @Autowired
-    MitarbeiterRepository mitarbeiterRepository;
+    MitarbeiterService mitarbeiterService;
 
     @GetMapping("/{id}")
     public Fachbereich getOne(@PathVariable String id) {
@@ -63,19 +63,19 @@ public class FachbereichController {
     @PostMapping("")
     public ResponseEntity<Fachbereich> createFachbereich(@RequestBody Fachbereich fachbereich) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Nutzer nutzer = nutzerRepository.findByUsername(authentication.getName())
+        Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized"));
 
         if (!nutzer.getRole().equals("ADMIN")) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized");
         }
 
-        Mitarbeiter referent = mitarbeiterRepository
-                .findById(Long.parseLong(fachbereich.getReferentId()))
+        Mitarbeiter referent = mitarbeiterService
+                .getMitarbeiter(fachbereich.getReferentId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Referent not found"));
 
-        Mitarbeiter stellvertreter = mitarbeiterRepository
-                .findById(Long.parseLong(fachbereich.getStellvertreterId()))
+        Mitarbeiter stellvertreter = mitarbeiterService
+                .getMitarbeiter(fachbereich.getStellvertreterId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter not found"));
 
         fachbereich.setReferent(referent);

@@ -11,7 +11,7 @@ import com.projekt.studiengangsorganisation.repository.NutzerRepository;
 
 @Service
 public class NutzerService {
-    
+
     @Autowired
     NutzerRepository nutzerRepository;
 
@@ -25,5 +25,9 @@ public class NutzerService {
 
     public Optional<Nutzer> getNutzer(String id) {
         return nutzerRepository.findById(Long.parseLong(id));
-    }  
+    }
+
+    public Optional<Nutzer> getNutzerByUsername(String username) {
+        return nutzerRepository.findByUsername(username);
+    }
 }

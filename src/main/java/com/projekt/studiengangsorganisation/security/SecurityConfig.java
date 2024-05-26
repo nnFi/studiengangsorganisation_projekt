@@ -31,7 +31,7 @@ public class SecurityConfig {
                                 .csrf(AbstractHttpConfigurer::disable)
                                 .authorizeHttpRequests(authz -> authz
                                                 .requestMatchers("/auth/login", "/auth/register/admin",
-                                                                "/auth/logout")
+                                                                "/auth/logout", "/testdata")
                                                 .permitAll()
                                                 .anyRequest().authenticated())
                                 .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

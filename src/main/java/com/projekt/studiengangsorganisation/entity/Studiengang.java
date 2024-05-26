@@ -37,15 +37,21 @@ public class Studiengang {
     @JoinColumn(name = "leiter_id")
     private Mitarbeiter leiter;
 
+    private String leiterId;
+
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "stellvertretenderLeiter_id")
     private Mitarbeiter stellvertretenderLeiter;
 
+    private String stellvertreterId;
+
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "fachbereich_id")
     private Fachbereich fachbereich;
+
+    private String fachbereichId;
 
     public long getId() {
         return id;
@@ -101,5 +107,29 @@ public class Studiengang {
 
     public void setFachbereich(Fachbereich fachbereich) {
         this.fachbereich = fachbereich;
+    }
+
+    public String getLeiterId() {
+        return leiterId;
+    }
+
+    public void setLeiterId(String leiterId) {
+        this.leiterId = leiterId;
+    }
+
+    public String getStellvertreterId() {
+        return stellvertreterId;
+    }
+
+    public void setStellvertreterId(String stellvertreterId) {
+        this.stellvertreterId = stellvertreterId;
+    }
+
+    public String getFachbereichId() {
+        return fachbereichId;
+    }
+
+    public void setFachbereichId(String fachbereichId) {
+        this.fachbereichId = fachbereichId;
     }
 }

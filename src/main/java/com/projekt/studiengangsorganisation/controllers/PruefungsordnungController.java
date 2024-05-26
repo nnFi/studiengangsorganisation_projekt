@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.projekt.studiengangsorganisation.entity.Nutzer;
-import com.projekt.studiengangsorganisation.entity.Pruefung;
 import com.projekt.studiengangsorganisation.entity.Pruefungsordnung;
 import com.projekt.studiengangsorganisation.entity.Studiengang;
 import com.projekt.studiengangsorganisation.service.NutzerService;
@@ -30,7 +29,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @RequestMapping("/pruefungsordnung")
 @RestController
 public class PruefungsordnungController {
-    
+
     @Autowired
     PruefungsordnungService pruefungsordnungService;
 
@@ -75,12 +74,7 @@ public class PruefungsordnungController {
                 .getStudiengang(pruefungsordnung.getStudiengangId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Leiter not found"));
 
-        Pruefung pruefung = pruefungService
-                .getPruefung(pruefungsordnung.getPruefungId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter not found"));
-
         pruefungsordnung.setStudiengang(studiengang);
-        pruefungsordnung.addPruefung(pruefung);
         pruefungsordnungService.saveAndFlush(pruefungsordnung);
 
         return new ResponseEntity<>(pruefungsordnung, HttpStatus.CREATED);

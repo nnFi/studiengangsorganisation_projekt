@@ -28,6 +28,10 @@ public class PruefungService {
         return pruefungRepository.findAll();
     }
 
+    public List<Pruefung> getPruefungen(List<String> ids) {
+        return pruefungRepository.findAllById(ids.stream().map(Long::parseLong).toList());
+    }
+
     public Pruefung saveAndFlush(Pruefung pruefung) {
         return pruefungRepository.saveAndFlush(pruefung);
     }

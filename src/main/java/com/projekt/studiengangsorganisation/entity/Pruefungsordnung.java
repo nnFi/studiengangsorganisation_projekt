@@ -1,6 +1,6 @@
 package com.projekt.studiengangsorganisation.entity;
 
-import java.util.Set;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
@@ -48,11 +48,7 @@ public class Pruefungsordnung {
     @OneToMany(mappedBy = "pruefungsordnung")
     @JsonIdentityReference(alwaysAsId = true)
     // @JsonIgnore
-    Set<Pruefung> pruefungen;
-
-    @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String pruefungId;
+    List<Pruefung> pruefungen;
 
     @Column(name = "auslafend")
     private boolean auslaufend;
@@ -89,11 +85,11 @@ public class Pruefungsordnung {
         this.studiengang = studiengang;
     }
 
-    public Set<Pruefung> getPruefungen() {
+    public List<Pruefung> getPruefungen() {
         return pruefungen;
     }
 
-    public void setPruefungen(Set<Pruefung> pruefungen) {
+    public void setPruefungen(List<Pruefung> pruefungen) {
         this.pruefungen = pruefungen;
     }
 
@@ -113,15 +109,4 @@ public class Pruefungsordnung {
         this.studiengangId = studiengangId;
     }
 
-    public String getPruefungId() {
-        return pruefungId;
-    }
-
-    public void setPruefungId(String pruefungId) {
-        this.pruefungId = pruefungId;
-    }
-
-    public void addPruefung(Pruefung pruefung) {
-        this.pruefungen.add(pruefung);
-    }
 }

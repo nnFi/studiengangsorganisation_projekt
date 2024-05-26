@@ -26,15 +26,19 @@ public class Fachbereich {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne()
+    @ManyToOne(optional = false)
     @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "referent_id")
     private Mitarbeiter referent;
 
-    @ManyToOne()
+    private String referentId;
+
+    @ManyToOne(optional = false)
     @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "stellvertreter_id")
     private Mitarbeiter stellvertreter;
+
+    private String stellvertreterId;
 
     public Long getId() {
         return id;
@@ -67,4 +71,21 @@ public class Fachbereich {
     public void setStellvertreter(Mitarbeiter stellvertreter) {
         this.stellvertreter = stellvertreter;
     }
+
+    public String getReferentId() {
+        return referentId;
+    }
+
+    public void setReferentId(String referentId) {
+        this.referentId = referentId;
+    }
+
+    public String getStellvertreterId() {
+        return stellvertreterId;
+    }
+
+    public void setStellvertreterId(String stellvertreterId) {
+        this.stellvertreterId = stellvertreterId;
+    }
+
 }

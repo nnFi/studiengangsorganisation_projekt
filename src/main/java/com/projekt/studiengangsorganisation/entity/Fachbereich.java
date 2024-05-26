@@ -2,6 +2,8 @@ package com.projekt.studiengangsorganisation.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
@@ -12,9 +14,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "fachbereich")
 public class Fachbereich {
 
@@ -31,6 +35,8 @@ public class Fachbereich {
     @JoinColumn(name = "referent_id")
     private Mitarbeiter referent;
 
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String referentId;
 
     @ManyToOne(optional = false)
@@ -38,6 +44,8 @@ public class Fachbereich {
     @JoinColumn(name = "stellvertreter_id")
     private Mitarbeiter stellvertreter;
 
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String stellvertreterId;
 
     public Long getId() {

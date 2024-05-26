@@ -5,6 +5,8 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
@@ -16,9 +18,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "Modul")
 public class Modul {
 
@@ -65,10 +69,18 @@ public class Modul {
     @JoinColumn(name = "fachgruppe_id")
     private Fachgruppe fachgruppe;
 
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String fachgruppeId;
+
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "modulbeauftragter_id")
     private Mitarbeiter modulbeauftragter;
+
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String modulbeauftragerId;
 
     @OneToMany(mappedBy = "modul")
     @JsonIgnore
@@ -78,6 +90,10 @@ public class Modul {
     @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "modulgruppe_id")
     private Modulgruppe modulgruppe;
+
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String modulgruppeId;
 
     public Long getId() {
         return id;
@@ -206,4 +222,31 @@ public class Modul {
     public void setModulgruppe(Modulgruppe modulgruppe) {
         this.modulgruppe = modulgruppe;
     }
+
+    public void setFachgruppeId (String fachgruppeId) {
+        this.fachgruppeId = fachgruppeId;
+    }
+
+    public String getFachgruppeId () {
+        return fachgruppeId;
+    }
+
+    public String getModulbeauftragerId() {
+        return modulbeauftragerId;
+    }
+
+    public void setModulbeauftragerId(String modulbeauftragerId) {
+        this.modulbeauftragerId = modulbeauftragerId;
+    }
+
+    public String getModulgruppeId() {
+        return modulgruppeId;
+    }
+
+    public void setModulgruppeId(String modulgruppeId) {
+        this.modulgruppeId = modulgruppeId;
+    }
+
+    
+
 }

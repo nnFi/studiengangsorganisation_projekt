@@ -5,14 +5,26 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.projekt.studiengangsorganisation.entity.Fachbereich;
 import com.projekt.studiengangsorganisation.entity.Fachgruppe;
+import com.projekt.studiengangsorganisation.entity.Mitarbeiter;
+import com.projekt.studiengangsorganisation.entity.Nutzer;
+import com.projekt.studiengangsorganisation.repository.FachgruppeRepository;
+import com.projekt.studiengangsorganisation.service.FachbereichService;
 import com.projekt.studiengangsorganisation.service.FachgruppeService;
+import com.projekt.studiengangsorganisation.service.MitarbeiterService;
+import com.projekt.studiengangsorganisation.service.NutzerService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -21,7 +33,19 @@ import jakarta.servlet.http.HttpServletResponse;
 public class FachgruppeController {
 
     @Autowired
+    NutzerService nutzerService;
+
+    @Autowired
     FachgruppeService fachgruppeService;
+
+    @Autowired
+    MitarbeiterService mitarbeiterService;
+
+    @Autowired
+    FachbereichService fachbereichService;
+
+    @Autowired
+    FachgruppeRepository fachgruppeRepository;
 
     @GetMapping("/{id}")
     public Fachgruppe getOne(@PathVariable String id) {
@@ -39,5 +63,41 @@ public class FachgruppeController {
         List<Fachgruppe> list = fachgruppeService.getFachgruppen();
         response.setHeader("Content-Range", "1-" + list.size());
         return list;
+    }
+
+    @PostMapping("")
+    public ResponseEntity<Fachgruppe> createFachgruppe(@RequestBody Fachgruppe fachgruppe) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized"));
+
+        if (!nutzer.getRole().equals("MITARBEITER") && !nutzer.getRole().equals("ADMIN")) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized");
+        }
+
+        Fachbereich fachbereich = fachbereichService
+                .getFachbereich(fachgruppe.getFachbereichId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fachbereich not found"));
+
+        if (!fachbereich.getReferent().getId().equals(nutzer.getId())
+                && !fachbereich.getStellvertreter().getId().equals(nutzer.getId())
+                && !nutzer.getRole().equals("ADMIN")) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized");
+        }
+
+        Mitarbeiter referent = mitarbeiterService
+                .getMitarbeiter(fachgruppe.getReferentId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Referent not found"));
+
+        Mitarbeiter stellvertreter = mitarbeiterService
+                .getMitarbeiter(fachgruppe.getStellvertreterId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter not found"));
+
+        fachgruppe.setFachbereich(fachbereich);
+        fachgruppe.setReferent(referent);
+        fachgruppe.setStellvertreter(stellvertreter);
+        fachgruppeRepository.saveAndFlush(fachgruppe);
+
+        return new ResponseEntity<>(fachgruppe, HttpStatus.CREATED);
     }
 }

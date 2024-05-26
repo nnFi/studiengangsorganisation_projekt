@@ -75,6 +75,12 @@ public class PruefungController {
                 .getPruefungsordnung((pruefung.getPruefungsordnungId()))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pruefungsordnung not found"));
 
+        for (Pruefung p : pruefungsordnung.getPruefungen()) {
+            if (p.getModulId().equals(pruefung.getModulId())) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Pruefung already exists");
+            }
+        }
+
         Modul modul = modulService
                 .getModul((pruefung.getModulId()))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Modul not found"));

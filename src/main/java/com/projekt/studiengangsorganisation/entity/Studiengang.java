@@ -3,6 +3,7 @@ package com.projekt.studiengangsorganisation.entity;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
@@ -13,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -39,6 +41,8 @@ public class Studiengang {
     @JoinColumn(name = "leiter_id")
     private Mitarbeiter leiter;
 
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String leiterId;
 
     @ManyToOne
@@ -46,6 +50,8 @@ public class Studiengang {
     @JoinColumn(name = "stellvertretenderLeiter_id")
     private Mitarbeiter stellvertretenderLeiter;
 
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String stellvertreterId;
 
     @ManyToOne
@@ -53,6 +59,8 @@ public class Studiengang {
     @JoinColumn(name = "fachbereich_id")
     private Fachbereich fachbereich;
 
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String fachbereichId;
 
     public long getId() {

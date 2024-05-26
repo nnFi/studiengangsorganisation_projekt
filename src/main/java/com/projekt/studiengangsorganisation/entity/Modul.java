@@ -80,7 +80,7 @@ public class Modul {
 
     @Transient
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String modulbeauftragerId;
+    private String modulbeauftragterId;
 
     @OneToMany(mappedBy = "modul")
     @JsonIgnore
@@ -223,20 +223,12 @@ public class Modul {
         this.modulgruppe = modulgruppe;
     }
 
-    public void setFachgruppeId (String fachgruppeId) {
+    public void setFachgruppeId(String fachgruppeId) {
         this.fachgruppeId = fachgruppeId;
     }
 
-    public String getFachgruppeId () {
+    public String getFachgruppeId() {
         return fachgruppeId;
-    }
-
-    public String getModulbeauftragerId() {
-        return modulbeauftragerId;
-    }
-
-    public void setModulbeauftragerId(String modulbeauftragerId) {
-        this.modulbeauftragerId = modulbeauftragerId;
     }
 
     public String getModulgruppeId() {
@@ -247,6 +239,12 @@ public class Modul {
         this.modulgruppeId = modulgruppeId;
     }
 
-    
+    public String getModulbeauftragterId() {
+        return modulbeauftragterId;
+    }
+
+    public void setModulbeauftragterId(String modulbeauftragterId) {
+        this.modulbeauftragterId = modulbeauftragterId;
+    }
 
 }

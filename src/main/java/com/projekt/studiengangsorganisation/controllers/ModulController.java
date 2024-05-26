@@ -87,7 +87,7 @@ public class ModulController {
         }
 
         Mitarbeiter modulbeauftragter = mitarbeiterService
-                .getMitarbeiter(modul.getModulbeauftragerId())
+                .getMitarbeiter(modul.getModulbeauftragterId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fachbereich not found"));
 
         Modulgruppe modulgruppe = modulgruppeService

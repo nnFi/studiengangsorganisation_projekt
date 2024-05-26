@@ -29,6 +29,7 @@ public class PruefungsordnungService {
         Pruefungsordnung pruefungsordnung = new Pruefungsordnung();
         pruefungsordnung.setFreigegeben(false);
         pruefungsordnung.setVersion("1");
+        pruefungsordnung.setAuslaufend(false);
 
         pruefungsordnungRepository.saveAndFlush(pruefungsordnung);
 

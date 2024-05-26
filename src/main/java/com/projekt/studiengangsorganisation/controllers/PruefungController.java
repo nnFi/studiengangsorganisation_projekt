@@ -31,7 +31,6 @@ import jakarta.servlet.http.HttpServletResponse;
 @RestController
 public class PruefungController {
 
-
     @Autowired
     PruefungService pruefungService;
 
@@ -62,8 +61,6 @@ public class PruefungController {
         return list;
     }
 
-
-
     @PostMapping("")
     public ResponseEntity<Pruefung> createPruefung(@RequestBody Pruefung pruefung) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -71,7 +68,7 @@ public class PruefungController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized"));
 
         if (!nutzer.getRole().equals("MITARBEITER") && !nutzer.getRole().equals("ADMIN")) {
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized");
         }
 
         Pruefungsordnung pruefungsordnung = pruefungsordnungService
@@ -84,6 +81,8 @@ public class PruefungController {
 
         pruefung.setPruefungsordnung(pruefungsordnung);
         pruefung.setModul(modul);
+
+        pruefungService.saveAndFlush(pruefung);
 
         return new ResponseEntity<>(pruefung, HttpStatus.CREATED);
     }

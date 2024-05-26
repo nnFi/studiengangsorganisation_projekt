@@ -22,6 +22,7 @@ import com.projekt.studiengangsorganisation.entity.Nutzer;
 import com.projekt.studiengangsorganisation.entity.Studiengang;
 import com.projekt.studiengangsorganisation.service.FachbereichService;
 import com.projekt.studiengangsorganisation.service.MitarbeiterService;
+import com.projekt.studiengangsorganisation.service.NutzerService;
 import com.projekt.studiengangsorganisation.service.StudiengangService;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -38,6 +39,9 @@ public class StudiengangController {
 
     @Autowired
     FachbereichService fachbereichService;
+
+    @Autowired
+    NutzerService nutzerService;
 
     @GetMapping("/{id}")
     public Studiengang getOne(@PathVariable String id) {
@@ -60,7 +64,7 @@ public class StudiengangController {
     @PostMapping("")
     public ResponseEntity<Studiengang> createFachbereich(@RequestBody Studiengang studiengang) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Nutzer nutzer = nutzerRepository.findByUsername(authentication.getName())
+        Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized"));
 
         if (!nutzer.getRole().equals("ADMIN")) {

@@ -28,6 +28,10 @@ public class PruefungService {
         return pruefungRepository.findAll();
     }
 
+    public Pruefung saveAndFlush(Pruefung pruefung) {
+        return pruefungRepository.saveAndFlush(pruefung);
+    }
+
     public Pruefung insertTestData(Pruefungsordnung pruefungsordnung, Modul modul) {
         Pruefung pruefung = new Pruefung();
         pruefung.setPruefungsnummer(1);

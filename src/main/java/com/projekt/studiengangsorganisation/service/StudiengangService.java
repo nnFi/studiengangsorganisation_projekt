@@ -29,6 +29,10 @@ public class StudiengangService {
         return studiengangRepository.findById(Long.parseLong(id));
     }
 
+    public Studiengang saveAndFlush(Studiengang studiengang) {
+        return studiengangRepository.saveAndFlush(studiengang);
+    }
+
     public Studiengang insertTestData(Mitarbeiter leiter, Mitarbeiter stellvertreter, Fachbereich fachbereich) {
         Studiengang studiengang = new Studiengang();
         studiengang.setName("Informatik");

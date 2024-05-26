@@ -26,6 +26,10 @@ public class PruefungsordnungService {
         return pruefungsordnungRepository.findById(Long.parseLong(id));
     }
 
+    public Pruefungsordnung saveAndFlush(Pruefungsordnung pruefungsordnung) {
+        return pruefungsordnungRepository.saveAndFlush(pruefungsordnung);
+    }
+
     public Pruefungsordnung insertTestData(Studiengang studiengang) {
         Pruefungsordnung pruefungsordnung = new Pruefungsordnung();
         pruefungsordnung.setFreigegeben(false);

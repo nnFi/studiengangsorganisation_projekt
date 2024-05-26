@@ -27,6 +27,10 @@ public class AdminService {
         return adminRepository.findAll();
     }
 
+    public Admin saveAndFlush(Admin admin) {
+        return adminRepository.saveAndFlush(admin);
+    }
+
     public Admin insertTestData() {
         Admin admin = new Admin();
         admin.setVorname("Max");

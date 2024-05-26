@@ -31,6 +31,10 @@ public class ModulService {
         return modulRepository.findById(Long.parseLong(id));
     }
 
+    public Modul saveAndFlush(Modul modul) {
+        return modulRepository.saveAndFlush(modul);
+    }
+
     public Modul insertTestData(Fachgruppe fachgruppe, Mitarbeiter beauftragter, Set<Pruefung> pruefungen,
             Modulgruppe modulgruppe) {
         Modul modul = new Modul();

@@ -30,4 +30,8 @@ public class NutzerService {
     public Optional<Nutzer> getNutzerByUsername(String username) {
         return nutzerRepository.findByUsername(username);
     }
+
+    public Nutzer saveAndFlush(Nutzer nutzer) {
+        return nutzerRepository.saveAndFlush(nutzer);
+    }
 }

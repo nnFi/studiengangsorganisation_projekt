@@ -26,6 +26,10 @@ public class ModulgruppeService {
         return modulgruppeRepository.findById(Long.parseLong(id));
     }
 
+    public Modulgruppe saveAndFlush(Modulgruppe modulgruppe) {
+        return modulgruppeRepository.saveAndFlush(modulgruppe);
+    }
+
     public Modulgruppe insertTestData() {
         Modulgruppe modulgruppe = new Modulgruppe();
         modulgruppe.setName("IBM");

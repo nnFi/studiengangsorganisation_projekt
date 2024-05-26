@@ -27,6 +27,10 @@ public class MitarbeiterService {
         return mitarbeiterRepository.findAll();
     }
 
+    public Mitarbeiter saveAndFlush(Mitarbeiter mitarbeiter) {
+        return mitarbeiterRepository.saveAndFlush(mitarbeiter);
+    }
+
     public Mitarbeiter insertTestData() {
         Mitarbeiter mitarbeiter = new Mitarbeiter();
         mitarbeiter.setVorname("Max");

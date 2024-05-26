@@ -27,6 +27,10 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
+    public Student saveAndFlushBook(Student student) {
+        return studentRepository.saveAndFlush(student);
+    }
+
     public Student insertTestData() {
         Student student = new Student();
         student.setVorname("Maria");

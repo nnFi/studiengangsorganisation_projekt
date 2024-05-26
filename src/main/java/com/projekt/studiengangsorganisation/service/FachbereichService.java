@@ -27,6 +27,10 @@ public class FachbereichService {
         return fachbereichRepository.findById(Long.parseLong(id));
     }
 
+    public Fachbereich saveAndFlush(Fachbereich fachbereich) {
+        return fachbereichRepository.saveAndFlush(fachbereich);
+    }
+
     public Fachbereich insertTestData(Mitarbeiter referent, Mitarbeiter stellvertreter) {
         Fachbereich fachbereich = new Fachbereich();
         fachbereich.setName("Wirtschaft");

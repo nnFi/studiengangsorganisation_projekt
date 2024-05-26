@@ -29,6 +29,10 @@ public class FachgruppeService {
         return fachgruppeRepository.findById(Long.parseLong(id));
     }
 
+    public Fachgruppe saveAndFlush(Fachgruppe fachgruppe) {
+        return fachgruppeRepository.saveAndFlush(fachgruppe);
+    }
+
     public Fachgruppe insertTestData(Mitarbeiter referent, Mitarbeiter stellvertreter, Fachbereich fachbereich) {
         Fachgruppe fachgruppe = new Fachgruppe();
         fachgruppe.setName("Marketing");

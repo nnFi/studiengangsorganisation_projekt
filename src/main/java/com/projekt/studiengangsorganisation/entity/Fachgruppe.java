@@ -30,6 +30,9 @@ public class Fachgruppe {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "kuerzel")
+    private String kuerzel;
+
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "referent")
@@ -119,6 +122,14 @@ public class Fachgruppe {
 
     public void setFachbereichId(String fachbereichId) {
         this.fachbereichId = fachbereichId;
+    }
+
+    public String getKuerzel() {
+        return kuerzel;
+    }
+
+    public void setKuerzel(String kuerzel) {
+        this.kuerzel = kuerzel;
     }
 
 }

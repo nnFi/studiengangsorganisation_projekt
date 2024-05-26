@@ -67,7 +67,7 @@ public class StudiengangController {
         Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized"));
 
-        if (!nutzer.getRole().equals("ADMIN")) {
+        if (!nutzer.getRole().equals("MITARBEITER") && !nutzer.getRole().equals("ADMIN")) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized");
         }
 

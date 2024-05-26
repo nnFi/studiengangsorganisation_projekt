@@ -71,11 +71,11 @@ public class TestDataController {
 
         Modul modul = modulService.insertTestData(fachgruppe, mitarbeiter1, null, modulgruppe);
 
-        Pruefungsordnung pruefungsordnung = pruefungsordnungService.insertTestData();
+        Studiengang studiengang = studiengangService.insertTestData(mitarbeiter1, mitarbeiter2, fachbereich);
+
+        Pruefungsordnung pruefungsordnung = pruefungsordnungService.insertTestData(studiengang);
 
         Pruefung pruefung = pruefungService.insertTestData(pruefungsordnung, modul);
-
-        Studiengang studiengang = studiengangService.insertTestData(mitarbeiter1, mitarbeiter2, fachbereich);
 
         return "Testdaten wurden erfolgreich erstellt!";
     }

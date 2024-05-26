@@ -42,6 +42,9 @@ public class Pruefungsordnung {
     // @JsonIgnore
     Set<Pruefung> pruefungen;
 
+    @Column(name = "auslafend")
+    private boolean auslaufend;
+
     public Long getId() {
         return id;
     }
@@ -80,5 +83,13 @@ public class Pruefungsordnung {
 
     public void setPruefungen(Set<Pruefung> pruefungen) {
         this.pruefungen = pruefungen;
+    }
+
+    public boolean isAuslaufend() {
+        return auslaufend;
+    }
+
+    public void setAuslaufend(boolean auslaufend) {
+        this.auslaufend = auslaufend;
     }
 }

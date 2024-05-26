@@ -8,12 +8,12 @@ import jakarta.persistence.Table;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-@Table(name = "Student")
-public class Student extends Nutzer {
+@Table(name = "Admin")
+public class Admin extends Nutzer {
 
-    public Student() {
+    public Admin() {
         super();
-        this.setRole("STUDENT");
+        this.setRole("ADMIN");
     }
 
 }

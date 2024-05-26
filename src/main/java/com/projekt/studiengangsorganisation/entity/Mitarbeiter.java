@@ -7,4 +7,9 @@ import jakarta.persistence.Table;
 @Table(name = "Mitarbeiter")
 public class Mitarbeiter extends Nutzer {
 
+    public Mitarbeiter() {
+        super();
+        this.setRole("MITARBEITER");
+    }
+
 }

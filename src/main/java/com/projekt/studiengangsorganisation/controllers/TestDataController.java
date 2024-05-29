@@ -55,6 +55,7 @@ public class TestDataController {
     @Autowired
     PruefungsordnungService pruefungsordnungService;
 
+    @SuppressWarnings("unused")
     @PostMapping("")
     public String createTestData() {
 

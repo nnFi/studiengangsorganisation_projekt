@@ -22,6 +22,7 @@ import com.projekt.studiengangsorganisation.entity.Nutzer;
 import com.projekt.studiengangsorganisation.entity.Student;
 import com.projekt.studiengangsorganisation.repository.NutzerRepository;
 import com.projekt.studiengangsorganisation.repository.StudentRepository;
+import com.projekt.studiengangsorganisation.service.NutzerService;
 import com.projekt.studiengangsorganisation.service.StudentService;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,10 +38,7 @@ public class StudentController {
     StudentService studentService;
 
     @Autowired
-    StudentRepository studentRepository;
-
-    @Autowired
-    NutzerRepository nutzerRepository;
+    NutzerService nutzerService;
 
     @GetMapping("/{id}")
     public Student getOne(@PathVariable String id) {
@@ -63,14 +61,14 @@ public class StudentController {
     @PostMapping("")
     public ResponseEntity<Student> createStudent(@RequestBody Student student) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Optional<Nutzer> nutzer = nutzerRepository.findByUsername(authentication.getName());
+        Optional<Nutzer> nutzer = nutzerService.getNutzerByUsername(authentication.getName());
 
         if (nutzer.isPresent() && nutzer.get().getRole().equals("ADMIN")) {
             student.setPassword(passwordEncoder.encode(student.getPassword()));
             student.setUsername(
                     student.getVorname().toLowerCase() + "." + student.getNachname().toLowerCase());
 
-            studentRepository.saveAndFlush(student);
+            studentService.saveAndFlush(student);
 
             return new ResponseEntity<>(student, HttpStatus.CREATED);
         } else {
@@ -87,7 +85,7 @@ public class StudentController {
 
             // Überprüfe, ob der Benutzer ein ADMIN ist
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Optional<Nutzer> nutzer = nutzerRepository.findByUsername(authentication.getName());
+            Optional<Nutzer> nutzer = nutzerService.getNutzerByUsername(authentication.getName());
             if (!nutzer.isPresent() || !nutzer.get().getRole().equals("ADMIN")) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nur Administratoren können Mitarbeiter aktualisieren");
             }

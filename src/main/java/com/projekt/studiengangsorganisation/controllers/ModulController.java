@@ -109,9 +109,15 @@ public class ModulController {
         modul.setFachgruppe(fachgruppe);
         modul.setModulbeauftragter(modulbeauftragter);
         modul.setModulgruppe(modulgruppe);
-        modulService.saveAndFlush(modul);
+        Modul savedModul = modulService.saveAndFlush(modul);
 
-        return new ResponseEntity<>(modul, HttpStatus.CREATED);
+        String modulnummer = (fachgruppe.getFachbereich().getId() + " " + fachgruppe.getKuerzel() + " " + savedModul.getId());
+
+        savedModul.setModulnummer(modulnummer);
+
+        modulService.saveAndFlush(savedModul);
+
+        return new ResponseEntity<>(savedModul, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

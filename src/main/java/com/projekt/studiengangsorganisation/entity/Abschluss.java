@@ -1,5 +1,8 @@
 package com.projekt.studiengangsorganisation.entity;
 
+/**
+ * Enumerationsklasse, die verschiedene Abschlussarten repräsentiert.
+ */
 public enum Abschluss {
     // Bachelorabschlüsse
     BACHELOR_OF_ARTS("Bachelor of Arts (B.A.)"),
@@ -52,10 +55,18 @@ public enum Abschluss {
 
     private final String bezeichnung;
 
+    /**
+     * Konstruktor für Abschluss.
+     * @param bezeichnung Die Bezeichnung des Abschlusses.
+     */
     Abschluss(String bezeichnung) {
         this.bezeichnung = bezeichnung;
     }
 
+    /**
+     * Gibt die Bezeichnung des Abschlusses zurück.
+     * @return Die Bezeichnung des Abschlusses.
+     */
     public String getBezeichnung() {
         return bezeichnung;
     }

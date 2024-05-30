@@ -1,7 +1,13 @@
 package com.projekt.studiengangsorganisation.entity;
 
+/**
+ * Enumerationsklasse, die verschiedene Arten von Modulen repräsentiert.
+ */
 public enum ModulArt {
 
+    /**
+     * Die Arten eines Moduls.
+     */
     VORLESUNG("Vorlesung"),
     SEMINAR("Seminar"),
     UEBUNG("Übung"),
@@ -19,12 +25,19 @@ public enum ModulArt {
 
     private final String bezeichnung;
 
+    /**
+     * Konstruktor für ModulArt.
+     * @param bezeichnung Die Bezeichnung der Modulart.
+     */
     ModulArt(String bezeichnung) {
         this.bezeichnung = bezeichnung;
     }
 
+    /**
+     * Gibt die Bezeichnung der Modulart zurück.
+     * @return Die Bezeichnung der Modulart.
+     */
     public String getBezeichnung() {
         return bezeichnung;
     }
-
 }

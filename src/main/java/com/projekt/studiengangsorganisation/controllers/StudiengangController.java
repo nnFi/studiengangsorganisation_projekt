@@ -49,7 +49,7 @@ public class StudiengangController {
     NutzerService nutzerService;
 
     /**
-     * Holt einen einzelnen Studiengang anhand seiner ID.
+     * Methode zum Abrufen eines einzelnen Studiengang anhand seiner ID.
      * @param id Die ID des zu holenden Studiengangs.
      * @return Der gefundene Studiengang.
      * @throws ResponseStatusException Falls der Studiengang nicht gefunden wird, wird ein 404 Fehler zurückgegeben.
@@ -78,7 +78,7 @@ public class StudiengangController {
     }
 
     /**
-     * Holt alle Studiengänge.
+     * Methode zum Abrufen aller Studiengänge.
      * @param response HTTP-Servlet-Antwort, um den Content-Range-Header zu setzen.
      * @return Eine Liste aller Studiengänge.
      */
@@ -102,12 +102,12 @@ public class StudiengangController {
     }
 
     /**
-     * Erstellt einen neuen Studiengang.
+     * Methode zum Erstellen eines neuen Studiengang.
      * @param studiengang Der zu erstellende Studiengang.
      * @return Der erstellte Studiengang.
      * @throws ResponseStatusException Falls der Benutzer nicht autorisiert ist, wird ein 401 Fehler zurückgegeben.
-     *                                  Falls der Leiter, der Stellvertreter oder der Fachbereich nicht gefunden werden,
-     *                                  wird ein 404 Fehler zurückgegeben.
+     *                                 Falls der Leiter, der Stellvertreter oder der Fachbereich nicht gefunden werden,
+     *                                 wird ein 404 Fehler zurückgegeben.
      */
     @PostMapping("")
     public ResponseEntity<Studiengang> createFachbereich(@RequestBody Studiengang studiengang) {
@@ -151,12 +151,12 @@ public class StudiengangController {
     }
 
     /**
-     * Aktualisiert einen vorhandenen Studiengang.
-     * @param id               Die ID des zu aktualisierenden Studiengangs.
+     * Methode zum Aktualisieren eines vorhandenen Studiengang.
+     * @param id Die ID des zu aktualisierenden Studiengangs.
      * @param updateStudiengang Der aktualisierte Studiengang.
      * @return Der aktualisierte Studiengang.
      * @throws ResponseStatusException Falls der Studiengang nicht gefunden wird, wird ein 404 Fehler zurückgegeben.
-     *                                  Falls der Leiter oder der Stellvertreter nicht gefunden wird, wird ein 404 Fehler zurückgegeben.
+     *                                 Falls der Leiter oder der Stellvertreter nicht gefunden wird, wird ein 404 Fehler zurückgegeben.
      */
     @PutMapping("/{id}")
     public ResponseEntity<Studiengang> updateStudiengang(@PathVariable String id,

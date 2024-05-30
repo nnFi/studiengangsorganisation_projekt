@@ -36,16 +36,15 @@ public class StudentController {
     @Autowired
     private PasswordEncoder passwordEncoder;
     
-    // Service für Studenten
+    // Deklarierung Services
     @Autowired
     StudentService studentService; 
 
-    // Service für Nutzer
     @Autowired
     NutzerService nutzerService;
 
     /**
-     * Liefert einen Studenten basierend auf der ID.
+     * Methode zum Abrufen eines Studenten basierend auf der ID.
      * @param id Die ID des Studenten.
      * @return Der gefundene Student.
      * @throws ResponseStatusException Falls der Student nicht gefunden wird.
@@ -62,7 +61,7 @@ public class StudentController {
     }
 
     /**
-     * Liefert alle Studenten.
+     * Methode zum Abrufen aller Studenten.
      * @param response Die HTTP-Response.
      * @return Eine Liste aller Studenten.
      */
@@ -76,7 +75,7 @@ public class StudentController {
     }
 
     /**
-     * Erstellt einen neuen Studenten.
+     * Methode zum Erstellen eines neuen Studenten.
      * @param student Die zu erstellende Studentenentität.
      * @return Die erstellte Studentenentität.
      * @throws ResponseStatusException Falls der Benutzer nicht autorisiert ist oder nicht gefunden wird.
@@ -103,7 +102,7 @@ public class StudentController {
     }
 
     /**
-     * Aktualisiert einen vorhandenen Studenten.
+     * Methode zum Aktualisieren eines vorhandenen Studenten.
      * @param id             Die ID des zu aktualisierenden Studenten.
      * @param updatedStudent Die aktualisierte Studentenentität.
      * @return Die aktualisierte Studentenentität.

@@ -48,7 +48,7 @@ public class PruefungController {
     ModulService modulService;
 
     /**
-     * Holt eine einzelne Prüfung anhand ihrer ID.
+     * Methode zum Abrufen einer einzelnen Prüfung anhand ihrer ID.
      * @param id Die ID der zu holenden Prüfung.
      * @return Die gefundene Prüfung.
      * @throws ResponseStatusException Falls die Prüfung nicht gefunden wird, wird ein 404 Fehler zurückgegeben.
@@ -76,7 +76,7 @@ public class PruefungController {
     }
 
     /**
-     * Holt alle Prüfungen.
+     * Methode zum Abrufen aller Prüfungen.
      * @param response HTTP-Servlet-Antwort, um den Content-Range-Header zu setzen.
      * @return Eine Liste aller Prüfungen.
      */
@@ -99,8 +99,7 @@ public class PruefungController {
     }
 
     /**
-     * Erstellt eine neue Prüfung.
-     *
+     * Methode zum Erstellen einer neue Prüfung.
      * @param pruefung Die zu erstellende Prüfung.
      * @return Die erstellte Prüfung.
      * @throws ResponseStatusException Falls der Nutzer nicht authorisiert ist, wird ein 401 Fehler zurückgegeben.

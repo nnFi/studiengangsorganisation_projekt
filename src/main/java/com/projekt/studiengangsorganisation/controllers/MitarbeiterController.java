@@ -32,6 +32,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @RestController
 public class MitarbeiterController {
 
+    // Deklarierung Services
     @Autowired
     private PasswordEncoder passwordEncoder;
 

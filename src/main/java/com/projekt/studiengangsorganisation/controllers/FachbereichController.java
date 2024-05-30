@@ -44,7 +44,7 @@ public class FachbereichController {
     MitarbeiterService mitarbeiterService;
 
     /**
-     * Holt einen Fachbereich anhand seiner ID.
+     * Methode zum Abrufen eines Fachbereich anhand seiner ID.
      * @param id Die ID des Fachbereichs.
      * @return Der Fachbereich, falls gefunden.
      * @throws ResponseStatusException Falls kein Fachbereich mit der angegebenen ID gefunden wurde (Status: NOT_FOUND).
@@ -64,7 +64,7 @@ public class FachbereichController {
     }
 
     /**
-     * Holt alle Fachbereiche.
+     * Methode zum Abrufen aller Fachbereiche.
      * @param response Das HTTP-Response-Objekt.
      * @return Die Liste aller Fachbereiche.
      */
@@ -82,7 +82,7 @@ public class FachbereichController {
     }
 
     /**
-     * Erstellt einen neuen Fachbereich.
+     * Methode zum Erstellen eines neuen Fachbereich.
      * @param fachbereich Der zu erstellende Fachbereich.
      * @return Die HTTP-Response-Entität mit dem erstellten Fachbereich und dem Statuscode 201 (CREATED).
      */
@@ -112,8 +112,8 @@ public class FachbereichController {
     }
 
     /**
-     * Aktualisiert einen vorhandenen Fachbereich.
-     * @param id              Die ID des zu aktualisierenden Fachbereichs.
+     * Methode zum Aktualisieren eines vorhandenen Fachbereich.
+     * @param id Die ID des zu aktualisierenden Fachbereichs.
      * @param updatedFachbereich Der aktualisierte Fachbereich.
      * @return Die HTTP-Response-Entität mit dem aktualisierten Fachbereich und dem Statuscode 200 (OK).
      * @throws ResponseStatusException Falls der Fachbereich nicht gefunden wurde (Status: NOT_FOUND) oder

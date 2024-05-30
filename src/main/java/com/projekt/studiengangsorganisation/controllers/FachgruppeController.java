@@ -49,7 +49,7 @@ public class FachgruppeController {
     FachbereichService fachbereichService;
 
     /**
-     * Liefert eine Fachgruppe basierend auf der ID.
+     * Methode zum Abrufen einer Fachgruppe basierend auf der ID.
      * @param id Die ID der Fachgruppe.
      * @return Die gefundene Fachgruppe.
      * @throws ResponseStatusException Falls die Fachgruppe nicht gefunden wird.
@@ -70,7 +70,7 @@ public class FachgruppeController {
     }
 
     /**
-     * Liefert alle Fachgruppen.
+     * Methode zum Abrufen aller Fachgruppen.
      * @param response Die HTTP-Response.
      * @return Eine Liste aller Fachgruppen.
      */
@@ -89,7 +89,7 @@ public class FachgruppeController {
     }
 
     /**
-     * Erstellt eine neue Fachgruppe.
+     * Methode zum Erstellen einer neue Fachgruppe.
      * @param fachgruppe Die zu erstellende Fachgruppenentität.
      * @return Die erstellte Fachgruppenentität.
      * @throws ResponseStatusException Falls der Benutzer nicht autorisiert ist oder erforderliche Ressourcen nicht gefunden werden.
@@ -131,7 +131,7 @@ public class FachgruppeController {
     }
 
     /**
-     * Aktualisiert eine vorhandene Fachgruppe.
+     * Methode zum Aktualisieren einer vorhandene Fachgruppe.
      * @param id             Die ID der zu aktualisierenden Fachgruppe.
      * @param updatedFachgruppe Die aktualisierte Fachgruppenentität.
      * @return Die aktualisierte Fachgruppenentität.

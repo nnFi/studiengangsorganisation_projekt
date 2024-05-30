@@ -27,7 +27,7 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public Student saveAndFlushBook(Student student) {
+    public Student saveAndFlush(Student student) {
         return studentRepository.saveAndFlush(student);
     }
 

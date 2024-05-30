@@ -20,8 +20,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.projekt.studiengangsorganisation.entity.Nutzer;
 import com.projekt.studiengangsorganisation.entity.Student;
-import com.projekt.studiengangsorganisation.repository.NutzerRepository;
-import com.projekt.studiengangsorganisation.repository.StudentRepository;
 import com.projekt.studiengangsorganisation.service.NutzerService;
 import com.projekt.studiengangsorganisation.service.StudentService;
 

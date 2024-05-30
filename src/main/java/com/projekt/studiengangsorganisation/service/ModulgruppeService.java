@@ -9,27 +9,51 @@ import org.springframework.stereotype.Service;
 import com.projekt.studiengangsorganisation.entity.Modulgruppe;
 import com.projekt.studiengangsorganisation.repository.ModulgruppeRepository;
 
+/**
+ * Service-Klasse für die Verwaltung von Modulgruppen.
+ */
 @Service
 public class ModulgruppeService {
     @Autowired
     ModulgruppeRepository modulgruppeRepository;
 
+    /**
+     * Konstruktor für die ModulgruppeService-Klasse.
+     */
     public ModulgruppeService() {
 
     }
 
+    /**
+     * Holt alle Modulgruppen.
+     * @return Eine Liste aller vorhandenen Modulgruppen.
+     */
     public List<Modulgruppe> getModulgruppen() {
         return modulgruppeRepository.findAll();
     }
 
+    /**
+     * Holt eine Modulgruppe anhand ihrer ID.
+     * @param id Die ID der Modulgruppe.
+     * @return Ein Optional, das die gefundene Modulgruppe enthält, falls vorhanden.
+     */
     public Optional<Modulgruppe> getModulgruppe(Long id) {
         return modulgruppeRepository.findById(id);
     }
 
+    /**
+     * Speichert eine Modulgruppe und aktualisiert die Änderungen.
+     * @param modulgruppe Die Modulgruppe, die gespeichert werden soll.
+     * @return Die gespeicherte und aktualisierte Modulgruppe.
+     */
     public Modulgruppe saveAndFlush(Modulgruppe modulgruppe) {
         return modulgruppeRepository.saveAndFlush(modulgruppe);
     }
 
+    /**
+     * Fügt Testdaten für eine Modulgruppe ein.
+     * @return Die erstellte Modulgruppe mit Testdaten.
+     */
     public Modulgruppe insertTestData() {
         Modulgruppe modulgruppe = new Modulgruppe();
         modulgruppe.setName("IBM");

@@ -20,8 +20,6 @@ import org.springframework.web.server.ResponseStatusException;
 import com.projekt.studiengangsorganisation.entity.Fachbereich;
 import com.projekt.studiengangsorganisation.entity.Fachgruppe;
 import com.projekt.studiengangsorganisation.entity.Mitarbeiter;
-import com.projekt.studiengangsorganisation.entity.Modul;
-import com.projekt.studiengangsorganisation.entity.Modulgruppe;
 import com.projekt.studiengangsorganisation.entity.Nutzer;
 import com.projekt.studiengangsorganisation.repository.FachgruppeRepository;
 import com.projekt.studiengangsorganisation.service.FachbereichService;

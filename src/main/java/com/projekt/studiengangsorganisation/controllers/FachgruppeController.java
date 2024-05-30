@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -111,5 +112,46 @@ public class FachgruppeController {
         fachgruppeRepository.saveAndFlush(fachgruppe);
 
         return new ResponseEntity<>(fachgruppe, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Fachgruppe> updateFachgruppe(@PathVariable String id, @RequestBody Fachgruppe updatedFachgruppe) {
+        Optional<Fachgruppe> existingFachgruppe = fachgruppeService.getFachgruppe(Long.parseLong(id));
+
+        if (existingFachgruppe.isPresent()) {
+            Fachgruppe fachgruppe = existingFachgruppe.get();
+
+            // Überprüfe, ob der Benutzer ein ADMIN ist
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Optional<Nutzer> nutzer = nutzerService.getNutzerByUsername(authentication.getName());
+            if (!nutzer.isPresent() || !nutzer.get().getRole().equals("ADMIN")) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                        "Nur Administratoren können Modul aktualisieren");
+            }
+
+            Mitarbeiter referent = mitarbeiterService
+                    .getMitarbeiter(updatedFachgruppe.getReferentId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Referent not found"));
+
+            Mitarbeiter stellvertreter= mitarbeiterService
+                    .getMitarbeiter(updatedFachgruppe.getStellvertreterId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter not found"));
+
+            Fachbereich fachbereich= fachbereichService
+                    .getFachbereich(updatedFachgruppe.getFachbereichId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fachbereich not found"));
+
+            fachgruppe.setId(updatedFachgruppe.getId());
+            fachgruppe.setName(updatedFachgruppe.getName());
+            fachgruppe.setKuerzel(updatedFachgruppe.getKuerzel());
+            fachgruppe.setFachbereich(fachbereich);
+            fachgruppe.setReferent(referent);
+            fachgruppe.setStellvertreter(stellvertreter);
+            fachgruppeService.saveAndFlush(fachgruppe);
+
+            return new ResponseEntity<>(fachgruppe, HttpStatus.OK);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Fachgruppe nicht gefunden");
+        }
     }
 }

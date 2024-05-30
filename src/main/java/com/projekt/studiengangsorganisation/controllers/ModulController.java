@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -108,8 +109,55 @@ public class ModulController {
         modul.setFachgruppe(fachgruppe);
         modul.setModulbeauftragter(modulbeauftragter);
         modul.setModulgruppe(modulgruppe);
-        modulService.saveAndFlush(modul);
+        Modul savedModul = modulService.saveAndFlush(modul);
 
-        return new ResponseEntity<>(modul, HttpStatus.CREATED);
+        //Modulnummer wird generiert
+        String modulnummer = (fachgruppe.getFachbereich().getId() + " " + fachgruppe.getKuerzel() + " " + savedModul.getId());
+
+        savedModul.setModulnummer(modulnummer);
+
+        modulService.saveAndFlush(savedModul);
+
+        return new ResponseEntity<>(savedModul, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Modul> updateModul(@PathVariable String id, @RequestBody Modul updatedModul) {
+        Optional<Modul> existingModul = modulService.getModul(Long.parseLong(id));
+
+        if (existingModul.isPresent()) {
+            Modul modul = existingModul.get();
+
+            // Überprüfe, ob der Benutzer ein ADMIN ist
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Optional<Nutzer> nutzer = nutzerService.getNutzerByUsername(authentication.getName());
+            if (!nutzer.isPresent() || !nutzer.get().getRole().equals("ADMIN")) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                        "Nur Administratoren können Modul aktualisieren");
+            }
+
+            Mitarbeiter modulbeauftragter = mitarbeiterService
+                    .getMitarbeiter(updatedModul.getModulbeauftragterId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Modulbeauftragter not found"));
+
+            Modulgruppe modulgruppe = modulgruppeService
+                    .getModulgruppe(updatedModul.getModulgruppeId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Modulgruppe not found"));
+
+            modul.setWorkload(updatedModul.getWorkload());
+            modul.setCredits(updatedModul.getCredits());
+            modul.setDauer(updatedModul.getDauer());
+            modul.setBeschreibung(updatedModul.getBeschreibung());
+            modul.setSprache(updatedModul.getSprache());
+            modul.setFreigegeben(updatedModul.isFreigegeben());
+            modul.setLehrveranstaltungsort(updatedModul.getLehrveranstaltungsort());
+            modul.setModulbeauftragter(modulbeauftragter);
+            modul.setModulgruppe(modulgruppe);
+            modulService.saveAndFlush(modul);
+
+            return new ResponseEntity<>(modul, HttpStatus.OK);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Modul nicht gefunden");
+        }
     }
 }

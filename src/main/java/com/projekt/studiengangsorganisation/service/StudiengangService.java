@@ -25,8 +25,8 @@ public class StudiengangService {
         return studiengangRepository.findAll();
     }
 
-    public Optional<Studiengang> getStudiengang(String id) {
-        return studiengangRepository.findById(Long.parseLong(id));
+    public Optional<Studiengang> getStudiengang(Long id) {
+        return studiengangRepository.findById(id);
     }
 
     public Studiengang saveAndFlush(Studiengang studiengang) {

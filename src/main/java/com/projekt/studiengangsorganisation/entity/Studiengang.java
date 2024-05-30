@@ -36,32 +36,32 @@ public class Studiengang {
     @Column(name = "studiengang_regelstudienzeit")
     private int regelstudienzeit;
 
-    @JsonIdentityReference(alwaysAsId = true)
+    // @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne
     @JoinColumn(name = "leiter_id")
     private Mitarbeiter leiter;
 
     @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String leiterId;
+    private Long leiterId;
 
     @ManyToOne
-    @JsonIdentityReference(alwaysAsId = true)
+    // @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "stellvertretenderLeiter_id")
     private Mitarbeiter stellvertretenderLeiter;
 
     @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String stellvertreterId;
+    private Long stellvertreterId;
 
     @ManyToOne
-    @JsonIdentityReference(alwaysAsId = true)
+    // @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "fachbereich_id")
     private Fachbereich fachbereich;
 
     @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String fachbereichId;
+    private Long fachbereichId;
 
     public long getId() {
         return id;
@@ -119,27 +119,27 @@ public class Studiengang {
         this.fachbereich = fachbereich;
     }
 
-    public String getLeiterId() {
+    public Long getLeiterId() {
         return leiterId;
     }
 
-    public void setLeiterId(String leiterId) {
+    public void setLeiterId(Long leiterId) {
         this.leiterId = leiterId;
     }
 
-    public String getStellvertreterId() {
+    public Long getStellvertreterId() {
         return stellvertreterId;
     }
 
-    public void setStellvertreterId(String stellvertreterId) {
+    public void setStellvertreterId(Long stellvertreterId) {
         this.stellvertreterId = stellvertreterId;
     }
 
-    public String getFachbereichId() {
+    public Long getFachbereichId() {
         return fachbereichId;
     }
 
-    public void setFachbereichId(String fachbereichId) {
+    public void setFachbereichId(Long fachbereichId) {
         this.fachbereichId = fachbereichId;
     }
 }

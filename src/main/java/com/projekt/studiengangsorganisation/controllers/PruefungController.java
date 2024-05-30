@@ -48,7 +48,10 @@ public class PruefungController {
         Optional<Pruefung> pruefung = pruefungService.getPruefung(id);
 
         if (pruefung.isPresent()) {
-            return pruefung.get();
+            Pruefung pruefungObject = pruefung.get();
+            pruefungObject.setPruefungsordnungId(pruefungObject.getPruefungsordnung().getId());
+            pruefungObject.setModulId(pruefungObject.getModul().getId());
+            return pruefungObject;
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -57,6 +60,12 @@ public class PruefungController {
     @GetMapping("")
     public List<Pruefung> getAll(HttpServletResponse response) {
         List<Pruefung> list = pruefungService.getPruefungen();
+
+        list.forEach(pruefung -> {
+            pruefung.setPruefungsordnungId(pruefung.getPruefungsordnung().getId());
+            pruefung.setModulId(pruefung.getModul().getId());
+        });
+
         response.setHeader("Content-Range", "1-" + list.size());
         return list;
     }

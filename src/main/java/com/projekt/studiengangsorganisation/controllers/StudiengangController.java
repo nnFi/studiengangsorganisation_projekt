@@ -26,6 +26,7 @@ import com.projekt.studiengangsorganisation.service.NutzerService;
 import com.projekt.studiengangsorganisation.service.StudiengangService;
 
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RequestMapping("/studiengang")
 @RestController
@@ -45,10 +46,14 @@ public class StudiengangController {
 
     @GetMapping("/{id}")
     public Studiengang getOne(@PathVariable String id) {
-        Optional<Studiengang> studiengang = studiengangService.getStudiengang(id);
+        Optional<Studiengang> studiengang = studiengangService.getStudiengang(Long.parseLong(id));
 
         if (studiengang.isPresent()) {
-            return studiengang.get();
+            Studiengang studiengangObject = studiengang.get();
+            studiengangObject.setLeiterId(studiengangObject.getLeiter().getId());
+            studiengangObject.setStellvertreterId(studiengangObject.getStellvertretenderLeiter().getId());
+            studiengangObject.setFachbereichId(studiengangObject.getFachbereich().getId());
+            return studiengangObject;
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -57,6 +62,13 @@ public class StudiengangController {
     @GetMapping("")
     public List<Studiengang> getAll(HttpServletResponse response) {
         List<Studiengang> list = studiengangService.getStudiengaenge();
+
+        list.forEach(studiengang -> {
+            studiengang.setLeiterId(studiengang.getLeiter().getId());
+            studiengang.setStellvertreterId(studiengang.getStellvertretenderLeiter().getId());
+            studiengang.setFachbereichId(studiengang.getFachbereich().getId());
+        });
+
         response.setHeader("Content-Range", "1-" + list.size());
         return list;
     }
@@ -89,5 +101,32 @@ public class StudiengangController {
         studiengangService.saveAndFlush(studiengang);
 
         return new ResponseEntity<>(studiengang, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Studiengang> updateStudiengang(@PathVariable String id,
+            @RequestBody Studiengang updateStudiengang) {
+        Optional<Studiengang> existingStudiengang = studiengangService.getStudiengang(Long.parseLong(id));
+
+        if (existingStudiengang.isPresent()) {
+            Studiengang studiengang = existingStudiengang.get();
+
+            Mitarbeiter leiter = mitarbeiterService
+                    .getMitarbeiter(updateStudiengang.getLeiterId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Leiter not found"));
+
+            Mitarbeiter stellvertretenderLeiter = mitarbeiterService
+                    .getMitarbeiter(updateStudiengang.getStellvertreterId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter not found"));
+
+            studiengang.setLeiter(leiter);
+            studiengang.setStellvertretenderLeiter(stellvertretenderLeiter);
+
+            studiengangService.saveAndFlush(studiengang);
+
+            return new ResponseEntity<>(studiengang, HttpStatus.OK);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 }

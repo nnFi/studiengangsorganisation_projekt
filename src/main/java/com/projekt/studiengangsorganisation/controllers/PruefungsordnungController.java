@@ -44,7 +44,7 @@ public class PruefungsordnungController {
 
     @GetMapping("/{id}")
     public Pruefungsordnung getOne(@PathVariable String id) {
-        Optional<Pruefungsordnung> pruefungsordnung = pruefungsordnungService.getPruefungsordnung(id);
+        Optional<Pruefungsordnung> pruefungsordnung = pruefungsordnungService.getPruefungsordnung(Long.parseLong(id));
 
         if (pruefungsordnung.isPresent()) {
             return pruefungsordnung.get();
@@ -56,6 +56,11 @@ public class PruefungsordnungController {
     @GetMapping("")
     public List<Pruefungsordnung> getAll(HttpServletResponse response) {
         List<Pruefungsordnung> list = pruefungsordnungService.getPruefungsordnungen();
+
+        list.forEach(pruefungsordnung -> {
+            pruefungsordnung.setStudiengangId(pruefungsordnung.getStudiengang().getId());
+        });
+
         response.setHeader("Content-Range", "1-" + list.size());
         return list;
     }

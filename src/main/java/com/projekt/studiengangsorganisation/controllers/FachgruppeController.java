@@ -49,10 +49,15 @@ public class FachgruppeController {
 
     @GetMapping("/{id}")
     public Fachgruppe getOne(@PathVariable String id) {
-        Optional<Fachgruppe> fachgruppe = fachgruppeService.getFachgruppe(id);
+        Optional<Fachgruppe> fachgruppe = fachgruppeService.getFachgruppe(Long.parseLong(id));
 
         if (fachgruppe.isPresent()) {
-            return fachgruppe.get();
+            Fachgruppe fachgruppeObject = fachgruppe.get();
+            fachgruppeObject.setFachbereichId(fachgruppeObject.getFachbereich().getId());
+            fachgruppeObject.setReferentId(fachgruppeObject.getReferent().getId());
+            fachgruppeObject.setStellvertreterId(fachgruppeObject.getStellvertreter().getId());
+
+            return fachgruppeObject;
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -61,6 +66,13 @@ public class FachgruppeController {
     @GetMapping("")
     public List<Fachgruppe> getAll(HttpServletResponse response) {
         List<Fachgruppe> list = fachgruppeService.getFachgruppen();
+
+        list.forEach(fachgruppe -> {
+            fachgruppe.setFachbereichId(fachgruppe.getFachbereich().getId());
+            fachgruppe.setReferentId(fachgruppe.getReferent().getId());
+            fachgruppe.setStellvertreterId(fachgruppe.getStellvertreter().getId());
+        });
+
         response.setHeader("Content-Range", "1-" + list.size());
         return list;
     }

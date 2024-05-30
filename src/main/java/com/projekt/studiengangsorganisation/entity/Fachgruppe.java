@@ -34,31 +34,31 @@ public class Fachgruppe {
     private String kuerzel;
 
     @ManyToOne
-    @JsonIdentityReference(alwaysAsId = true)
+    // @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "referent")
     private Mitarbeiter referent;
 
     @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String referentId;
+    private Long referentId;
 
     @ManyToOne
-    @JsonIdentityReference(alwaysAsId = true)
+    // @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "stellvertreter_id")
     private Mitarbeiter stellvertreter;
 
     @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String stellvertreterId;
+    private Long stellvertreterId;
 
     @ManyToOne
-    @JsonIdentityReference(alwaysAsId = true)
+    // @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "fachbereich_id")
     private Fachbereich fachbereich;
 
     @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String fachbereichId;
+    private Long fachbereichId;
 
     public Long getId() {
         return id;
@@ -100,27 +100,27 @@ public class Fachgruppe {
         this.fachbereich = fachbereich;
     }
 
-    public String getReferentId() {
+    public Long getReferentId() {
         return referentId;
     }
 
-    public void setReferentId(String referentId) {
+    public void setReferentId(Long referentId) {
         this.referentId = referentId;
     }
 
-    public String getStellvertreterId() {
+    public Long getStellvertreterId() {
         return stellvertreterId;
     }
 
-    public void setStellvertreterId(String stellvertreterId) {
+    public void setStellvertreterId(Long stellvertreterId) {
         this.stellvertreterId = stellvertreterId;
     }
 
-    public String getFachbereichId() {
+    public Long getFachbereichId() {
         return fachbereichId;
     }
 
-    public void setFachbereichId(String fachbereichId) {
+    public void setFachbereichId(Long fachbereichId) {
         this.fachbereichId = fachbereichId;
     }
 

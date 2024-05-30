@@ -25,8 +25,8 @@ public class FachgruppeService {
         return fachgruppeRepository.findAll();
     }
 
-    public Optional<Fachgruppe> getFachgruppe(String id) {
-        return fachgruppeRepository.findById(Long.parseLong(id));
+    public Optional<Fachgruppe> getFachgruppe(Long id) {
+        return fachgruppeRepository.findById(id);
     }
 
     public Fachgruppe saveAndFlush(Fachgruppe fachgruppe) {

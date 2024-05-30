@@ -22,8 +22,8 @@ public class PruefungsordnungService {
         return pruefungsordnungRepository.findAll();
     }
 
-    public Optional<Pruefungsordnung> getPruefungsordnung(String id) {
-        return pruefungsordnungRepository.findById(Long.parseLong(id));
+    public Optional<Pruefungsordnung> getPruefungsordnung(Long id) {
+        return pruefungsordnungRepository.findById(id);
     }
 
     public Pruefungsordnung saveAndFlush(Pruefungsordnung pruefungsordnung) {

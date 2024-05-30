@@ -22,8 +22,8 @@ public class ModulgruppeService {
         return modulgruppeRepository.findAll();
     }
 
-    public Optional<Modulgruppe> getModulgruppe(String id) {
-        return modulgruppeRepository.findById(Long.parseLong(id));
+    public Optional<Modulgruppe> getModulgruppe(Long id) {
+        return modulgruppeRepository.findById(id);
     }
 
     public Modulgruppe saveAndFlush(Modulgruppe modulgruppe) {

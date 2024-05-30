@@ -65,35 +65,35 @@ public class Modul {
     private boolean freigegeben;
 
     @ManyToOne
-    @JsonIdentityReference(alwaysAsId = true)
+    // @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "fachgruppe_id")
     private Fachgruppe fachgruppe;
 
     @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String fachgruppeId;
+    private Long fachgruppeId;
 
     @ManyToOne
-    @JsonIdentityReference(alwaysAsId = true)
+    // @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "modulbeauftragter_id")
     private Mitarbeiter modulbeauftragter;
 
     @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String modulbeauftragterId;
+    private Long modulbeauftragterId;
 
     @OneToMany(mappedBy = "modul")
     @JsonIgnore
     Set<Pruefung> pruefungen;
 
     @ManyToOne
-    @JsonIdentityReference(alwaysAsId = true)
+    // @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "modulgruppe_id")
     private Modulgruppe modulgruppe;
 
     @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String modulgruppeId;
+    private Long modulgruppeId;
 
     public Long getId() {
         return id;
@@ -223,27 +223,27 @@ public class Modul {
         this.modulgruppe = modulgruppe;
     }
 
-    public void setFachgruppeId(String fachgruppeId) {
+    public void setFachgruppeId(Long fachgruppeId) {
         this.fachgruppeId = fachgruppeId;
     }
 
-    public String getFachgruppeId() {
+    public Long getFachgruppeId() {
         return fachgruppeId;
     }
 
-    public String getModulgruppeId() {
+    public Long getModulgruppeId() {
         return modulgruppeId;
     }
 
-    public void setModulgruppeId(String modulgruppeId) {
+    public void setModulgruppeId(Long modulgruppeId) {
         this.modulgruppeId = modulgruppeId;
     }
 
-    public String getModulbeauftragterId() {
+    public Long getModulbeauftragterId() {
         return modulbeauftragterId;
     }
 
-    public void setModulbeauftragterId(String modulbeauftragterId) {
+    public void setModulbeauftragterId(Long modulbeauftragterId) {
         this.modulbeauftragterId = modulbeauftragterId;
     }
 

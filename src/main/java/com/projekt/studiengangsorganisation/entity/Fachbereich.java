@@ -31,22 +31,22 @@ public class Fachbereich {
     private String name;
 
     @ManyToOne(optional = false)
-    @JsonIdentityReference(alwaysAsId = true)
+    // @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "referent_id")
     private Mitarbeiter referent;
 
     @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String referentId;
+    private Long referentId;
 
     @ManyToOne(optional = false)
-    @JsonIdentityReference(alwaysAsId = true)
+    // @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "stellvertreter_id")
     private Mitarbeiter stellvertreter;
 
     @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String stellvertreterId;
+    private Long stellvertreterId;
 
     public Long getId() {
         return id;
@@ -80,19 +80,19 @@ public class Fachbereich {
         this.stellvertreter = stellvertreter;
     }
 
-    public String getReferentId() {
+    public Long getReferentId() {
         return referentId;
     }
 
-    public void setReferentId(String referentId) {
+    public void setReferentId(Long referentId) {
         this.referentId = referentId;
     }
 
-    public String getStellvertreterId() {
+    public Long getStellvertreterId() {
         return stellvertreterId;
     }
 
-    public void setStellvertreterId(String stellvertreterId) {
+    public void setStellvertreterId(Long stellvertreterId) {
         this.stellvertreterId = stellvertreterId;
     }
 

@@ -46,7 +46,7 @@ public class MitarbeiterController {
     @GetMapping("/{id}")
     public Mitarbeiter getOne(@PathVariable String id) {
         // Versuche, den Mitarbeiter mit der angegebenen ID zu erhalten
-        Optional<Mitarbeiter> mitarbeiter = mitarbeiterService.getMitarbeiter(id);
+        Optional<Mitarbeiter> mitarbeiter = mitarbeiterService.getMitarbeiter(Long.parseLong(id));
 
         // Wenn der Mitarbeiter gefunden wurde, gib ihn zurück
         if (mitarbeiter.isPresent()) {
@@ -63,7 +63,8 @@ public class MitarbeiterController {
         // Erhalte eine Liste aller Mitarbeiter
         List<Mitarbeiter> list = mitarbeiterService.getMitarbeiter();
 
-        // Setze den Content-Range Header im Response, um die Anzahl der Mitarbeiter anzugeben
+        // Setze den Content-Range Header im Response, um die Anzahl der Mitarbeiter
+        // anzugeben
         response.setHeader("Content-Range", "1-" + list.size());
 
         // Gib die Liste der Mitarbeiter zurück
@@ -73,7 +74,8 @@ public class MitarbeiterController {
     // Methode zum Erstellen eines neuen Mitarbeiters
     @PostMapping("")
     public ResponseEntity<Mitarbeiter> createMitarbeiter(@RequestBody Mitarbeiter mitarbeiter) {
-        // Überprüfe, ob der Benutzer ein Administrator ist, um einen Mitarbeiter zu erstellen
+        // Überprüfe, ob der Benutzer ein Administrator ist, um einen Mitarbeiter zu
+        // erstellen
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<Nutzer> nutzer = nutzerRepository.findByUsername(authentication.getName());
 
@@ -97,8 +99,9 @@ public class MitarbeiterController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Mitarbeiter> updateMitarbeiter(@PathVariable String id, @RequestBody Mitarbeiter updatedMitarbeiter) {
-        Optional<Mitarbeiter> existingMitarbeiter = mitarbeiterService.getMitarbeiter(id);
+    public ResponseEntity<Mitarbeiter> updateMitarbeiter(@PathVariable String id,
+            @RequestBody Mitarbeiter updatedMitarbeiter) {
+        Optional<Mitarbeiter> existingMitarbeiter = mitarbeiterService.getMitarbeiter(Long.parseLong(id));
 
         if (existingMitarbeiter.isPresent()) {
             Mitarbeiter mitarbeiter = existingMitarbeiter.get();
@@ -107,7 +110,8 @@ public class MitarbeiterController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             Optional<Nutzer> nutzer = nutzerRepository.findByUsername(authentication.getName());
             if (!nutzer.isPresent() || !nutzer.get().getRole().equals("ADMIN")) {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nur Administratoren können Mitarbeiter aktualisieren");
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                        "Nur Administratoren können Mitarbeiter aktualisieren");
             }
 
             // Aktualisiere die Felder des Mitarbeiters

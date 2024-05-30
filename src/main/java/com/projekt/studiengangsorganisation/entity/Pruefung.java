@@ -31,24 +31,23 @@ public class Pruefung {
 
     @ManyToOne
     // @MapsId("modulId")
-    @JsonIdentityReference(alwaysAsId = true)
+    // @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "modul_id")
     private Modul modul;
 
-@Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String modulId;
-
+    @Transient
+    private Long modulId;
 
     @ManyToOne
     // @MapsId("pruefungsordnungId")
-    @JsonIdentityReference(alwaysAsId = true)
+    // @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "pruefungsordnung_id")
     private Pruefungsordnung pruefungsordnung;
 
     @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String pruefungsordnungId;
+    private Long pruefungsordnungId;
 
     @Column(name = "pruefungsnummer")
     private int pruefungsnummer;
@@ -96,20 +95,20 @@ public class Pruefung {
         this.fachsemester = fachsemester;
     }
 
-    public String getModulId() {
+    public Long getModulId() {
         return modulId;
     }
 
-    public void setModulId(String modulId) {
+    public void setModulId(Long modulId) {
         this.modulId = modulId;
     }
 
-    public String getPruefungsordnungId() {
+    public Long getPruefungsordnungId() {
         return pruefungsordnungId;
     }
 
-    public void setPruefungsordnungId(String pruefungsordnungId) {
+    public void setPruefungsordnungId(Long pruefungsordnungId) {
         this.pruefungsordnungId = pruefungsordnungId;
     }
-    
+
 }

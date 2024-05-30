@@ -40,10 +40,13 @@ public class FachbereichController {
 
     @GetMapping("/{id}")
     public Fachbereich getOne(@PathVariable String id) {
-        Optional<Fachbereich> fachbereich = fachbereichService.getFachbereich(id);
+        Optional<Fachbereich> fachbereich = fachbereichService.getFachbereich(Long.parseLong(id));
 
         if (fachbereich.isPresent()) {
-            return fachbereich.get();
+            Fachbereich fachbereichObject = fachbereich.get();
+            fachbereichObject.setReferentId(fachbereichObject.getReferent().getId());
+            fachbereichObject.setStellvertreterId(fachbereichObject.getStellvertreter().getId());
+            return fachbereichObject;
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -52,6 +55,12 @@ public class FachbereichController {
     @GetMapping("")
     public List<Fachbereich> getAll(HttpServletResponse response) {
         List<Fachbereich> list = fachbereichService.getFachbereiche();
+
+        list.forEach(fachbereich -> {
+            fachbereich.setReferentId(fachbereich.getReferent().getId());
+            fachbereich.setStellvertreterId(fachbereich.getStellvertreter().getId());
+        });
+
         response.setHeader("Content-Range", "1-" + list.size());
         return list;
     }

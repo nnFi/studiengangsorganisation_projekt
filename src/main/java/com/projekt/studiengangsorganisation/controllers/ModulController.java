@@ -50,9 +50,13 @@ public class ModulController {
 
     @GetMapping("/{id}")
     public Modul getOne(@PathVariable String id) {
-        Optional<Modul> modul = modulService.getModul(id);
+        Optional<Modul> modul = modulService.getModul(Long.parseLong(id));
 
         if (modul.isPresent()) {
+            Modul modulObject = modul.get();
+            modulObject.setModulbeauftragterId(modulObject.getModulbeauftragter().getId());
+            modulObject.setFachgruppeId(modulObject.getFachgruppe().getId());
+            modulObject.setModulgruppeId(modulObject.getModulgruppe().getId());
             return modul.get();
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -62,6 +66,13 @@ public class ModulController {
     @GetMapping("")
     public List<Modul> getAll(HttpServletResponse response) {
         List<Modul> list = modulService.getModule();
+
+        list.forEach(modul -> {
+            modul.setModulbeauftragterId(modul.getModulbeauftragter().getId());
+            modul.setFachgruppeId(modul.getFachgruppe().getId());
+            modul.setModulgruppeId(modul.getModulgruppe().getId());
+        });
+
         response.setHeader("Content-Range", "1-" + list.size());
         return list;
     }

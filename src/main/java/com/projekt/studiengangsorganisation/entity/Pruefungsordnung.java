@@ -37,13 +37,13 @@ public class Pruefungsordnung {
     private boolean freigegeben;
 
     @ManyToOne
-    @JsonIdentityReference(alwaysAsId = true)
+    // @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "studiengang_id")
     private Studiengang studiengang;
 
     @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String studiengangId;
+    private Long studiengangId;
 
     @OneToMany(mappedBy = "pruefungsordnung")
     @JsonIdentityReference(alwaysAsId = true)
@@ -101,11 +101,11 @@ public class Pruefungsordnung {
         this.auslaufend = auslaufend;
     }
 
-    public String getStudiengangId() {
+    public Long getStudiengangId() {
         return studiengangId;
     }
 
-    public void setStudiengangId(String studiengangId) {
+    public void setStudiengangId(Long studiengangId) {
         this.studiengangId = studiengangId;
     }
 

@@ -23,8 +23,8 @@ public class FachbereichService {
         return fachbereichRepository.findAll();
     }
 
-    public Optional<Fachbereich> getFachbereich(String id) {
-        return fachbereichRepository.findById(Long.parseLong(id));
+    public Optional<Fachbereich> getFachbereich(Long id) {
+        return fachbereichRepository.findById(id);
     }
 
     public Fachbereich saveAndFlush(Fachbereich fachbereich) {

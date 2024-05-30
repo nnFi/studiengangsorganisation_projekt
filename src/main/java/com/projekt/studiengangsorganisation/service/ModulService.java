@@ -27,8 +27,8 @@ public class ModulService {
         return modulRepository.findAll();
     }
 
-    public Optional<Modul> getModul(String id) {
-        return modulRepository.findById(Long.parseLong(id));
+    public Optional<Modul> getModul(Long id) {
+        return modulRepository.findById(id);
     }
 
     public Modul saveAndFlush(Modul modul) {

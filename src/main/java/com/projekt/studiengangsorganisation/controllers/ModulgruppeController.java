@@ -23,7 +23,6 @@ import com.projekt.studiengangsorganisation.service.NutzerService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-
 @RequestMapping("/modulgruppe")
 @RestController
 public class ModulgruppeController {
@@ -36,7 +35,7 @@ public class ModulgruppeController {
 
     @GetMapping("/{id}")
     public Modulgruppe getOne(@PathVariable String id) {
-        Optional<Modulgruppe> modulgruppe = modulgruppeService.getModulgruppe(id);
+        Optional<Modulgruppe> modulgruppe = modulgruppeService.getModulgruppe(Long.parseLong(id));
 
         if (modulgruppe.isPresent()) {
             return modulgruppe.get();

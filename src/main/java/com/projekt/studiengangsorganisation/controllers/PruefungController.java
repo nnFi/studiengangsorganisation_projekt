@@ -74,30 +74,36 @@ public class PruefungController {
     public ResponseEntity<Pruefung> createPruefung(@RequestBody Pruefung pruefung) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User nicht authorisiert"));
 
         if (!nutzer.getRole().equals("MITARBEITER") && !nutzer.getRole().equals("ADMIN")) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User nicht authorisiert");
         }
 
         Pruefungsordnung pruefungsordnung = pruefungsordnungService
                 .getPruefungsordnung((pruefung.getPruefungsordnungId()))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pruefungsordnung not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pruefungsordnung nicht gefunden"));
+
 
         for (Pruefung p : pruefungsordnung.getPruefungen()) {
             if (p.getModulId().equals(pruefung.getModulId())) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "Pruefung already exists");
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Pruefung existiert bereits");
             }
         }
 
         Modul modul = modulService
                 .getModul((pruefung.getModulId()))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Modul not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Modul nicht gefunden"));
 
         pruefung.setPruefungsordnung(pruefungsordnung);
         pruefung.setModul(modul);
 
+        if (!pruefungsordnung.isFreigegeben()) {
         pruefungService.saveAndFlush(pruefung);
+        }
+        else {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Pruefungsordnung wurde bereits freigegeben");
+        }
 
         return new ResponseEntity<>(pruefung, HttpStatus.CREATED);
     }

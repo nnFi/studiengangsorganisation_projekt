@@ -20,9 +20,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.projekt.studiengangsorganisation.entity.Mitarbeiter;
 import com.projekt.studiengangsorganisation.entity.Nutzer;
-import com.projekt.studiengangsorganisation.repository.MitarbeiterRepository;
-import com.projekt.studiengangsorganisation.repository.NutzerRepository;
 import com.projekt.studiengangsorganisation.service.MitarbeiterService;
+import com.projekt.studiengangsorganisation.service.NutzerService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -37,10 +36,7 @@ public class MitarbeiterController {
     MitarbeiterService mitarbeiterService;
 
     @Autowired
-    NutzerRepository nutzerRepository;
-
-    @Autowired
-    MitarbeiterRepository mitarbeiterRepository;
+    NutzerService nutzerService;
 
     // Methode zum Abrufen eines Mitarbeiters anhand seiner ID
     @GetMapping("/{id}")
@@ -77,15 +73,14 @@ public class MitarbeiterController {
         // Überprüfe, ob der Benutzer ein Administrator ist, um einen Mitarbeiter zu
         // erstellen
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Optional<Nutzer> nutzer = nutzerRepository.findByUsername(authentication.getName());
+        Optional<Nutzer> nutzer = nutzerService.getNutzerByUsername(authentication.getName());
 
         // Wenn der Benutzer ein Administrator ist
         if (nutzer.isPresent() && nutzer.get().getRole().equals("ADMIN")) {
             // Verschlüssele das Passwort des Mitarbeiters
             mitarbeiter.setPassword(passwordEncoder.encode(mitarbeiter.getPassword()));
             // Setze den Benutzernamen des Mitarbeiters basierend auf Vorname und Nachname
-            mitarbeiter.setUsername(
-                    mitarbeiter.getVorname().toLowerCase() + "." + mitarbeiter.getNachname().toLowerCase());
+            mitarbeiter.setUsername(mitarbeiter.getVorname().toLowerCase() + "." + mitarbeiter.getNachname().toLowerCase());
 
             // Speichere den neuen Mitarbeiter in der Datenbank
             mitarbeiterService.saveAndFlush(mitarbeiter);
@@ -108,7 +103,7 @@ public class MitarbeiterController {
 
             // Überprüfe, ob der Benutzer ein ADMIN ist
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Optional<Nutzer> nutzer = nutzerRepository.findByUsername(authentication.getName());
+            Optional<Nutzer> nutzer = nutzerService.getNutzerByUsername(authentication.getName());
             if (!nutzer.isPresent() || !nutzer.get().getRole().equals("ADMIN")) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                         "Nur Administratoren können Mitarbeiter aktualisieren");
@@ -117,6 +112,7 @@ public class MitarbeiterController {
             // Aktualisiere die Felder des Mitarbeiters
             mitarbeiter.setVorname(updatedMitarbeiter.getVorname());
             mitarbeiter.setNachname(updatedMitarbeiter.getNachname());
+            mitarbeiter.setUsername(updatedMitarbeiter.getVorname().toLowerCase() + "." + updatedMitarbeiter.getNachname());
 
             // Speichere die aktualisierten Mitarbeiterdaten
             mitarbeiterService.saveAndFlush(mitarbeiter);

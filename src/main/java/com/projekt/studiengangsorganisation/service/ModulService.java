@@ -39,7 +39,7 @@ public class ModulService {
             Modulgruppe modulgruppe) {
         Modul modul = new Modul();
         modul.setName("Programmieren");
-        modul.setKuerzel("5 WIF 22");
+        modul.setModulnummer("5 WIF 22");
         modul.setWorkload(180);
         modul.setAbschluss("B. Sc.");
         modul.setArt("Seminaristischer Unterricht");

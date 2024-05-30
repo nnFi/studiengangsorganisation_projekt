@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,8 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.projekt.studiengangsorganisation.entity.Nutzer;
 import com.projekt.studiengangsorganisation.entity.Student;
-import com.projekt.studiengangsorganisation.repository.NutzerRepository;
-import com.projekt.studiengangsorganisation.repository.StudentRepository;
+import com.projekt.studiengangsorganisation.service.NutzerService;
 import com.projekt.studiengangsorganisation.service.StudentService;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,10 +36,7 @@ public class StudentController {
     StudentService studentService;
 
     @Autowired
-    StudentRepository studentRepository;
-
-    @Autowired
-    NutzerRepository nutzerRepository;
+    NutzerService nutzerService;
 
     @GetMapping("/{id}")
     public Student getOne(@PathVariable String id) {
@@ -62,18 +59,46 @@ public class StudentController {
     @PostMapping("")
     public ResponseEntity<Student> createStudent(@RequestBody Student student) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Optional<Nutzer> nutzer = nutzerRepository.findByUsername(authentication.getName());
+        Optional<Nutzer> nutzer = nutzerService.getNutzerByUsername(authentication.getName());
 
         if (nutzer.isPresent() && nutzer.get().getRole().equals("ADMIN")) {
             student.setPassword(passwordEncoder.encode(student.getPassword()));
             student.setUsername(
                     student.getVorname().toLowerCase() + "." + student.getNachname().toLowerCase());
 
-            studentRepository.saveAndFlush(student);
+            studentService.saveAndFlush(student);
 
             return new ResponseEntity<>(student, HttpStatus.CREATED);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Student> updateMitarbeiter(@PathVariable String id, @RequestBody Student updatedStudent) {
+        Optional<Student> existingStudent = studentService.getStudent(id);
+
+        if (existingStudent.isPresent()) {
+            Student student = existingStudent.get();
+
+            // Überprüfe, ob der Benutzer ein ADMIN ist
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Optional<Nutzer> nutzer = nutzerService.getNutzerByUsername(authentication.getName());
+            if (!nutzer.isPresent() || !nutzer.get().getRole().equals("ADMIN")) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nur Administratoren können Mitarbeiter aktualisieren");
+            }
+
+            // Aktualisiere die Felder des Mitarbeiters
+            student.setVorname(updatedStudent.getVorname());
+            student.setNachname(updatedStudent.getNachname());
+            student.setUsername(updatedStudent.getVorname().toLowerCase() + "." + updatedStudent.getNachname().toLowerCase());
+
+            // Speichere die aktualisierten Mitarbeiterdaten
+            studentService.saveAndFlush(student);
+
+            return new ResponseEntity<>(student, HttpStatus.OK);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student nicht gefunden");
         }
     }
 }

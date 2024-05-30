@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.projekt.studiengangsorganisation.entity.Abschluss;
 import com.projekt.studiengangsorganisation.entity.Fachbereich;
 import com.projekt.studiengangsorganisation.entity.Mitarbeiter;
 import com.projekt.studiengangsorganisation.entity.Studiengang;
@@ -36,7 +37,7 @@ public class StudiengangService {
     public Studiengang insertTestData(Mitarbeiter leiter, Mitarbeiter stellvertreter, Fachbereich fachbereich) {
         Studiengang studiengang = new Studiengang();
         studiengang.setName("Informatik");
-        studiengang.setAbschluss("Bachelor");
+        studiengang.setAbschluss(Abschluss.BACHELOR_OF_SCIENCE);
         studiengang.setRegelstudienzeit(6);
         studiengang.setLeiter(leiter);
         studiengang.setStellvertretenderLeiter(stellvertreter);

@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -46,10 +48,12 @@ public class Modul {
     private int dauer;
 
     @Column(name = "Art")
-    private String art;
+    @Enumerated(EnumType.ORDINAL)
+    private ModulArt art;
 
     @Column(name = "abschluss")
-    private String abschluss;
+    @Enumerated(EnumType.ORDINAL)
+    private Abschluss abschluss;
 
     @Column(name = "beschreibung")
     private String beschreibung;
@@ -58,7 +62,8 @@ public class Modul {
     private String lehrveranstaltungsort;
 
     @Column(name = "sprache")
-    private String sprache;
+    @Enumerated(EnumType.ORDINAL)
+    private Sprache sprache;
 
     @Column(name = "freigegeben")
     private boolean freigegeben;
@@ -142,19 +147,19 @@ public class Modul {
         this.dauer = dauer;
     }
 
-    public String getArt() {
+    public ModulArt getArt() {
         return art;
     }
 
-    public void setArt(String art) {
+    public void setArt(ModulArt art) {
         this.art = art;
     }
 
-    public String getAbschluss() {
+    public Abschluss getAbschluss() {
         return abschluss;
     }
 
-    public void setAbschluss(String abschluss) {
+    public void setAbschluss(Abschluss abschluss) {
         this.abschluss = abschluss;
     }
 
@@ -174,11 +179,11 @@ public class Modul {
         this.lehrveranstaltungsort = lehrveranstaltungsort;
     }
 
-    public String getSprache() {
+    public Sprache getSprache() {
         return sprache;
     }
 
-    public void setSprache(String sprache) {
+    public void setSprache(Sprache sprache) {
         this.sprache = sprache;
     }
 

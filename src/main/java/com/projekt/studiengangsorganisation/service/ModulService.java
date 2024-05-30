@@ -7,11 +7,14 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.projekt.studiengangsorganisation.entity.Abschluss;
 import com.projekt.studiengangsorganisation.entity.Fachgruppe;
 import com.projekt.studiengangsorganisation.entity.Mitarbeiter;
 import com.projekt.studiengangsorganisation.entity.Modul;
+import com.projekt.studiengangsorganisation.entity.ModulArt;
 import com.projekt.studiengangsorganisation.entity.Modulgruppe;
 import com.projekt.studiengangsorganisation.entity.Pruefung;
+import com.projekt.studiengangsorganisation.entity.Sprache;
 import com.projekt.studiengangsorganisation.repository.ModulRepository;
 
 @Service
@@ -41,13 +44,14 @@ public class ModulService {
         modul.setName("Programmieren");
         modul.setModulnummer("5 WIF 22");
         modul.setWorkload(180);
-        modul.setAbschluss("B. Sc.");
-        modul.setArt("Seminaristischer Unterricht");
+        modul.setAbschluss(Abschluss.BACHELOR_OF_SCIENCE);
+        modul.setArt(ModulArt.SEMINAR);
         modul.setBeschreibung("Programmieren lernen");
         modul.setCredits(6);
         modul.setDauer(1);
         modul.setFreigegeben(true);
         modul.setLehrveranstaltungsort("D2");
+        modul.setSprache(Sprache.DEUTSCH);
 
         modul.setFachgruppe(fachgruppe);
         modul.setModulbeauftragter(beauftragter);

@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,7 +32,8 @@ public class Studiengang {
     private String name;
 
     @Column(name = "studiengang_abschluss")
-    private String abschluss;
+    @Enumerated(EnumType.ORDINAL)
+    private Abschluss abschluss;
 
     @Column(name = "studiengang_regelstudienzeit")
     private int regelstudienzeit;
@@ -78,11 +81,11 @@ public class Studiengang {
         this.name = name;
     }
 
-    public String getAbschluss() {
+    public Abschluss getAbschluss() {
         return abschluss;
     }
 
-    public void setAbschluss(String abschluss) {
+    public void setAbschluss(Abschluss abschluss) {
         this.abschluss = abschluss;
     }
 

@@ -26,12 +26,16 @@ import com.projekt.studiengangsorganisation.service.NutzerService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * Controller-Klasse für Fachbereich-Operationen.
+ */
 @RequestMapping("/fachbereich")
 @RestController
 public class FachbereichController {
 
+    // Deklarierung Services
     @Autowired
-    FachbereichService fachbereichService;
+    FachbereichService fachbereichService; 
 
     @Autowired
     NutzerService nutzerService;
@@ -39,6 +43,12 @@ public class FachbereichController {
     @Autowired
     MitarbeiterService mitarbeiterService;
 
+    /**
+     * Holt einen Fachbereich anhand seiner ID.
+     * @param id Die ID des Fachbereichs.
+     * @return Der Fachbereich, falls gefunden.
+     * @throws ResponseStatusException Falls kein Fachbereich mit der angegebenen ID gefunden wurde (Status: NOT_FOUND).
+     */
     @GetMapping("/{id}")
     public Fachbereich getOne(@PathVariable String id) {
         Optional<Fachbereich> fachbereich = fachbereichService.getFachbereich(Long.parseLong(id));
@@ -53,6 +63,11 @@ public class FachbereichController {
         }
     }
 
+    /**
+     * Holt alle Fachbereiche.
+     * @param response Das HTTP-Response-Objekt.
+     * @return Die Liste aller Fachbereiche.
+     */
     @GetMapping("")
     public List<Fachbereich> getAll(HttpServletResponse response) {
         List<Fachbereich> list = fachbereichService.getFachbereiche();
@@ -66,6 +81,11 @@ public class FachbereichController {
         return list;
     }
 
+    /**
+     * Erstellt einen neuen Fachbereich.
+     * @param fachbereich Der zu erstellende Fachbereich.
+     * @return Die HTTP-Response-Entität mit dem erstellten Fachbereich und dem Statuscode 201 (CREATED).
+     */
     @PostMapping("")
     public ResponseEntity<Fachbereich> createFachbereich(@RequestBody Fachbereich fachbereich) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -91,6 +111,14 @@ public class FachbereichController {
         return new ResponseEntity<>(fachbereich, HttpStatus.CREATED);
     }
 
+    /**
+     * Aktualisiert einen vorhandenen Fachbereich.
+     * @param id              Die ID des zu aktualisierenden Fachbereichs.
+     * @param updatedFachbereich Der aktualisierte Fachbereich.
+     * @return Die HTTP-Response-Entität mit dem aktualisierten Fachbereich und dem Statuscode 200 (OK).
+     * @throws ResponseStatusException Falls der Fachbereich nicht gefunden wurde (Status: NOT_FOUND) oder
+     *                                  der Benutzer keine Berechtigung hat (Status: FORBIDDEN).
+     */
     @PutMapping("/{id}")
     public ResponseEntity<Fachbereich> updateFachbereich(@PathVariable Long id, @RequestBody Fachbereich updatedFachbereich) {
         Optional<Fachbereich> existingFachbereich = fachbereichService.getFachbereich(id);

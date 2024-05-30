@@ -14,6 +14,7 @@ import com.projekt.studiengangsorganisation.repository.ModulgruppeRepository;
  */
 @Service
 public class ModulgruppeService {
+    
     @Autowired
     ModulgruppeRepository modulgruppeRepository;
 

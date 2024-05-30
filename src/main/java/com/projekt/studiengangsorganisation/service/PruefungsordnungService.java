@@ -15,6 +15,7 @@ import com.projekt.studiengangsorganisation.repository.PruefungsordnungRepositor
  */
 @Service
 public class PruefungsordnungService {
+    
     @Autowired
     PruefungsordnungRepository pruefungsordnungRepository;
 

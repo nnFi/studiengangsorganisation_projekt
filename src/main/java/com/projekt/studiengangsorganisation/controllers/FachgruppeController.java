@@ -21,7 +21,6 @@ import com.projekt.studiengangsorganisation.entity.Fachbereich;
 import com.projekt.studiengangsorganisation.entity.Fachgruppe;
 import com.projekt.studiengangsorganisation.entity.Mitarbeiter;
 import com.projekt.studiengangsorganisation.entity.Nutzer;
-import com.projekt.studiengangsorganisation.repository.FachgruppeRepository;
 import com.projekt.studiengangsorganisation.service.FachbereichService;
 import com.projekt.studiengangsorganisation.service.FachgruppeService;
 import com.projekt.studiengangsorganisation.service.MitarbeiterService;
@@ -29,10 +28,14 @@ import com.projekt.studiengangsorganisation.service.NutzerService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * Controller-Klasse für die Verwaltung von Fachgruppen.
+ */
 @RequestMapping("/fachgruppe")
 @RestController
 public class FachgruppeController {
 
+    // Deklarierung Services
     @Autowired
     NutzerService nutzerService;
 
@@ -45,9 +48,12 @@ public class FachgruppeController {
     @Autowired
     FachbereichService fachbereichService;
 
-    @Autowired
-    FachgruppeRepository fachgruppeRepository;
-
+    /**
+     * Liefert eine Fachgruppe basierend auf der ID.
+     * @param id Die ID der Fachgruppe.
+     * @return Die gefundene Fachgruppe.
+     * @throws ResponseStatusException Falls die Fachgruppe nicht gefunden wird.
+     */
     @GetMapping("/{id}")
     public Fachgruppe getOne(@PathVariable String id) {
         Optional<Fachgruppe> fachgruppe = fachgruppeService.getFachgruppe(Long.parseLong(id));
@@ -57,13 +63,17 @@ public class FachgruppeController {
             fachgruppeObject.setFachbereichId(fachgruppeObject.getFachbereich().getId());
             fachgruppeObject.setReferentId(fachgruppeObject.getReferent().getId());
             fachgruppeObject.setStellvertreterId(fachgruppeObject.getStellvertreter().getId());
-
-            return fachgruppeObject;
+            return fachgruppeObject; // Falls vorhanden, gib die Fachgruppe zurück
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND); // Andernfalls: Nicht gefunden Fehler
         }
     }
 
+    /**
+     * Liefert alle Fachgruppen.
+     * @param response Die HTTP-Response.
+     * @return Eine Liste aller Fachgruppen.
+     */
     @GetMapping("")
     public List<Fachgruppe> getAll(HttpServletResponse response) {
         List<Fachgruppe> list = fachgruppeService.getFachgruppen();
@@ -74,10 +84,16 @@ public class FachgruppeController {
             fachgruppe.setStellvertreterId(fachgruppe.getStellvertreter().getId());
         });
 
-        response.setHeader("Content-Range", "1-" + list.size());
-        return list;
+        response.setHeader("Content-Range", "1-" + list.size()); // Setze Content-Range Header
+        return list; // Gib die Liste der Fachgruppen zurück
     }
 
+    /**
+     * Erstellt eine neue Fachgruppe.
+     * @param fachgruppe Die zu erstellende Fachgruppenentität.
+     * @return Die erstellte Fachgruppenentität.
+     * @throws ResponseStatusException Falls der Benutzer nicht autorisiert ist oder erforderliche Ressourcen nicht gefunden werden.
+     */
     @PostMapping("")
     public ResponseEntity<Fachgruppe> createFachgruppe(@RequestBody Fachgruppe fachgruppe) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -109,11 +125,18 @@ public class FachgruppeController {
         fachgruppe.setFachbereich(fachbereich);
         fachgruppe.setReferent(referent);
         fachgruppe.setStellvertreter(stellvertreter);
-        fachgruppeRepository.saveAndFlush(fachgruppe);
+        fachgruppeService.saveAndFlush(fachgruppe); // Fachgruppe speichern
 
-        return new ResponseEntity<>(fachgruppe, HttpStatus.CREATED);
+        return new ResponseEntity<>(fachgruppe, HttpStatus.CREATED); // Erfolgreiche Erstellung
     }
 
+    /**
+     * Aktualisiert eine vorhandene Fachgruppe.
+     * @param id             Die ID der zu aktualisierenden Fachgruppe.
+     * @param updatedFachgruppe Die aktualisierte Fachgruppenentität.
+     * @return Die aktualisierte Fachgruppenentität.
+     * @throws ResponseStatusException Falls der Benutzer nicht autorisiert ist, die Fachgruppe nicht gefunden wird oder die Aktualisierung fehlschlägt.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<Fachgruppe> updateFachgruppe(@PathVariable String id, @RequestBody Fachgruppe updatedFachgruppe) {
         Optional<Fachgruppe> existingFachgruppe = fachgruppeService.getFachgruppe(Long.parseLong(id));
@@ -129,24 +152,25 @@ public class FachgruppeController {
                         "Nur Administratoren können Modul aktualisieren");
             }
 
-            Mitarbeiter referent = mitarbeiterService
-                    .getMitarbeiter(updatedFachgruppe.getReferentId())
+            // Mitarbeiterreferent, Stellvertreter und Fachbereich anhand ihrer IDs abrufen.
+            Mitarbeiter referent = mitarbeiterService.getMitarbeiter(updatedFachgruppe.getReferentId())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Referent not found"));
 
-            Mitarbeiter stellvertreter= mitarbeiterService
-                    .getMitarbeiter(updatedFachgruppe.getStellvertreterId())
+            Mitarbeiter stellvertreter = mitarbeiterService.getMitarbeiter(updatedFachgruppe.getStellvertreterId())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter not found"));
 
-            Fachbereich fachbereich= fachbereichService
-                    .getFachbereich(updatedFachgruppe.getFachbereichId())
+            Fachbereich fachbereich = fachbereichService.getFachbereich(updatedFachgruppe.getFachbereichId())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fachbereich not found"));
 
+            // Die Eigenschaften der aktualisierten Fachgruppe setzen.
             fachgruppe.setId(updatedFachgruppe.getId());
             fachgruppe.setName(updatedFachgruppe.getName());
             fachgruppe.setKuerzel(updatedFachgruppe.getKuerzel());
             fachgruppe.setFachbereich(fachbereich);
             fachgruppe.setReferent(referent);
             fachgruppe.setStellvertreter(stellvertreter);
+
+            // Die aktualisierte Fachgruppe speichern.
             fachgruppeService.saveAndFlush(fachgruppe);
 
             return new ResponseEntity<>(fachgruppe, HttpStatus.OK);

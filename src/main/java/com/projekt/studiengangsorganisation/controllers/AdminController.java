@@ -16,13 +16,23 @@ import com.projekt.studiengangsorganisation.service.AdminService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * Controller für die Verwaltung von Admins.
+ */
 @RequestMapping("/admin")
 @RestController
 public class AdminController {
 
+    // Deklarierung Service
     @Autowired
     AdminService adminService;
 
+    /**
+     * Holt einen einzelnen Admin anhand seiner ID.
+     * @param id Die ID des Admins.
+     * @return Der Admin, falls gefunden.
+     * @throws ResponseStatusException Falls kein Admin mit der angegebenen ID gefunden wurde (Status: NOT_FOUND).
+     */
     @GetMapping("/{id}")
     public Admin getOne(@PathVariable String id) {
         Optional<Admin> admin = adminService.getAdmin(id);
@@ -34,6 +44,11 @@ public class AdminController {
         }
     }
 
+    /**
+     * Holt alle Admins.
+     * @param response Das HTTP-Response-Objekt.
+     * @return Die Liste aller Admins.
+     */
     @GetMapping("")
     public List<Admin> getAll(HttpServletResponse response) {
         List<Admin> list = adminService.getAdmin();

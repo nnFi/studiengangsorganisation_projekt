@@ -22,6 +22,7 @@ import com.projekt.studiengangsorganisation.repository.ModulRepository;
  */
 @Service
 public class ModulService {
+    
     @Autowired
     ModulRepository modulRepository;
 

@@ -27,10 +27,14 @@ import com.projekt.studiengangsorganisation.service.PruefungsordnungService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * Controller-Klasse für die Verwaltung von Pruefungen.
+ */
 @RequestMapping("/pruefung")
 @RestController
 public class PruefungController {
 
+    // Deklarierung Services
     @Autowired
     PruefungService pruefungService;
 
@@ -43,68 +47,111 @@ public class PruefungController {
     @Autowired
     ModulService modulService;
 
+    /**
+     * Holt eine einzelne Prüfung anhand ihrer ID.
+     * @param id Die ID der zu holenden Prüfung.
+     * @return Die gefundene Prüfung.
+     * @throws ResponseStatusException Falls die Prüfung nicht gefunden wird, wird ein 404 Fehler zurückgegeben.
+     */
     @GetMapping("/{id}")
     public Pruefung getOne(@PathVariable String id) {
+        // Prüfung anhand der ID abrufen
         Optional<Pruefung> pruefung = pruefungService.getPruefung(id);
 
+        // Überprüfen, ob die Prüfung vorhanden ist
         if (pruefung.isPresent()) {
+            // Wenn die Prüfung vorhanden ist, Pruefung-Objekt aus dem Optional extrahieren
             Pruefung pruefungObject = pruefung.get();
+            
+            // Die IDs der zugehörigen Prüfungsordnung und des Moduls setzen
             pruefungObject.setPruefungsordnungId(pruefungObject.getPruefungsordnung().getId());
             pruefungObject.setModulId(pruefungObject.getModul().getId());
+            
+            // Das Pruefung-Objekt zurückgeben
             return pruefungObject;
         } else {
+            // Falls die Prüfung nicht gefunden wird, einen 404 Fehler zurückgeben
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
+    /**
+     * Holt alle Prüfungen.
+     * @param response HTTP-Servlet-Antwort, um den Content-Range-Header zu setzen.
+     * @return Eine Liste aller Prüfungen.
+     */
     @GetMapping("")
     public List<Pruefung> getAll(HttpServletResponse response) {
+        // Alle Prüfungen abrufen
         List<Pruefung> list = pruefungService.getPruefungen();
 
+        // Für jede Prüfung in der Liste die Prüfungsordnung-ID und die Modul-ID setzen
         list.forEach(pruefung -> {
             pruefung.setPruefungsordnungId(pruefung.getPruefungsordnung().getId());
             pruefung.setModulId(pruefung.getModul().getId());
         });
 
+        // Den Content-Range-Header der HTTP-Antwort setzen, um den Bereich der zurückgegebenen Prüfungen anzugeben
         response.setHeader("Content-Range", "1-" + list.size());
+
+        // Die Liste der Prüfungen zurückgeben
         return list;
     }
 
+    /**
+     * Erstellt eine neue Prüfung.
+     *
+     * @param pruefung Die zu erstellende Prüfung.
+     * @return Die erstellte Prüfung.
+     * @throws ResponseStatusException Falls der Nutzer nicht authorisiert ist, wird ein 401 Fehler zurückgegeben.
+     *                                 Falls die Prüfungsordnung nicht gefunden wird, wird ein 404 Fehler zurückgegeben.
+     *                                 Falls das Modul nicht gefunden wird, wird ein 404 Fehler zurückgegeben.
+     *                                 Falls die Prüfung bereits existiert, wird ein 409 Fehler zurückgegeben.
+     *                                 Falls die Prüfungsordnung bereits freigegeben wurde, wird ein 409 Fehler zurückgegeben.
+     */
     @PostMapping("")
     public ResponseEntity<Pruefung> createPruefung(@RequestBody Pruefung pruefung) {
+        // Authentifizierung des Benutzers
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Benutzerinformationen aus dem NutzerService abrufen und sicherstellen, dass der Benutzer autorisiert ist
         Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User nicht authorisiert"));
 
+        // Überprüfen, ob der Benutzer die erforderliche Rolle hat
         if (!nutzer.getRole().equals("MITARBEITER") && !nutzer.getRole().equals("ADMIN")) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User nicht authorisiert");
         }
 
+        // Die Prüfungsordnung für die zu erstellende Prüfung abrufen und sicherstellen, dass sie existiert
         Pruefungsordnung pruefungsordnung = pruefungsordnungService
-                .getPruefungsordnung((pruefung.getPruefungsordnungId()))
+                .getPruefungsordnung(pruefung.getPruefungsordnungId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pruefungsordnung nicht gefunden"));
 
-
+        // Überprüfen, ob eine Prüfung für dasselbe Modul bereits in der Prüfungsordnung existiert
         for (Pruefung p : pruefungsordnung.getPruefungen()) {
             if (p.getModulId().equals(pruefung.getModulId())) {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Pruefung existiert bereits");
             }
         }
 
+        // Das Modul für die zu erstellende Prüfung abrufen und sicherstellen, dass es existiert
         Modul modul = modulService
-                .getModul((pruefung.getModulId()))
+                .getModul(pruefung.getModulId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Modul nicht gefunden"));
 
+        // Die Prüfungsordnung und das Modul für die Prüfung setzen
         pruefung.setPruefungsordnung(pruefungsordnung);
         pruefung.setModul(modul);
 
+        // Die Prüfung speichern, wenn die Prüfungsordnung noch nicht freigegeben wurde, andernfalls eine Ausnahme auslösen
         if (!pruefungsordnung.isFreigegeben()) {
-        pruefungService.saveAndFlush(pruefung);
-        }
-        else {
+            pruefungService.saveAndFlush(pruefung);
+        } else {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Pruefungsordnung wurde bereits freigegeben");
         }
 
+        // Eine Antwort mit der erstellten Prüfung und dem Status "Created" zurückgeben
         return new ResponseEntity<>(pruefung, HttpStatus.CREATED);
     }
 }

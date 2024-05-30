@@ -15,6 +15,7 @@ import com.projekt.studiengangsorganisation.repository.FachbereichRepository;
  */
 @Service
 public class FachbereichService {
+    
     @Autowired
     FachbereichRepository fachbereichRepository;
 

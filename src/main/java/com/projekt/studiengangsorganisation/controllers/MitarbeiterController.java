@@ -25,6 +25,9 @@ import com.projekt.studiengangsorganisation.service.NutzerService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
+/*
+ * Controller-Klasse für die Verwaltung von Mitarbeitern.
+ */
 @RequestMapping("/mitarbeiter")
 @RestController
 public class MitarbeiterController {
@@ -38,7 +41,12 @@ public class MitarbeiterController {
     @Autowired
     NutzerService nutzerService;
 
-    // Methode zum Abrufen eines Mitarbeiters anhand seiner ID
+    /**
+     * Methode zum Abrufen eines Mitarbeiters anhand seiner ID.
+     * @param id Die ID des Mitarbeiters.
+     * @return Der Mitarbeiter, falls gefunden.
+     * @throws ResponseStatusException Falls der Mitarbeiter nicht gefunden wird.
+     */
     @GetMapping("/{id}")
     public Mitarbeiter getOne(@PathVariable String id) {
         // Versuche, den Mitarbeiter mit der angegebenen ID zu erhalten
@@ -53,25 +61,32 @@ public class MitarbeiterController {
         }
     }
 
-    // Methode zum Abrufen aller Mitarbeiter
+    /**
+     * Methode zum Abrufen aller Mitarbeiter.
+     * @param response Der HTTP-Response.
+     * @return Eine Liste aller Mitarbeiter.
+     */
     @GetMapping("")
     public List<Mitarbeiter> getAll(HttpServletResponse response) {
         // Erhalte eine Liste aller Mitarbeiter
         List<Mitarbeiter> list = mitarbeiterService.getMitarbeiter();
 
-        // Setze den Content-Range Header im Response, um die Anzahl der Mitarbeiter
-        // anzugeben
+        // Setze den Content-Range Header im Response, um die Anzahl der Mitarbeiter anzugeben
         response.setHeader("Content-Range", "1-" + list.size());
 
         // Gib die Liste der Mitarbeiter zurück
         return list;
     }
 
-    // Methode zum Erstellen eines neuen Mitarbeiters
+    /**
+     * Methode zum Erstellen eines neuen Mitarbeiters.
+     * @param mitarbeiter Der Mitarbeiter, der erstellt werden soll.
+     * @return Eine ResponseEntity, die den erstellten Mitarbeiter und den HTTP-Statuscode enthält.
+     * @throws ResponseStatusException Falls der Benutzer kein Administrator ist.
+     */
     @PostMapping("")
     public ResponseEntity<Mitarbeiter> createMitarbeiter(@RequestBody Mitarbeiter mitarbeiter) {
-        // Überprüfe, ob der Benutzer ein Administrator ist, um einen Mitarbeiter zu
-        // erstellen
+        // Überprüfe, ob der Benutzer ein Administrator ist, um einen Mitarbeiter zu erstellen
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<Nutzer> nutzer = nutzerService.getNutzerByUsername(authentication.getName());
 
@@ -93,18 +108,28 @@ public class MitarbeiterController {
         }
     }
 
+    /**
+     * Methode zum Aktualisieren eines Mitarbeiters.
+     * @param id                Die ID des zu aktualisierenden Mitarbeiters.
+     * @param updatedMitarbeiter Der aktualisierte Mitarbeiter.
+     * @return Eine ResponseEntity, die den aktualisierten Mitarbeiter und den HTTP-Statuscode enthält.
+     * @throws ResponseStatusException Falls der Mitarbeiter nicht gefunden wird oder der Benutzer kein Administrator ist.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<Mitarbeiter> updateMitarbeiter(@PathVariable String id,
-            @RequestBody Mitarbeiter updatedMitarbeiter) {
+                                                         @RequestBody Mitarbeiter updatedMitarbeiter) {
+        // Versuche, den vorhandenen Mitarbeiter anhand seiner ID zu erhalten
         Optional<Mitarbeiter> existingMitarbeiter = mitarbeiterService.getMitarbeiter(Long.parseLong(id));
 
+        // Wenn der Mitarbeiter gefunden wurde
         if (existingMitarbeiter.isPresent()) {
             Mitarbeiter mitarbeiter = existingMitarbeiter.get();
 
-            // Überprüfe, ob der Benutzer ein ADMIN ist
+            // Überprüfe, ob der Benutzer ein Administrator ist
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             Optional<Nutzer> nutzer = nutzerService.getNutzerByUsername(authentication.getName());
             if (!nutzer.isPresent() || !nutzer.get().getRole().equals("ADMIN")) {
+                // Wenn der Benutzer kein Administrator ist, wirf einen Fehler 403 - Verboten
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                         "Nur Administratoren können Mitarbeiter aktualisieren");
             }
@@ -117,8 +142,10 @@ public class MitarbeiterController {
             // Speichere die aktualisierten Mitarbeiterdaten
             mitarbeiterService.saveAndFlush(mitarbeiter);
 
+            // Gib eine Erfolgsantwort zurück
             return new ResponseEntity<>(mitarbeiter, HttpStatus.OK);
         } else {
+            // Andernfalls wirf einen Fehler 404 - Ressource nicht gefunden
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Mitarbeiter nicht gefunden");
         }
     }

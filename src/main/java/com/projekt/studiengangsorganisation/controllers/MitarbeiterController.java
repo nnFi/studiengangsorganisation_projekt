@@ -113,6 +113,7 @@ public class MitarbeiterController {
             // Aktualisiere die Felder des Mitarbeiters
             mitarbeiter.setVorname(updatedMitarbeiter.getVorname());
             mitarbeiter.setNachname(updatedMitarbeiter.getNachname());
+            mitarbeiter.setUsername(updatedMitarbeiter.getVorname() + "." + updatedMitarbeiter.getNachname());
 
             // Speichere die aktualisierten Mitarbeiterdaten
             mitarbeiterService.saveAndFlush(mitarbeiter);

@@ -111,6 +111,7 @@ public class ModulController {
         modul.setModulgruppe(modulgruppe);
         Modul savedModul = modulService.saveAndFlush(modul);
 
+        //Modulnummer wird generiert
         String modulnummer = (fachgruppe.getFachbereich().getId() + " " + fachgruppe.getKuerzel() + " " + savedModul.getId());
 
         savedModul.setModulnummer(modulnummer);

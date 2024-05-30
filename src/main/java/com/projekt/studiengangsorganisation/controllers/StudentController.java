@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -74,6 +75,34 @@ public class StudentController {
             return new ResponseEntity<>(student, HttpStatus.CREATED);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Student> updateMitarbeiter(@PathVariable String id, @RequestBody Student updatedStudent) {
+        Optional<Student> existingStudent = studentService.getStudent(id);
+
+        if (existingStudent.isPresent()) {
+            Student student = existingStudent.get();
+
+            // Überprüfe, ob der Benutzer ein ADMIN ist
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Optional<Nutzer> nutzer = nutzerRepository.findByUsername(authentication.getName());
+            if (!nutzer.isPresent() || !nutzer.get().getRole().equals("ADMIN")) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nur Administratoren können Mitarbeiter aktualisieren");
+            }
+
+            // Aktualisiere die Felder des Mitarbeiters
+            student.setVorname(updatedStudent.getVorname());
+            student.setNachname(updatedStudent.getNachname());
+            student.setUsername(updatedStudent.getVorname().toLowerCase() + "." + updatedStudent.getNachname().toLowerCase());
+
+            // Speichere die aktualisierten Mitarbeiterdaten
+            studentService.saveAndFlush(student);
+
+            return new ResponseEntity<>(student, HttpStatus.OK);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student nicht gefunden");
         }
     }
 }

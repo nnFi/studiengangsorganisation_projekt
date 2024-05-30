@@ -82,8 +82,7 @@ public class MitarbeiterController {
             // Verschlüssele das Passwort des Mitarbeiters
             mitarbeiter.setPassword(passwordEncoder.encode(mitarbeiter.getPassword()));
             // Setze den Benutzernamen des Mitarbeiters basierend auf Vorname und Nachname
-            mitarbeiter.setUsername(
-                    mitarbeiter.getVorname().toLowerCase() + "." + mitarbeiter.getNachname().toLowerCase());
+            mitarbeiter.setUsername(mitarbeiter.getVorname().toLowerCase() + "." + mitarbeiter.getNachname().toLowerCase());
 
             // Speichere den neuen Mitarbeiter in der Datenbank
             mitarbeiterService.saveAndFlush(mitarbeiter);
@@ -113,6 +112,7 @@ public class MitarbeiterController {
             // Aktualisiere die Felder des Mitarbeiters
             mitarbeiter.setVorname(updatedMitarbeiter.getVorname());
             mitarbeiter.setNachname(updatedMitarbeiter.getNachname());
+            mitarbeiter.setUsername(updatedMitarbeiter.getVorname().toLowerCase() + "." + updatedMitarbeiter.getNachname().toLowerCase());
 
             // Speichere die aktualisierten Mitarbeiterdaten
             mitarbeiterService.saveAndFlush(mitarbeiter);

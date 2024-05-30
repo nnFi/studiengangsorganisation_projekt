@@ -108,7 +108,9 @@ public class PruefungsordnungController {
                 pruefungsordnung.setFreigegeben(updatedPruefungsordnung.isFreigegeben());
                 pruefungsordnung.setStudiengang(updatedPruefungsordnung.getStudiengang());
                 pruefungsordnung.setPruefungen(updatedPruefungsordnung.getPruefungen());
-                pruefungsordnung.setAuslaufend(updatedPruefungsordnung.isAuslaufend());
+                if (!pruefungsordnung.isAuslaufend()) {
+                    pruefungsordnung.setAuslaufend(updatedPruefungsordnung.isAuslaufend());
+                }
             }
             else {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Bereits veröffentlichte Prüfungsordnungen können abgesehen vom Status 'Auslaufend' nicht bearbeitet werden");

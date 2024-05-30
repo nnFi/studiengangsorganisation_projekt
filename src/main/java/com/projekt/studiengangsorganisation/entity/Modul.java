@@ -34,8 +34,8 @@ public class Modul {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "kuerzel")
-    private String kuerzel;
+    @Column(name = "modulnummer")
+    private String modulnummer;
 
     @Column(name = "workload")
     private int workload;
@@ -111,12 +111,12 @@ public class Modul {
         this.name = name;
     }
 
-    public String getKuerzel() {
-        return kuerzel;
+    public String getModulnummer() {
+        return modulnummer;
     }
 
-    public void setKuerzel(String kuerzel) {
-        this.kuerzel = kuerzel;
+    public void setModulnummer(String modulnummer) {
+        this.modulnummer = modulnummer;
     }
 
     public int getWorkload() {

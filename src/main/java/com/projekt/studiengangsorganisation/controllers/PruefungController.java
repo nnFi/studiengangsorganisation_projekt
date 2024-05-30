@@ -75,6 +75,7 @@ public class PruefungController {
                 .getPruefungsordnung((pruefung.getPruefungsordnungId()))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pruefungsordnung not found"));
 
+
         for (Pruefung p : pruefungsordnung.getPruefungen()) {
             if (p.getModulId().equals(pruefung.getModulId())) {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Pruefung already exists");
@@ -88,7 +89,12 @@ public class PruefungController {
         pruefung.setPruefungsordnung(pruefungsordnung);
         pruefung.setModul(modul);
 
+        if (!pruefungsordnung.isFreigegeben()) {
         pruefungService.saveAndFlush(pruefung);
+        }
+        else {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Pruefungsordnung wurde bereits freigegeben");
+        }
 
         return new ResponseEntity<>(pruefung, HttpStatus.CREATED);
     }

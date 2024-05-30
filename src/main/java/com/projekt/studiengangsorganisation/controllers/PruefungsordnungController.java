@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -83,5 +84,47 @@ public class PruefungsordnungController {
         pruefungsordnungService.saveAndFlush(pruefungsordnung);
 
         return new ResponseEntity<>(pruefungsordnung, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Pruefungsordnung> updatePruefungsordnung(@PathVariable String id, @RequestBody Pruefungsordnung updatedPruefungsordnung) {
+        Optional<Pruefungsordnung> existingPruefungsordnung = pruefungsordnungService.getPruefungsordnung(Long.parseLong(id));
+
+        if (existingPruefungsordnung.isPresent()) {
+            Pruefungsordnung pruefungsordnung = existingPruefungsordnung.get();
+
+            // Überprüfe, ob der Benutzer ein ADMIN ist
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized"));
+
+        if (!nutzer.getRole().equals("MITARBEITER") && !nutzer.getRole().equals("ADMIN")) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized");
+        }
+
+            // Aktualisiere die Felder der Prüfungsordnung, wenn die Prüfungsordnung noch nicht veröffentlicht wurde
+            if (!pruefungsordnung.isFreigegeben()) {
+                pruefungsordnung.setVersion(updatedPruefungsordnung.getVersion());
+                pruefungsordnung.setFreigegeben(updatedPruefungsordnung.isFreigegeben());
+                pruefungsordnung.setStudiengang(updatedPruefungsordnung.getStudiengang());
+                pruefungsordnung.setPruefungen(updatedPruefungsordnung.getPruefungen());
+                pruefungsordnung.setAuslaufend(updatedPruefungsordnung.isAuslaufend());
+            }
+            else {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Bereits veröffentlichte Prüfungsordnungen können abgesehen vom Status 'Auslaufend' nicht bearbeitet werden");
+            }
+
+            //Aktualisiere das Feld 'Auslaufend', wenn die Prüfungsordnung bereits veröffentlicht wurde
+            if (pruefungsordnung.isFreigegeben()) {
+                pruefungsordnung.setAuslaufend(updatedPruefungsordnung.isAuslaufend());
+            }
+
+            // Speichere die aktualisierten Prüfungsordnungdaten
+            pruefungsordnungService.saveAndFlush(pruefungsordnung);
+
+            return new ResponseEntity<>(pruefungsordnung, HttpStatus.OK);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pruefungsordnung nicht gefunden");
+        }
     }
 }

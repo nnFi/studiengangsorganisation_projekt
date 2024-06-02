@@ -14,6 +14,19 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>studiengangsorganisation</name>
 	<description>Demo project for Spring Boot</description>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+
+				</configuration>
+			</plugin>
+		</plugins>
+
+	</reporting>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -52,6 +65,13 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

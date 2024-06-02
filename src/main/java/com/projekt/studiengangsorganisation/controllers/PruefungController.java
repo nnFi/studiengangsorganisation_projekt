@@ -49,9 +49,11 @@ public class PruefungController {
 
     /**
      * Methode zum Abrufen einer einzelnen Prüfung anhand ihrer ID.
+     * 
      * @param id Die ID der zu holenden Prüfung.
      * @return Die gefundene Prüfung.
-     * @throws ResponseStatusException Falls die Prüfung nicht gefunden wird, wird ein 404 Fehler zurückgegeben.
+     * @throws ResponseStatusException Falls die Prüfung nicht gefunden wird, wird
+     *                                 ein 404 Fehler zurückgegeben.
      */
     @GetMapping("/{id}")
     public Pruefung getOne(@PathVariable String id) {
@@ -62,11 +64,11 @@ public class PruefungController {
         if (pruefung.isPresent()) {
             // Wenn die Prüfung vorhanden ist, Pruefung-Objekt aus dem Optional extrahieren
             Pruefung pruefungObject = pruefung.get();
-            
+
             // Die IDs der zugehörigen Prüfungsordnung und des Moduls setzen
             pruefungObject.setPruefungsordnungId(pruefungObject.getPruefungsordnung().getId());
             pruefungObject.setModulId(pruefungObject.getModul().getId());
-            
+
             // Das Pruefung-Objekt zurückgeben
             return pruefungObject;
         } else {
@@ -77,6 +79,7 @@ public class PruefungController {
 
     /**
      * Methode zum Abrufen aller Prüfungen.
+     * 
      * @param response HTTP-Servlet-Antwort, um den Content-Range-Header zu setzen.
      * @return Eine Liste aller Prüfungen.
      */
@@ -91,7 +94,8 @@ public class PruefungController {
             pruefung.setModulId(pruefung.getModul().getId());
         });
 
-        // Den Content-Range-Header der HTTP-Antwort setzen, um den Bereich der zurückgegebenen Prüfungen anzugeben
+        // Den Content-Range-Header der HTTP-Antwort setzen, um den Bereich der
+        // zurückgegebenen Prüfungen anzugeben
         response.setHeader("Content-Range", "1-" + list.size());
 
         // Die Liste der Prüfungen zurückgeben
@@ -100,20 +104,27 @@ public class PruefungController {
 
     /**
      * Methode zum Erstellen einer neue Prüfung.
+     * 
      * @param pruefung Die zu erstellende Prüfung.
      * @return Die erstellte Prüfung.
-     * @throws ResponseStatusException Falls der Nutzer nicht authorisiert ist, wird ein 401 Fehler zurückgegeben.
-     *                                 Falls die Prüfungsordnung nicht gefunden wird, wird ein 404 Fehler zurückgegeben.
-     *                                 Falls das Modul nicht gefunden wird, wird ein 404 Fehler zurückgegeben.
-     *                                 Falls die Prüfung bereits existiert, wird ein 409 Fehler zurückgegeben.
-     *                                 Falls die Prüfungsordnung bereits freigegeben wurde, wird ein 409 Fehler zurückgegeben.
+     * @throws ResponseStatusException Falls der Nutzer nicht authorisiert ist, wird
+     *                                 ein 401 Fehler zurückgegeben.
+     *                                 Falls die Prüfungsordnung nicht gefunden
+     *                                 wird, wird ein 404 Fehler zurückgegeben.
+     *                                 Falls das Modul nicht gefunden wird, wird ein
+     *                                 404 Fehler zurückgegeben.
+     *                                 Falls die Prüfung bereits existiert, wird ein
+     *                                 409 Fehler zurückgegeben.
+     *                                 Falls die Prüfungsordnung bereits freigegeben
+     *                                 wurde, wird ein 409 Fehler zurückgegeben.
      */
     @PostMapping("")
     public ResponseEntity<Pruefung> createPruefung(@RequestBody Pruefung pruefung) {
         // Authentifizierung des Benutzers
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        // Benutzerinformationen aus dem NutzerService abrufen und sicherstellen, dass der Benutzer autorisiert ist
+        // Benutzerinformationen aus dem NutzerService abrufen und sicherstellen, dass
+        // der Benutzer autorisiert ist
         Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User nicht authorisiert"));
 
@@ -122,19 +133,26 @@ public class PruefungController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User nicht authorisiert");
         }
 
-        // Die Prüfungsordnung für die zu erstellende Prüfung abrufen und sicherstellen, dass sie existiert
+        // TODO: Nur der Studiengangsleiter, dessen Vertreter, der Fachbereichsleiter
+        // oder der Administrator können Prüfungen erstellen
+
+        // Die Prüfungsordnung für die zu erstellende Prüfung abrufen und sicherstellen,
+        // dass sie existiert
         Pruefungsordnung pruefungsordnung = pruefungsordnungService
                 .getPruefungsordnung(pruefung.getPruefungsordnungId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pruefungsordnung nicht gefunden"));
+                .orElseThrow(
+                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pruefungsordnung nicht gefunden"));
 
-        // Überprüfen, ob eine Prüfung für dasselbe Modul bereits in der Prüfungsordnung existiert
+        // Überprüfen, ob eine Prüfung für dasselbe Modul bereits in der Prüfungsordnung
+        // existiert
         for (Pruefung p : pruefungsordnung.getPruefungen()) {
             if (p.getModulId().equals(pruefung.getModulId())) {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Pruefung existiert bereits");
             }
         }
 
-        // Das Modul für die zu erstellende Prüfung abrufen und sicherstellen, dass es existiert
+        // Das Modul für die zu erstellende Prüfung abrufen und sicherstellen, dass es
+        // existiert
         Modul modul = modulService
                 .getModul(pruefung.getModulId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Modul nicht gefunden"));
@@ -143,7 +161,8 @@ public class PruefungController {
         pruefung.setPruefungsordnung(pruefungsordnung);
         pruefung.setModul(modul);
 
-        // Die Prüfung speichern, wenn die Prüfungsordnung noch nicht freigegeben wurde, andernfalls eine Ausnahme auslösen
+        // Die Prüfung speichern, wenn die Prüfungsordnung noch nicht freigegeben wurde,
+        // andernfalls eine Ausnahme auslösen
         if (!pruefungsordnung.isFreigegeben()) {
             pruefungService.saveAndFlush(pruefung);
         } else {

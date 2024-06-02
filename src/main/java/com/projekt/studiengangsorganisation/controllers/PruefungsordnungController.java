@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-
 import com.projekt.studiengangsorganisation.entity.Nutzer;
 import com.projekt.studiengangsorganisation.entity.Pruefungsordnung;
 import com.projekt.studiengangsorganisation.entity.Studiengang;
@@ -50,6 +49,7 @@ public class PruefungsordnungController {
 
     /**
      * Methode zum Abrufen einer Pruefungsordnung anhand ihrer ID.
+     * 
      * @param id Die ID der zu findenden Pruefungsordnung.
      * @return Die gefundene Pruefungsordnung.
      */
@@ -76,6 +76,7 @@ public class PruefungsordnungController {
 
     /**
      * Methode zum Abrufen aller Pruefungsordnungen.
+     * 
      * @param response Das HTTP-Response-Objekt.
      * @return Eine Liste aller Pruefungsordnungen.
      */
@@ -99,6 +100,7 @@ public class PruefungsordnungController {
 
     /**
      * Methode zum Erstellen einer neuen Pruefungsordnung.
+     * 
      * @param pruefungsordnung Die zu erstellende Pruefungsordnung.
      * @return Die erstellte Pruefungsordnung.
      */
@@ -116,6 +118,9 @@ public class PruefungsordnungController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
         }
 
+        // TODO: Nur der Studiengangsleiter, dessen Vertreter, der Fachbereichsleiter
+        // oder der Administrator können Prüfungsordnungen erstellen
+
         // Den Studiengang anhand der ID aus der Prüfungsordnungsinformationen abrufen
         Studiengang studiengang = studiengangService
                 .getStudiengang(pruefungsordnung.getStudiengangId())
@@ -124,14 +129,17 @@ public class PruefungsordnungController {
         // Den abgerufenen Studiengang der Prüfungsordnung zuweisen
         pruefungsordnung.setStudiengang(studiengang);
 
-        // Die aktualisierte Prüfungsordnung speichern und HTTP-Statuscode 201 (Created) zurückgeben
+        // Die aktualisierte Prüfungsordnung speichern und HTTP-Statuscode 201 (Created)
+        // zurückgeben
         pruefungsordnungService.saveAndFlush(pruefungsordnung);
         return new ResponseEntity<>(pruefungsordnung, HttpStatus.CREATED);
     }
 
     /**
      * Methode zum Aktualisieren einer Pruefungsordnung anhand ihrer ID.
-     * @param id Die ID der zu aktualisierenden Pruefungsordnung.
+     * 
+     * @param id                      Die ID der zu aktualisierenden
+     *                                Pruefungsordnung.
      * @param updatedPruefungsordnung Die aktualisierte Pruefungsordnung.
      * @return Die aktualisierte Pruefungsordnung.
      */
@@ -140,40 +148,46 @@ public class PruefungsordnungController {
             @RequestBody Pruefungsordnung updatedPruefungsordnung) {
         // Prüfen, ob die angegebene Prüfungsordnung vorhanden ist
         Optional<Pruefungsordnung> existingPruefungsordnung = pruefungsordnungService
-        .getPruefungsordnung(Long.parseLong(id));
+                .getPruefungsordnung(Long.parseLong(id));
 
         // Wenn die Prüfungsordnung vorhanden ist
         if (existingPruefungsordnung.isPresent()) {
-        // Die vorhandene Prüfungsordnung aus dem Optional extrahieren
-        Pruefungsordnung pruefungsordnung = existingPruefungsordnung.get();
+            // Die vorhandene Prüfungsordnung aus dem Optional extrahieren
+            Pruefungsordnung pruefungsordnung = existingPruefungsordnung.get();
 
-        // Überprüfen, ob der aktuelle Benutzer ein Administrator ist
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht authorisiert"));
+            // Überprüfen, ob der aktuelle Benutzer ein Administrator ist
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
+                    .orElseThrow(
+                            () -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht authorisiert"));
 
-        if (!nutzer.getRole().equals("MITARBEITER") && !nutzer.getRole().equals("ADMIN")) {
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht authorisiert");
-        }
+            if (!nutzer.getRole().equals("MITARBEITER") && !nutzer.getRole().equals("ADMIN")) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht authorisiert");
+            }
 
-        // Aktualisieren der Prüfungsordnung, sofern sie noch nicht veröffentlicht wurde
-        if (!pruefungsordnung.isFreigegeben()) {
-        pruefungsordnung.setFreigegeben(updatedPruefungsordnung.isFreigegeben());
-        }
-        if (!pruefungsordnung.isAuslaufend()) {
-        pruefungsordnung.setAuslaufend(updatedPruefungsordnung.isAuslaufend());
+            // TODO: Nur der Studiengangsleiter, dessen Vertreter, der Fachbereichsleiter
+            // oder der Administrator können Prüfungsordnungen aktualisieren
+
+            // Aktualisieren der Prüfungsordnung, sofern sie noch nicht veröffentlicht wurde
+            if (!pruefungsordnung.isFreigegeben()) {
+                pruefungsordnung.setFreigegeben(updatedPruefungsordnung.isFreigegeben());
+            }
+            if (!pruefungsordnung.isAuslaufend()) {
+                pruefungsordnung.setAuslaufend(updatedPruefungsordnung.isAuslaufend());
+            } else {
+                // Fehlermeldung zurückgeben, wenn versucht wird, eine bereits veröffentlichte
+                // Prüfungsordnung zu bearbeiten
+                throw new ResponseStatusException(HttpStatus.NOT_MODIFIED,
+                        "Bereits veröffentlichte Prüfungsordnungen können nicht bearbeitet werden");
+            }
+
+            // Die aktualisierten Daten der Prüfungsordnung speichern und aktualisiertes
+            // Objekt zurückgeben
+            pruefungsordnungService.saveAndFlush(pruefungsordnung);
+            return new ResponseEntity<>(pruefungsordnung, HttpStatus.OK);
         } else {
-        // Fehlermeldung zurückgeben, wenn versucht wird, eine bereits veröffentlichte Prüfungsordnung zu bearbeiten
-        throw new ResponseStatusException(HttpStatus.NOT_MODIFIED,
-                "Bereits veröffentlichte Prüfungsordnungen können nicht bearbeitet werden");
-        }
-
-        // Die aktualisierten Daten der Prüfungsordnung speichern und aktualisiertes Objekt zurückgeben
-        pruefungsordnungService.saveAndFlush(pruefungsordnung);
-        return new ResponseEntity<>(pruefungsordnung, HttpStatus.OK);
-        } else {
-        // Fehlermeldung zurückgeben, wenn die Prüfungsordnung nicht gefunden wurde
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pruefungsordnung nicht gefunden");
+            // Fehlermeldung zurückgeben, wenn die Prüfungsordnung nicht gefunden wurde
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pruefungsordnung nicht gefunden");
         }
     }
 }

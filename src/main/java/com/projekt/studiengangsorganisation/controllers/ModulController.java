@@ -55,6 +55,7 @@ public class ModulController {
 
     /**
      * Methode zum Abrufen eines Moduls anhand seiner ID.
+     * 
      * @param id Die ID des Moduls.
      * @return Das Modul, falls gefunden.
      * @throws ResponseStatusException Falls das Modul nicht gefunden wird.
@@ -80,6 +81,7 @@ public class ModulController {
 
     /**
      * Methode zum Abrufen aller Module.
+     * 
      * @param response Der HTTP-Response.
      * @return Eine Liste aller Module.
      */
@@ -95,16 +97,20 @@ public class ModulController {
             modul.setModulgruppeId(modul.getModulgruppe().getId());
         });
 
-        // Setze den Content-Range Header im Response, um die Anzahl der Module anzugeben
+        // Setze den Content-Range Header im Response, um die Anzahl der Module
+        // anzugeben
         response.setHeader("Content-Range", "1-" + list.size());
         return list;
     }
 
     /**
      * Methode zum Erstellen eines neuen Moduls.
+     * 
      * @param modul Das Modul, das erstellt werden soll.
-     * @return Eine ResponseEntity, die das erstellte Modul und den HTTP-Statuscode enthält.
-     * @throws ResponseStatusException Falls der Benutzer nicht autorisiert ist oder eine Entität nicht gefunden wird.
+     * @return Eine ResponseEntity, die das erstellte Modul und den HTTP-Statuscode
+     *         enthält.
+     * @throws ResponseStatusException Falls der Benutzer nicht autorisiert ist oder
+     *                                 eine Entität nicht gefunden wird.
      */
     @PostMapping("")
     public ResponseEntity<Modul> createModul(@RequestBody Modul modul) {
@@ -115,11 +121,13 @@ public class ModulController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert"));
 
         if (!nutzer.getRole().equals("MITARBEITER") && !nutzer.getRole().equals("ADMIN")) {
-            // Wenn der Benutzer nicht autorisiert ist, wirf einen Fehler 401 - Nicht autorisiert
+            // Wenn der Benutzer nicht autorisiert ist, wirf einen Fehler 401 - Nicht
+            // autorisiert
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
         }
 
-        // Überprüfe, ob der Benutzer berechtigt ist, das Modul für die Fachgruppe zu erstellen
+        // Überprüfe, ob der Benutzer berechtigt ist, das Modul für die Fachgruppe zu
+        // erstellen
         Fachgruppe fachgruppe = fachgruppeService
                 .getFachgruppe(modul.getFachgruppeId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fachgruppe nicht gefunden"));
@@ -133,7 +141,8 @@ public class ModulController {
         // Hole den Modulbeauftragten und die Modulgruppe
         Mitarbeiter modulbeauftragter = mitarbeiterService
                 .getMitarbeiter(modul.getModulbeauftragterId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Modulbeauftragter nicht gefunden"));
+                .orElseThrow(
+                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Modulbeauftragter nicht gefunden"));
 
         Modulgruppe modulgruppe = modulgruppeService
                 .getModulgruppe(modul.getModulgruppeId())
@@ -146,7 +155,8 @@ public class ModulController {
         Modul savedModul = modulService.saveAndFlush(modul);
 
         // Generiere die Modulnummer und setze sie
-        String modulnummer = (fachgruppe.getFachbereich().getId() + " " + fachgruppe.getKuerzel() + " " + savedModul.getId());
+        String modulnummer = (fachgruppe.getFachbereich().getId() + " " + fachgruppe.getKuerzel() + " "
+                + savedModul.getId());
         savedModul.setModulnummer(modulnummer);
 
         // Speichere das Modul mit der Modulnummer
@@ -157,10 +167,13 @@ public class ModulController {
 
     /**
      * Methode zum Aktualisieren eines Moduls.
-     * @param id            Die ID des zu aktualisierenden Moduls.
-     * @param updatedModul  Das aktualisierte Modul.
-     * @return Eine ResponseEntity, die das aktualisierte Modul und den HTTP-Statuscode enthält.
-     * @throws ResponseStatusException Falls das Modul nicht gefunden wird oder der Benutzer nicht autorisiert ist.
+     * 
+     * @param id           Die ID des zu aktualisierenden Moduls.
+     * @param updatedModul Das aktualisierte Modul.
+     * @return Eine ResponseEntity, die das aktualisierte Modul und den
+     *         HTTP-Statuscode enthält.
+     * @throws ResponseStatusException Falls das Modul nicht gefunden wird oder der
+     *                                 Benutzer nicht autorisiert ist.
      */
     @PutMapping("/{id}")
     public ResponseEntity<Modul> updateModul(@PathVariable String id, @RequestBody Modul updatedModul) {
@@ -177,9 +190,12 @@ public class ModulController {
                         "Nur Administratoren können Modul aktualisieren");
             }
 
+            // TODO: Modulbeauftragter darf modul aktualisieren
+
             Mitarbeiter modulbeauftragter = mitarbeiterService
                     .getMitarbeiter(updatedModul.getModulbeauftragterId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Modulbeauftragter not found"));
+                    .orElseThrow(
+                            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Modulbeauftragter not found"));
 
             Modulgruppe modulgruppe = modulgruppeService
                     .getModulgruppe(updatedModul.getModulgruppeId())

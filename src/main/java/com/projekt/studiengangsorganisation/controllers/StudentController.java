@@ -35,16 +35,17 @@ public class StudentController {
     // Encoder für Passwörter
     @Autowired
     private PasswordEncoder passwordEncoder;
-    
+
     // Deklarierung Services
     @Autowired
-    StudentService studentService; 
+    StudentService studentService;
 
     @Autowired
     NutzerService nutzerService;
 
     /**
      * Methode zum Abrufen eines Studenten basierend auf der ID.
+     * 
      * @param id Die ID des Studenten.
      * @return Der gefundene Student.
      * @throws ResponseStatusException Falls der Student nicht gefunden wird.
@@ -62,6 +63,7 @@ public class StudentController {
 
     /**
      * Methode zum Abrufen aller Studenten.
+     * 
      * @param response Die HTTP-Response.
      * @return Eine Liste aller Studenten.
      */
@@ -76,9 +78,11 @@ public class StudentController {
 
     /**
      * Methode zum Erstellen eines neuen Studenten.
+     * 
      * @param student Die zu erstellende Studentenentität.
      * @return Die erstellte Studentenentität.
-     * @throws ResponseStatusException Falls der Benutzer nicht autorisiert ist oder nicht gefunden wird.
+     * @throws ResponseStatusException Falls der Benutzer nicht autorisiert ist oder
+     *                                 nicht gefunden wird.
      */
     @PostMapping("")
     public ResponseEntity<Student> createStudent(@RequestBody Student student) {
@@ -88,7 +92,8 @@ public class StudentController {
         if (nutzer.isPresent() && nutzer.get().getRole().equals("ADMIN")) {
             // Falls der Benutzer ein ADMIN ist
             student.setPassword(passwordEncoder.encode(student.getPassword())); // Passwort kodieren
-            student.setUsername(student.getVorname().toLowerCase() + "." + student.getNachname().toLowerCase()); // Benutzername erstellen
+            student.setUsername(student.getVorname().toLowerCase() + "." + student.getNachname().toLowerCase()); // Benutzername
+                                                                                                                 // erstellen
 
             // Student speichern
             studentService.saveAndFlush(student);
@@ -103,13 +108,16 @@ public class StudentController {
 
     /**
      * Methode zum Aktualisieren eines vorhandenen Studenten.
+     * 
      * @param id             Die ID des zu aktualisierenden Studenten.
      * @param updatedStudent Die aktualisierte Studentenentität.
      * @return Die aktualisierte Studentenentität.
-     * @throws ResponseStatusException Falls der Benutzer nicht autorisiert ist, der Student nicht gefunden wird oder die Aktualisierung fehlschlägt.
+     * @throws ResponseStatusException Falls der Benutzer nicht autorisiert ist, der
+     *                                 Student nicht gefunden wird oder die
+     *                                 Aktualisierung fehlschlägt.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Student> updateMitarbeiter(@PathVariable String id, @RequestBody Student updatedStudent) {
+    public ResponseEntity<Student> updateStudent(@PathVariable String id, @RequestBody Student updatedStudent) {
         Optional<Student> existingStudent = studentService.getStudent(id);
 
         if (existingStudent.isPresent()) {
@@ -119,20 +127,23 @@ public class StudentController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             Optional<Nutzer> nutzer = nutzerService.getNutzerByUsername(authentication.getName());
             if (!nutzer.isPresent() || !nutzer.get().getRole().equals("ADMIN")) {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nur Administratoren können Mitarbeiter aktualisieren");
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                        "Nur Administratoren können Studenten aktualisieren");
             }
 
-            // Aktualisiere die Felder des Mitarbeiters
+            // Aktualisiere die Felder des Studentens
             student.setVorname(updatedStudent.getVorname());
             student.setNachname(updatedStudent.getNachname());
-            student.setUsername(updatedStudent.getVorname().toLowerCase() + "." + updatedStudent.getNachname().toLowerCase());
+            student.setUsername(
+                    updatedStudent.getVorname().toLowerCase() + "." + updatedStudent.getNachname().toLowerCase());
 
-            // Speichere die aktualisierten Mitarbeiterdaten
+            // Speichere die aktualisierten Studentendaten
             studentService.saveAndFlush(student);
 
             return new ResponseEntity<>(student, HttpStatus.OK); // Erfolgreiche Aktualisierung
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student nicht gefunden"); // Andernfalls: Nicht gefunden Fehler
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student nicht gefunden"); // Andernfalls: Nicht
+                                                                                               // gefunden Fehler
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.projekt.studiengangsorganisation.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,7 +91,7 @@ public class ModulController {
         // Erhalte eine Liste aller Module
         List<Modul> list = modulService.getModule();
 
-        // Setze die IDs der zugehörigen Entitäten für eine kompakte Antwort
+        // Setze die IDs der zugehörigen Entitäten
         list.forEach(modul -> {
             modul.setModulbeauftragterId(modul.getModulbeauftragter().getId());
             modul.setFachgruppeId(modul.getFachgruppe().getId());

@@ -136,6 +136,12 @@ public class StudiengangController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
         }
 
+        // Validierungslogik für die Eingabefelder
+        List<String> errors = validateStudiengang(studiengang);
+            if (!errors.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
+            }
+
         // Den Mitarbeiter für den Leiter des Studiengangs abrufen oder eine Ausnahme
         // auslösen, wenn nicht gefunden
         Mitarbeiter leiter = mitarbeiterService
@@ -230,6 +236,11 @@ public class StudiengangController {
             Mitarbeiter stellvertretenderLeiter = mitarbeiterService
                     .getMitarbeiter(updateStudiengang.getStellvertreterId())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter not found"));
+            // Validierungslogik für die Eingabefelder
+            List<String> errors = validateStudiengang(studiengang);
+            if (!errors.isEmpty()) {
+               throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
+            }
 
             // Den Leiter und den stellvertretenden Leiter des Studiengangs aktualisieren
             studiengang.setLeiter(leiter);

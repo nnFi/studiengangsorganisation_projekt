@@ -155,20 +155,28 @@ public class FachgruppeController {
     @PutMapping("/{id}")
     public ResponseEntity<Fachgruppe> updateFachgruppe(@PathVariable String id,
             @RequestBody Fachgruppe updatedFachgruppe) {
+
+
         Optional<Fachgruppe> existingFachgruppe = fachgruppeService.getFachgruppe(Long.parseLong(id));
+
+        // Authentifizierung des Benutzers über den SecurityContextHolder
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Benutzerinformationen abrufen und sicherstellen, dass der Benutzer
+        // autorisiert ist
+        Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert"));
 
         if (existingFachgruppe.isPresent()) {
             Fachgruppe fachgruppe = existingFachgruppe.get();
 
-            // Überprüfe, ob der Benutzer ein ADMIN ist
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Optional<Nutzer> nutzer = nutzerService.getNutzerByUsername(authentication.getName());
-            if (!nutzer.isPresent() || !nutzer.get().getRole().equals("ADMIN")) {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                        "Nur Administratoren können Fachgruppe aktualisieren");
+            // Überprüfen, ob der Benutzer die erforderliche Rolle hat, um die Operation
+            // auszuführen
+            if (!nutzer.getRole().equals("MITARBEITER") && !nutzer.getRole().equals("ADMIN")) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
             }
 
-            // TODO: erstellen nur mitarbeiter oder admin
+            // TODO: Wer darf bearbeiten
 
             // Mitarbeiterreferent, Stellvertreter und Fachbereich anhand ihrer IDs abrufen.
             Mitarbeiter referent = mitarbeiterService.getMitarbeiter(updatedFachgruppe.getReferentId())

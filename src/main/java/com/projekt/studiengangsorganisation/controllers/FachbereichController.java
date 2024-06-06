@@ -136,15 +136,21 @@ public class FachbereichController {
         if (existingFachbereich.isPresent()) {
             Fachbereich fachbereich = existingFachbereich.get();
 
-            // Überprüfe, ob der Benutzer ein ADMIN ist
+            // Authentifizierung des Benutzers über den SecurityContextHolder
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Optional<Nutzer> nutzer = nutzerService.getNutzerByUsername(authentication.getName());
-            if (!nutzer.isPresent() || !nutzer.get().getRole().equals("ADMIN")) {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                        "Nur Administratoren können Fachbereiche aktualisieren");
-            }
 
-            // TODO: bearbeiten nur referent und leiter oder admin
+            // Benutzerinformationen abrufen und sicherstellen, dass der Benutzer
+            // autorisiert ist
+            Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert"));
+
+            // Überprüft ob der Benutzer eine Prüfung bearbeiten darf und gibt im Fehlerfall 401 zurück
+            if (!(nutzer.getRole().equals("ADMIN")
+                || nutzer.getRole().equals("MITARBEITER")
+                    && (fachbereich.getReferent().getId() == nutzer.getId()
+                        || fachbereich.getStellvertreter().getId() == nutzer.getId()))) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
+            }
 
             // Referent und Stellvertreter finden
             Mitarbeiter referent = mitarbeiterService

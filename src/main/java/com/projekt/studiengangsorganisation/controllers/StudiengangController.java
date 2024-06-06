@@ -274,8 +274,7 @@ public class StudiengangController {
         }
 
         // Überprüfen, ob Regelstudienzeit ausgewählt ist
-        int regelstudienzeit = studiengang.getRegelstudienzeit();
-        if (regelstudienzeit <= 0) {
+        if (studiengang.getRegelstudienzeit() <= 0) {
             errors.add("Regelstudienzeit muss eine positive Zahl sein und darf nicht 0 oder negativ sein.");
         }
 

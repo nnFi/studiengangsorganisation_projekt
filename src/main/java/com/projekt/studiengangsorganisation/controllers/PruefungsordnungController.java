@@ -113,13 +113,15 @@ public class PruefungsordnungController {
         Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert"));
 
-        // Überprüfen, ob der Benutzer die Berechtigung hat, die Aktion auszuführen
-        if (!nutzer.getRole().equals("MITARBEITER") && !nutzer.getRole().equals("ADMIN")) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
+        // Überprüft ob der Benutzer eine Prüfung erstellen darf und gibt im Fehlerfall 401 zurück
+        if (!(nutzer.getRole().equals("ADMIN")
+                || nutzer.getRole().equals("Mitarbeiter")
+                    && (pruefungsordnung.getStudiengang().getLeiterId() == nutzer.getId()
+                        || pruefungsordnung.getStudiengang().getStellvertreterId() == nutzer.getId()
+                        || pruefungsordnung.getStudiengang().getFachbereich().getReferentId() == nutzer.getId()
+                        || pruefungsordnung.getStudiengang().getFachbereich().getStellvertreterId() == nutzer.getId()))) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User nicht authorisiert");
         }
-
-        // TODO: Nur der Studiengangsleiter, dessen Vertreter, der Fachbereichsleiter
-        // oder der Administrator können Prüfungsordnungen erstellen
 
         // Den Studiengang anhand der ID aus der Prüfungsordnungsinformationen abrufen
         Studiengang studiengang = studiengangService
@@ -161,12 +163,15 @@ public class PruefungsordnungController {
                     .orElseThrow(
                             () -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht authorisiert"));
 
-            if (!nutzer.getRole().equals("MITARBEITER") && !nutzer.getRole().equals("ADMIN")) {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht authorisiert");
+            // Überprüft ob der Benutzer eine Prüfung bearbeiten darf und gibt im Fehlerfall 401 zurück
+            if (!(nutzer.getRole().equals("ADMIN")
+                || nutzer.getRole().equals("Mitarbeiter")
+                    && (pruefungsordnung.getStudiengang().getLeiterId() == nutzer.getId()
+                        || pruefungsordnung.getStudiengang().getStellvertreterId() == nutzer.getId()
+                        || pruefungsordnung.getStudiengang().getFachbereich().getReferentId() == nutzer.getId()
+                        || pruefungsordnung.getStudiengang().getFachbereich().getStellvertreterId() == nutzer.getId()))) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User nicht authorisiert");
             }
-
-            // TODO: Nur der Studiengangsleiter, dessen Vertreter, der Fachbereichsleiter
-            // oder der Administrator können Prüfungsordnungen aktualisieren
 
             // Aktualisieren der Prüfungsordnung, sofern sie noch nicht veröffentlicht wurde
             if (!pruefungsordnung.isFreigegeben()) {

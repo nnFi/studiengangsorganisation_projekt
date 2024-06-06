@@ -1,7 +1,7 @@
 package com.projekt.studiengangsorganisation.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,15 +15,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projekt.studiengangsorganisation.entity.Fachgruppe;
 import com.projekt.studiengangsorganisation.entity.Mitarbeiter;
 import com.projekt.studiengangsorganisation.entity.Modul;
 import com.projekt.studiengangsorganisation.entity.Modulgruppe;
 import com.projekt.studiengangsorganisation.entity.Nutzer;
-import com.projekt.studiengangsorganisation.entity.Student;
 import com.projekt.studiengangsorganisation.service.FachgruppeService;
 import com.projekt.studiengangsorganisation.service.MitarbeiterService;
 import com.projekt.studiengangsorganisation.service.ModulService;
@@ -82,15 +86,43 @@ public class ModulController {
     }
 
     /**
-     * Methode zum Abrufen aller Module.
+     * Methode zum Abrufen aller Module oder einer spezifischen Auswahl von Modulen
+     * basierend auf einem Filter.
      * 
-     * @param response Der HTTP-Response.
-     * @return Eine Liste aller Module.
+     * @param response Der HTTP-Response, in dem der Content-Range Header gesetzt
+     *                 wird, um die Anzahl der zurückgegebenen Module anzugeben.
+     * @param filter   Ein optionaler String, der als JSON-Objekt interpretiert
+     *                 wird. Wenn der Filter "id" enthält, werden nur die Module mit
+     *                 den entsprechenden IDs zurückgegeben.
+     * @return Eine Liste aller Module oder eine Liste der Module, die den
+     *         Filterkriterien entsprechen.
+     * @throws JsonMappingException    Wenn es ein Problem beim Parsen des
+     *                                 Filter-Strings als JSON gibt.
+     * @throws JsonProcessingException Wenn es ein Problem beim Verarbeiten des
+     *                                 Filter-Strings als JSON gibt.
      */
     @GetMapping("")
-    public List<Modul> getAll(HttpServletResponse response) {
-        // Erhalte eine Liste aller Module
-        List<Modul> list = modulService.getModule();
+    public List<Modul> getAll(HttpServletResponse response, @RequestParam(required = false) String filter)
+            throws JsonMappingException, JsonProcessingException {
+        List<Modul> list;
+
+        if (filter != null && !filter.isEmpty() && !filter.equals("{}")) {
+            // Den Filter als JSON-Objekt parsen
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, List<Long>> filterMap = mapper.readValue(filter, new TypeReference<Map<String, List<Long>>>() {
+            });
+
+            // Wenn ein Filter bereitgestellt wird und "id" enthält, nur diese Prüfungen
+            // abrufen
+            if (filterMap.containsKey("id")) {
+                list = modulService.getModuleByIds(filterMap.get("id"));
+            } else {
+                list = modulService.getModule();
+            }
+        } else {
+            // Wenn kein Filter bereitgestellt wird, alle Module abrufen
+            list = modulService.getModule();
+        }
 
         // Setze die IDs der zugehörigen Entitäten
         list.forEach(modul -> {
@@ -102,6 +134,7 @@ public class ModulController {
         // Setze den Content-Range Header im Response, um die Anzahl der Module
         // anzugeben
         response.setHeader("Content-Range", "1-" + list.size());
+
         return list;
     }
 
@@ -141,10 +174,13 @@ public class ModulController {
         }
 
         // Validierungslogik für die Eingabefelder
-        /*List<String> errors = validateModul (modul);
-        if (!errors.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
-        }*/
+        /*
+         * List<String> errors = validateModul (modul);
+         * if (!errors.isEmpty()) {
+         * throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ",
+         * errors));
+         * }
+         */
 
         // Hole den Modulbeauftragten und die Modulgruppe
         Mitarbeiter modulbeauftragter = mitarbeiterService
@@ -201,7 +237,7 @@ public class ModulController {
 
         Optional<Modul> existingModul = modulService.getModul(Long.parseLong(id));
 
-        //Überprüfen, ob das Modul vorhanden ist
+        // Überprüfen, ob das Modul vorhanden ist
         if (existingModul.isPresent()) {
             // Wenn das Modul vorhanden ist, das Modul-Objekt aus dem Optional
             // extrahieren
@@ -210,16 +246,19 @@ public class ModulController {
             // Überprüfe, ob der Benutzer ein Modulbeauftrager oder Admin ist
             if (!(modul.getModulbeauftragter().getId() == nutzer.getId()
                     || nutzer.getRole().equals("ADMIN"))) {
-                // Falls der Benutzer nicht der Modulbeauftrager des Moduls ist oder kein 
-                //Administrator ist, einen 401 Fehler zurückgeben
+                // Falls der Benutzer nicht der Modulbeauftrager des Moduls ist oder kein
+                // Administrator ist, einen 401 Fehler zurückgeben
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
             }
 
             // Validierungslogik für die Eingabefelder
-            /*List<String> errors = validateModul(updatedModul);
-            if (!errors.isEmpty()) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
-            }*/
+            /*
+             * List<String> errors = validateModul(updatedModul);
+             * if (!errors.isEmpty()) {
+             * throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ",
+             * errors));
+             * }
+             */
 
             Mitarbeiter modulbeauftragter = mitarbeiterService
                     .getMitarbeiter(updatedModul.getModulbeauftragterId())
@@ -247,5 +286,4 @@ public class ModulController {
         }
     }
 
-    
 }

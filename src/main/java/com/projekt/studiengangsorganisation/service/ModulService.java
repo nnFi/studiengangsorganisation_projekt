@@ -22,7 +22,7 @@ import com.projekt.studiengangsorganisation.repository.ModulRepository;
  */
 @Service
 public class ModulService {
-    
+
     @Autowired
     ModulRepository modulRepository;
 
@@ -35,6 +35,7 @@ public class ModulService {
 
     /**
      * Holt alle Module.
+     * 
      * @return Eine Liste aller vorhandenen Module.
      */
     public List<Modul> getModule() {
@@ -43,6 +44,7 @@ public class ModulService {
 
     /**
      * Holt ein Modul anhand seiner ID.
+     * 
      * @param id Die ID des Moduls.
      * @return Ein Optional, das das gefundene Modul enthält, falls vorhanden.
      */
@@ -52,6 +54,7 @@ public class ModulService {
 
     /**
      * Speichert ein Modul und aktualisiert die Änderungen.
+     * 
      * @param modul Das Modul, das gespeichert werden soll.
      * @return Das gespeicherte und aktualisierte Modul.
      */
@@ -61,10 +64,11 @@ public class ModulService {
 
     /**
      * Fügt Testdaten für ein Modul ein.
-     * @param fachgruppe Die Fachgruppe, zu der das Modul gehört.
+     * 
+     * @param fachgruppe   Die Fachgruppe, zu der das Modul gehört.
      * @param beauftragter Der Beauftragte für das Modul.
-     * @param pruefungen Die Prüfungen, die dem Modul zugeordnet sind.
-     * @param modulgruppe Die Modulgruppe, zu der das Modul gehört.
+     * @param pruefungen   Die Prüfungen, die dem Modul zugeordnet sind.
+     * @param modulgruppe  Die Modulgruppe, zu der das Modul gehört.
      * @return Das erstellte Modul mit Testdaten.
      */
     public Modul insertTestData(Fachgruppe fachgruppe, Mitarbeiter beauftragter, Set<Pruefung> pruefungen,
@@ -90,5 +94,16 @@ public class ModulService {
         modulRepository.saveAndFlush(modul);
 
         return modul;
+    }
+
+    /**
+     * Diese Methode gibt eine Liste von Modulen zurück, die durch ihre IDs
+     * identifiziert werden.
+     *
+     * @param list Eine Liste von Modul-IDs, für die Module abgerufen werden sollen.
+     * @return Eine Liste von Modulen, die den angegebenen IDs entsprechen.
+     */
+    public List<Modul> getModuleByIds(List<Long> list) {
+        return modulRepository.findAllById(list);
     }
 }

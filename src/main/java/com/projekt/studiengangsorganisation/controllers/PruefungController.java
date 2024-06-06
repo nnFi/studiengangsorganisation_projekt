@@ -1,6 +1,7 @@
 package com.projekt.studiengangsorganisation.controllers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projekt.studiengangsorganisation.entity.Modul;
 import com.projekt.studiengangsorganisation.entity.Nutzer;
 import com.projekt.studiengangsorganisation.entity.Pruefung;
@@ -80,25 +86,52 @@ public class PruefungController {
     /**
      * Methode zum Abrufen aller Prüfungen.
      * 
-     * @param response HTTP-Servlet-Antwort, um den Content-Range-Header zu setzen.
-     * @return Eine Liste aller Prüfungen.
+     * @param response Der HTTP-Response, in dem der Content-Range Header gesetzt
+     *                 wird, um die Anzahl der zurückgegebenen Prüfungen anzugeben.
+     * @param filter   Ein optionaler String, der als JSON-Objekt interpretiert
+     *                 wird. Wenn der Filter "id" enthält, werden nur die Prüfungen
+     *                 mit
+     *                 den entsprechenden IDs zurückgegeben.
+     * @return Eine Liste aller Prüfungen oder eine Liste der Prüfungen, die den
+     *         Filterkriterien entsprechen.
+     * @throws JsonMappingException    Wenn es ein Problem beim Parsen des
+     *                                 Filter-Strings als JSON gibt.
+     * @throws JsonProcessingException Wenn es ein Problem beim Verarbeiten des
+     *                                 Filter-Strings als JSON gibt.
      */
-    @GetMapping("")
-    public List<Pruefung> getAll(HttpServletResponse response) {
-        // Alle Prüfungen abrufen
-        List<Pruefung> list = pruefungService.getPruefungen();
 
-        // Für jede Prüfung in der Liste die Prüfungsordnung-ID und die Modul-ID setzen
+    @GetMapping("")
+    public List<Pruefung> getAll(HttpServletResponse response, @RequestParam(required = false) String filter)
+            throws JsonMappingException, JsonProcessingException {
+        List<Pruefung> list;
+
+        if (filter != null && !filter.isEmpty()) {
+            // Den Filter als JSON-Objekt parsen
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, List<Long>> filterMap = mapper.readValue(filter, new TypeReference<Map<String, List<Long>>>() {
+            });
+
+            // Wenn ein Filter bereitgestellt wird und "id" enthält, nur diese Prüfungen
+            // abrufen
+            if (filterMap.containsKey("id")) {
+                list = pruefungService.getPruefungenByIds(filterMap.get("id"));
+            } else {
+                list = pruefungService.getPruefungen();
+            }
+        } else {
+            // Wenn kein Filter bereitgestellt wird, alle Prüfungen abrufen
+            list = pruefungService.getPruefungen();
+        }
+
         list.forEach(pruefung -> {
             pruefung.setPruefungsordnungId(pruefung.getPruefungsordnung().getId());
             pruefung.setModulId(pruefung.getModul().getId());
         });
 
-        // Den Content-Range-Header der HTTP-Antwort setzen, um den Bereich der
-        // zurückgegebenen Prüfungen anzugeben
+        // Setze den Content-Range Header im Response, um die Anzahl der Prüfungen
+        // anzugeben
         response.setHeader("Content-Range", "1-" + list.size());
 
-        // Die Liste der Prüfungen zurückgeben
         return list;
     }
 
@@ -123,17 +156,22 @@ public class PruefungController {
         // Authentifizierung des Benutzers
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        // Benutzerinformationen aus dem NutzerService abrufen und sicherstellen, dass der Benutzer autorisiert ist
+        // Benutzerinformationen aus dem NutzerService abrufen und sicherstellen, dass
+        // der Benutzer autorisiert ist
         Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User nicht authorisiert"));
 
-        // Überprüft ob der Benutzer eine Prüfung erstellen darf und gibt im Fehlerfall 401 zurück
+        // Überprüft ob der Benutzer eine Prüfung erstellen darf und gibt im Fehlerfall
+        // 401 zurück
         if (!(nutzer.getRole().equals("ADMIN")
                 || nutzer.getRole().equals("Mitarbeiter")
-                    && (pruefung.getPruefungsordnung().getStudiengang().getLeiterId() == nutzer.getId()
-                        || pruefung.getPruefungsordnung().getStudiengang().getStellvertreterId() == nutzer.getId()
-                        || pruefung.getPruefungsordnung().getStudiengang().getFachbereich().getReferentId() == nutzer.getId()
-                        || pruefung.getPruefungsordnung().getStudiengang().getFachbereich().getStellvertreterId() == nutzer.getId()))) {
+                        && (pruefung.getPruefungsordnung().getStudiengang().getLeiterId() == nutzer.getId()
+                                || pruefung.getPruefungsordnung().getStudiengang().getStellvertreterId() == nutzer
+                                        .getId()
+                                || pruefung.getPruefungsordnung().getStudiengang().getFachbereich()
+                                        .getReferentId() == nutzer.getId()
+                                || pruefung.getPruefungsordnung().getStudiengang().getFachbereich()
+                                        .getStellvertreterId() == nutzer.getId()))) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User nicht authorisiert");
         }
 

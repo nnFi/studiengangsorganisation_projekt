@@ -147,7 +147,7 @@ public class PruefungController {
         // Überprüfen, ob eine Prüfung für dasselbe Modul bereits in der Prüfungsordnung
         // existiert
         for (Pruefung p : pruefungsordnung.getPruefungen()) {
-            if (p.getModulId().equals(pruefung.getModulId())) {
+            if (p.getModul().getId().equals(pruefung.getModulId())) {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Pruefung existiert bereits");
             }
         }

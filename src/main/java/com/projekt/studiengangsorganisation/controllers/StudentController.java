@@ -1,5 +1,6 @@
 package com.projekt.studiengangsorganisation.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,6 +95,11 @@ public class StudentController {
             student.setPassword(passwordEncoder.encode(student.getPassword())); // Passwort kodieren
             student.setUsername(student.getVorname().toLowerCase() + "." + student.getNachname().toLowerCase()); // Benutzername
                                                                                                                  // erstellen
+            // Validierungslogik für die Eingabefelder
+            List<String> errors = validateStudent(student);
+            if (!errors.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
+            }
 
             // Student speichern
             studentService.saveAndFlush(student);
@@ -131,11 +137,17 @@ public class StudentController {
                         "Nur Administratoren können Studenten aktualisieren");
             }
 
+            // Validierungslogik für die Eingabefelder
+            List<String> errors = validateStudent(updatedStudent);
+            if (!errors.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
+            }
+
             // Aktualisiere die Felder des Studentens
             student.setVorname(updatedStudent.getVorname());
             student.setNachname(updatedStudent.getNachname());
             student.setUsername(
-                    updatedStudent.getVorname().toLowerCase() + "." + updatedStudent.getNachname().toLowerCase());
+                    (updatedStudent.getVorname().toLowerCase() + "." + updatedStudent.getNachname().toLowerCase()).replace("ß", "ss"));
 
             // Speichere die aktualisierten Studentendaten
             studentService.saveAndFlush(student);
@@ -145,5 +157,41 @@ public class StudentController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student nicht gefunden"); // Andernfalls: Nicht
                                                                                                // gefunden Fehler
         }
+    }
+
+    /**
+     * Validiert das übergebene Mitarbeiter-Objekt.
+     * 
+     * @param student das zu validierende Student-Objekt
+     * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler vorliegen
+     */
+    private List<String> validateStudent(Student student) {
+        List<String> errors = new ArrayList<>();
+
+        // Überprüfung erforderlicher Felder
+        if (student.getVorname() == null || student.getVorname().isEmpty()) {
+            errors.add("Das Feld 'Vorname' ist erforderlich.");
+        }
+
+        if (student.getNachname() == null || student.getNachname().isEmpty()) {
+            errors.add("Das Feld 'Nachname' ist erforderlich.");
+        }
+
+        // Längenprüfung
+        if (student.getVorname() != null && student.getVorname().length() < 2) {
+            errors.add("Das Feld 'Vorname' muss mindestens 2 Zeichen lang sein.");
+        }
+
+        if (student.getNachname() != null && student.getNachname().length() < 2) {
+            errors.add("Das Feld 'Nachname' muss mindestens 2 Zeichen lang sein.");
+        }
+
+        // Benutzername-Formatprüfung
+        String username = (student.getVorname().toLowerCase() + "." + student.getNachname().toLowerCase()).replace("ß", "ss");
+        if (!username.matches("^[a-z]+\\.[a-z]+$")) {
+            errors.add("Das Feld 'Username' hat ein ungültiges Format.");
+        }
+
+        return errors;
     }
 }

@@ -1,5 +1,6 @@
 package com.projekt.studiengangsorganisation.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -106,6 +107,13 @@ public class FachbereichController {
 
         fachbereich.setReferent(referent);
         fachbereich.setStellvertreter(stellvertreter);
+
+        // Validierungslogik für die Eingabefelder
+        List<String> errors = validateFachbereich(fachbereich);
+        if (!errors.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
+        }
+
         fachbereichService.saveAndFlush(fachbereich);
 
         return new ResponseEntity<>(fachbereich, HttpStatus.CREATED);
@@ -146,11 +154,50 @@ public class FachbereichController {
             // Fachbereich aktualisieren
             fachbereich.setReferent(referent);
             fachbereich.setStellvertreter(stellvertreter);
+
+            // Validierungslogik für die Eingabefelder
+            List<String> errors = validateFachbereich(fachbereich);
+            if (!errors.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
+            }
+
             fachbereichService.saveAndFlush(fachbereich);
 
             return new ResponseEntity<>(fachbereich, HttpStatus.OK);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Fachbereich nicht gefunden");
         }
+    }
+
+    /**
+     * Validiert das übergebene Fachbereich-Objekt.
+     * 
+     * @param fachbereich das zu validierende Fachbereich-Objekt
+     * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler vorliegen
+     */
+    public static List<String> validateFachbereich(Fachbereich fachbereich) {
+        List<String> errors = new ArrayList<>();
+
+        // Namensprüfung
+        if (fachbereich.getName() == null || fachbereich.getName().isEmpty()) {
+            errors.add("Das Feld 'Nname' ist erforderlich.");
+        }
+
+        // Längenprüfung
+        if (fachbereich.getName() != null && fachbereich.getName().length() < 2) {
+            errors.add("Das Feld 'Name' muss mindestens 2 Zeichen lang sein.");
+        }
+
+        // Überprüfen, ob das Feld ReferentId gesetzt ist
+        if (fachbereich.getReferentId() == null) {
+            errors.add("ReferentId ist nicht gesetzt.");
+        }
+
+        // Überprüfen, ob das Feld StellvertreterId gesetzt ist
+        if (fachbereich.getStellvertreterId() == null) {
+            errors.add("StellvertreterId ist nicht gesetzt.");
+        }
+
+        return errors;
     }
 }

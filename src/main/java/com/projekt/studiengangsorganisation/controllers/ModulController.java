@@ -1,5 +1,6 @@
 package com.projekt.studiengangsorganisation.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -174,13 +175,10 @@ public class ModulController {
         }
 
         // Validierungslogik für die Eingabefelder
-        /*
-         * List<String> errors = validateModul (modul);
-         * if (!errors.isEmpty()) {
-         * throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ",
-         * errors));
-         * }
-         */
+        List<String> errors = validateModul (modul);
+        if (!errors.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
+        }
 
         // Hole den Modulbeauftragten und die Modulgruppe
         Mitarbeiter modulbeauftragter = mitarbeiterService
@@ -246,19 +244,16 @@ public class ModulController {
             // Überprüfe, ob der Benutzer ein Modulbeauftrager oder Admin ist
             if (!(modul.getModulbeauftragter().getId() == nutzer.getId()
                     || nutzer.getRole().equals("ADMIN"))) {
-                // Falls der Benutzer nicht der Modulbeauftrager des Moduls ist oder kein
+                // Falls der Benutzer nicht der Modulbeauftrager des Moduls ist oder kein 
                 // Administrator ist, einen 401 Fehler zurückgeben
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
             }
 
             // Validierungslogik für die Eingabefelder
-            /*
-             * List<String> errors = validateModul(updatedModul);
-             * if (!errors.isEmpty()) {
-             * throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ",
-             * errors));
-             * }
-             */
+            List<String> errors = validateModul(updatedModul);
+            if (!errors.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
+            }
 
             Mitarbeiter modulbeauftragter = mitarbeiterService
                     .getMitarbeiter(updatedModul.getModulbeauftragterId())
@@ -286,4 +281,79 @@ public class ModulController {
         }
     }
 
+    /**
+     * Validiert das übergebene Modul-Objekt.
+     * 
+     * @param modul das zu validierende Modul-Objekt
+     * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler vorliegen
+     */
+    private List<String> validateModul(Modul modul) {
+        List<String> errors = new ArrayList<>();
+
+        // Überprüfung erforderlicher Felder
+        // Namesprüfung
+        if (modul.getName() == null || modul.getName().isEmpty()) {
+            errors.add("Das Feld 'Name' ist erforderlich.");
+        }
+
+        // Längenprüfung
+        if (modul.getName() != null && modul.getName().length() < 2) {
+            errors.add("Das Feld 'Name' muss mindestens 2 Zeichen lang sein.");
+        }
+
+        // Überprüfen, ob Workload vorhanden ist
+        if (modul.getWorkload() <= 0) {
+            errors.add("Das Feld 'Workload' ist erforderlich.");
+        }
+
+        // Überprüfen, ob Credits vorhanden sind
+        if (modul.getCredits() <= 0) {
+            errors.add("Das Feld 'Credits' ist erforderlich.");
+        }
+
+        // Überprüfen, ob Dauer vorhanden ist
+        if (modul.getDauer() <= 0) {
+            errors.add("Das Feld 'Dauer' ist erforderlich.");
+        }
+
+        // Überprüfen, ob Art ausgewählt ist
+        if (modul.getArt() == null) {
+            errors.add("Das Feld 'Art' ist erforderlich.");
+        } 
+        
+        // Überprüfen, ob Abschluss ausgewählt ist
+        if (modul.getAbschluss() == null) {
+            errors.add("Das Feld 'Abschluss' ist erforderlich.");
+        }  
+        
+        // Überprüfen, ob Beschreibung vorhanden ist
+        if (modul.getBeschreibung() == null || modul.getBeschreibung().isEmpty()) {
+            errors.add("Das Feld 'Beschreibung' ist erforderlich.");
+        }
+
+        // Überprüfen, ob Lehrveranstaltungsort vorhanden ist
+        if (modul.getLehrveranstaltungsort() == null || modul.getLehrveranstaltungsort().isEmpty()) {
+            errors.add("Das Feld 'Lehrveranstaltungsort' ist erforderlich.");
+        }
+
+        // Überprüfen, ob Sprache ausgewählt ist
+        if (modul.getSprache() == null) {
+            errors.add("Das Feld 'Sprache' ist erforderlich.");
+        }
+
+        if (modul.getFachgruppe() == null) {
+            errors.add("Fachgruppe ist nicht gesetzt.");
+        }
+
+        if (modul.getModulbeauftragter() == null) {
+            errors.add("Modulbeauftrager ist nicht gesetzt");
+        }
+
+        if (modul.getModulgruppe() == null) {
+            errors.add("Modulgruppe ist nicht gesetzt");
+        }
+
+        return errors;
+    }
+    
 }

@@ -1,3 +1,5 @@
+package com.projekt.studiengangsorganisation.tests;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -18,7 +20,7 @@ import com.projekt.studiengangsorganisation.controllers.MitarbeiterController;
 import com.projekt.studiengangsorganisation.entity.Mitarbeiter;
 import com.projekt.studiengangsorganisation.entity.Nutzer;
 import com.projekt.studiengangsorganisation.service.MitarbeiterService;
-import com.projekt.studiengangsorganisation.service.NutzerService;^
+import com.projekt.studiengangsorganisation.service.NutzerService;
 
 public class MitarbeiterControllerTest {
 
@@ -61,7 +63,7 @@ public class MitarbeiterControllerTest {
 
     @Test
     public void testCreateMitarbeiter_Administrator_SuccessfullyCreated() {
-        Nutzer mockNutzer = new Nutzer();
+        Nutzer mockNutzer = new Mitarbeiter();
         mockNutzer.setRole("ADMIN");
         when(nutzerService.getNutzerByUsername(any())).thenReturn(Optional.of(mockNutzer));
         

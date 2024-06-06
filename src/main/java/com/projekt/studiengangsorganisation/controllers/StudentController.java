@@ -21,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.projekt.studiengangsorganisation.entity.Nutzer;
 import com.projekt.studiengangsorganisation.entity.Student;
+import com.projekt.studiengangsorganisation.security.PasswordValidator;
 import com.projekt.studiengangsorganisation.service.NutzerService;
 import com.projekt.studiengangsorganisation.service.StudentService;
 
@@ -190,6 +191,11 @@ public class StudentController {
         String username = (student.getVorname().toLowerCase() + "." + student.getNachname().toLowerCase()).replace("ß", "ss");
         if (!username.matches("^[a-z0-9]+\\.[a-z0-9]+$")) {
             errors.add("Das Feld 'Username' hat ein ungültiges Format.");
+        }
+
+        // Passwort prüfen
+        if (PasswordValidator.validate(student.getPassword())) {
+            errors.add("Passwort entspricht nicht den Anforderungen. (Groß- und Kleinbuchstaben, Sonderzeichen, Zahlen, Mindeslänge 8)");
         }
 
         return errors;

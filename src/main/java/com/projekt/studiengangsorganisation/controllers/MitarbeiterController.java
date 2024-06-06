@@ -1,5 +1,6 @@
 package com.projekt.studiengangsorganisation.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -135,10 +136,17 @@ public class MitarbeiterController {
                         "Nur Administratoren können Mitarbeiter aktualisieren");
             }
 
+            // Validierungslogik für die Eingabefelder
+            List<String> errors = validateMitarbeiter(updatedMitarbeiter);
+            if (!errors.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
+            }
+
             // Aktualisiere die Felder des Mitarbeiters
             mitarbeiter.setVorname(updatedMitarbeiter.getVorname());
             mitarbeiter.setNachname(updatedMitarbeiter.getNachname());
-            mitarbeiter.setUsername(updatedMitarbeiter.getVorname().toLowerCase() + "." + updatedMitarbeiter.getNachname());
+            mitarbeiter.setUsername(
+                    (updatedMitarbeiter.getVorname().toLowerCase() + "." + updatedMitarbeiter.getNachname().toLowerCase()).replace("ß", "ss"));
 
             // Speichere die aktualisierten Mitarbeiterdaten
             mitarbeiterService.saveAndFlush(mitarbeiter);
@@ -149,5 +157,42 @@ public class MitarbeiterController {
             // Andernfalls wirf einen Fehler 404 - Ressource nicht gefunden
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Mitarbeiter nicht gefunden");
         }
+    }
+
+    /**
+     * Validiert das übergebene Mitarbeiter-Objekt.
+     * 
+     * @param mitarbeiter das zu validierende Mitarbeiter-Objekt
+     * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler vorliegen
+     */
+    private List<String> validateMitarbeiter(Mitarbeiter mitarbeiter) {
+        List<String> errors = new ArrayList<>();
+
+        // Überprüfung erforderlicher Felder
+        if (mitarbeiter.getVorname() == null || mitarbeiter.getVorname().isEmpty()) {
+            errors.add("Das Feld 'Vorname' ist erforderlich.");
+        }
+
+        if (mitarbeiter.getNachname() == null || mitarbeiter.getNachname().isEmpty()) {
+            errors.add("Das Feld 'Nachname' ist erforderlich.");
+        }
+
+        // Längenprüfung
+        if (mitarbeiter.getVorname() != null && mitarbeiter.getVorname().length() < 2) {
+            errors.add("Das Feld 'Vorname' muss mindestens 2 Zeichen lang sein.");
+        }
+
+        if (mitarbeiter.getNachname() != null && mitarbeiter.getNachname().length() < 2) {
+            errors.add("Das Feld 'Nachname' muss mindestens 2 Zeichen lang sein.");
+        }
+
+        
+        // Benutzername-Formatprüfung
+        String username = (mitarbeiter.getVorname().toLowerCase() + "." + mitarbeiter.getNachname().toLowerCase()).replace("ß", "ss");
+        if (!username.matches("^[a-z]+\\.[a-z]+$")) {
+            errors.add("Das Feld 'Username' hat ein ungültiges Format.");
+        }
+
+        return errors;
     }
 }

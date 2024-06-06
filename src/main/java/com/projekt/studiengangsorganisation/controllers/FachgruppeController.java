@@ -110,7 +110,11 @@ public class FachgruppeController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
         }
 
-        // TODO: erstellen nur mitarbeiter oder admin
+        // Überprüfen, ob der Benutzer die erforderliche Rolle hat, um die Operation
+        // auszuführen
+        if (!nutzer.getRole().equals("MITARBEITER") && !nutzer.getRole().equals("ADMIN")) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
+        }
 
         Fachbereich fachbereich = fachbereichService
                 .getFachbereich(fachgruppe.getFachbereichId())

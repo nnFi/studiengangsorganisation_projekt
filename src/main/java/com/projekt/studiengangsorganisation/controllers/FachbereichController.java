@@ -93,11 +93,11 @@ public class FachbereichController {
         Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht authorisiert"));
 
-        if (!nutzer.getRole().equals("ADMIN")) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht authorisiert");
+        // Überprüfen, ob der Benutzer die erforderliche Rolle hat, um die Operation
+        // auszuführen
+        if (!nutzer.getRole().equals("MITARBEITER") && !nutzer.getRole().equals("ADMIN")) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
         }
-
-        // TODO: erstellen nur mitarbeiter oder admin
 
         Mitarbeiter referent = mitarbeiterService
                 .getMitarbeiter(fachbereich.getReferentId())

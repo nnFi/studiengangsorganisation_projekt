@@ -136,12 +136,6 @@ public class StudiengangController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
         }
 
-        // Validierungslogik für die Eingabefelder
-        List<String> errors = validateStudiengang(studiengang);
-            if (!errors.isEmpty()) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
-            }
-
         // Den Mitarbeiter für den Leiter des Studiengangs abrufen oder eine Ausnahme
         // auslösen, wenn nicht gefunden
         Mitarbeiter leiter = mitarbeiterService
@@ -170,6 +164,12 @@ public class StudiengangController {
         studiengang.setLeiter(leiter);
         studiengang.setStellvertretenderLeiter(stellvertretenderLeiter);
         studiengang.setFachbereich(fachbereich);
+
+        // Validierungslogik für die Eingabefelder
+        List<String> errors = validateStudiengang(studiengang);
+        if (!errors.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
+        }
 
         // Den aktualisierten Studiengang speichern und flushen
         studiengangService.saveAndFlush(studiengang);
@@ -236,15 +236,16 @@ public class StudiengangController {
             Mitarbeiter stellvertretenderLeiter = mitarbeiterService
                     .getMitarbeiter(updateStudiengang.getStellvertreterId())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter not found"));
-            // Validierungslogik für die Eingabefelder
-            List<String> errors = validateStudiengang(studiengang);
-            if (!errors.isEmpty()) {
-               throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
-            }
 
             // Den Leiter und den stellvertretenden Leiter des Studiengangs aktualisieren
             studiengang.setLeiter(leiter);
             studiengang.setStellvertretenderLeiter(stellvertretenderLeiter);
+
+            // Validierungslogik für die Eingabefelder
+            List<String> errors = validateStudiengang(studiengang);
+            if (!errors.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
+            }
 
             // Den aktualisierten Studiengang speichern und flushen
             studiengangService.saveAndFlush(studiengang);
@@ -297,6 +298,12 @@ public class StudiengangController {
         // Überprüfen, ob Stellvertreter ausgewählt ist
         if (studiengang.getStellvertretenderLeiter() == null) {
             errors.add("Stellvertreter ist nicht gesetzt");
+        }
+
+        // Überprüfen, ob Leiter und Stellvertreter identisch sind
+        if (studiengang.getLeiter() != null && studiengang.getStellvertretenderLeiter() != null
+                && studiengang.getLeiter().getId() == studiengang.getStellvertretenderLeiter().getId()) {
+            errors.add("Leiter und Stellvertreter dürfen nicht identisch sein");
         }
 
         // Überprüfen, ob Fachbereich ausgewählt ist

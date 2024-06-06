@@ -165,13 +165,13 @@ public class PruefungController {
         // 401 zurück
         if (!(nutzer.getRole().equals("ADMIN")
                 || nutzer.getRole().equals("Mitarbeiter")
-                        && (pruefung.getPruefungsordnung().getStudiengang().getLeiterId() == nutzer.getId()
-                                || pruefung.getPruefungsordnung().getStudiengang().getStellvertreterId() == nutzer
+                        && (pruefung.getPruefungsordnung().getStudiengang().getLeiter().getId() == nutzer.getId()
+                                || pruefung.getPruefungsordnung().getStudiengang().getStellvertretenderLeiter().getId() == nutzer
                                         .getId()
                                 || pruefung.getPruefungsordnung().getStudiengang().getFachbereich()
-                                        .getReferentId() == nutzer.getId()
+                                        .getReferent().getId() == nutzer.getId()
                                 || pruefung.getPruefungsordnung().getStudiengang().getFachbereich()
-                                        .getStellvertreterId() == nutzer.getId()))) {
+                                        .getStellvertreter().getId() == nutzer.getId()))) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User nicht authorisiert");
         }
 

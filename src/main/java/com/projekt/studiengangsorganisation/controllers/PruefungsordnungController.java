@@ -115,13 +115,13 @@ public class PruefungsordnungController {
 
         // Überprüft ob der Benutzer eine Prüfung erstellen darf und gibt im Fehlerfall 401 zurück
         if (!(nutzer.getRole().equals("ADMIN")
-                || nutzer.getRole().equals("Mitarbeiter")
-                    && (pruefungsordnung.getStudiengang().getLeiterId() == nutzer.getId()
-                        || pruefungsordnung.getStudiengang().getStellvertreterId() == nutzer.getId()
-                        || pruefungsordnung.getStudiengang().getFachbereich().getReferentId() == nutzer.getId()
-                        || pruefungsordnung.getStudiengang().getFachbereich().getStellvertreterId() == nutzer.getId()))) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User nicht authorisiert");
-        }
+        || nutzer.getRole().equals("Mitarbeiter")
+            && (pruefungsordnung.getStudiengang().getLeiter().getId() == nutzer.getId()
+                || pruefungsordnung.getStudiengang().getStellvertretenderLeiter().getId() == nutzer.getId()
+                || pruefungsordnung.getStudiengang().getFachbereich().getReferent().getId() == nutzer.getId()
+                || pruefungsordnung.getStudiengang().getFachbereich().getStellvertreter().getId() == nutzer.getId()))) {
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User nicht authorisiert");
+    }
 
         // Den Studiengang anhand der ID aus der Prüfungsordnungsinformationen abrufen
         Studiengang studiengang = studiengangService
@@ -166,10 +166,10 @@ public class PruefungsordnungController {
             // Überprüft ob der Benutzer eine Prüfung bearbeiten darf und gibt im Fehlerfall 401 zurück
             if (!(nutzer.getRole().equals("ADMIN")
                 || nutzer.getRole().equals("Mitarbeiter")
-                    && (pruefungsordnung.getStudiengang().getLeiterId() == nutzer.getId()
-                        || pruefungsordnung.getStudiengang().getStellvertreterId() == nutzer.getId()
-                        || pruefungsordnung.getStudiengang().getFachbereich().getReferentId() == nutzer.getId()
-                        || pruefungsordnung.getStudiengang().getFachbereich().getStellvertreterId() == nutzer.getId()))) {
+                    && (pruefungsordnung.getStudiengang().getLeiter().getId() == nutzer.getId()
+                        || pruefungsordnung.getStudiengang().getStellvertretenderLeiter().getId() == nutzer.getId()
+                        || pruefungsordnung.getStudiengang().getFachbereich().getReferent().getId() == nutzer.getId()
+                        || pruefungsordnung.getStudiengang().getFachbereich().getStellvertreter().getId() == nutzer.getId()))) {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User nicht authorisiert");
             }
 

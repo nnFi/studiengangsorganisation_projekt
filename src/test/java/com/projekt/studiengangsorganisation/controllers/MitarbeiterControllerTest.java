@@ -62,10 +62,7 @@ public class MitarbeiterControllerTest {
     }
 
     @Test
-    public void testCreateMitarbeiter_Administrator_SuccessfullyCreated() {
-        Nutzer mockNutzer = new Mitarbeiter();
-        when(nutzerService.getNutzerByUsername(any())).thenReturn(Optional.of(mockNutzer));
-        
+    public void testCreateMitarbeiter_Administrator_SuccessfullyCreated() {        
         Mitarbeiter mockMitarbeiter = new Mitarbeiter();
         mockMitarbeiter.setVorname("John");
         mockMitarbeiter.setNachname("Doe");

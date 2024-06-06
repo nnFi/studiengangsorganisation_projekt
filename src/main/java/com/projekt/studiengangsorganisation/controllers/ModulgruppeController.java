@@ -1,5 +1,6 @@
 package com.projekt.studiengangsorganisation.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,10 +91,38 @@ public class ModulgruppeController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
         }
 
+        // Validierungslogik für die Eingabefelder
+        List<String> errors = validateModulgruppe(modulgruppe);
+        if (!errors.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
+        }
+
         // Speichere die Modulgruppe in der Datenbank
         modulgruppeService.saveAndFlush(modulgruppe);
 
         // Gib eine Erfolgsantwort zurück
         return new ResponseEntity<>(modulgruppe, HttpStatus.CREATED);
+    }
+
+    /**
+     * Validiert das übergebene Modulgruppe-Objekt.
+     * 
+     * @param modulgruppe das zu validierende Modulgruppe-Objekt
+     * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler vorliegen
+     */
+    public static List<String> validateModulgruppe(Modulgruppe modulgruppe) {
+        List<String> errors = new ArrayList<>();
+
+        // Namensprüfung
+        if (modulgruppe.getName() == null || modulgruppe.getName().isEmpty()) {
+            errors.add("Das Feld 'Name' ist erforderlich.");
+        }
+
+        // Längenprüfung
+        if (modulgruppe.getName() != null && modulgruppe.getName().length() < 2) {
+            errors.add("Das Feld 'Name' muss mindestens 2 Zeichen lang sein.");
+        }
+
+        return errors;
     }
 }

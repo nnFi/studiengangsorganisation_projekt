@@ -104,29 +104,31 @@ public class FachgruppeController {
     public ResponseEntity<Fachgruppe> createFachgruppe(@RequestBody Fachgruppe fachgruppe) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert"));
 
         if (!nutzer.getRole().equals("MITARBEITER") && !nutzer.getRole().equals("ADMIN")) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
         }
+
+        // TODO: erstellen nur mitarbeiter oder admin
 
         Fachbereich fachbereich = fachbereichService
                 .getFachbereich(fachgruppe.getFachbereichId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fachbereich not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fachbereich nicht gefunden"));
 
         if (!fachbereich.getReferent().getId().equals(nutzer.getId())
                 && !fachbereich.getStellvertreter().getId().equals(nutzer.getId())
                 && !nutzer.getRole().equals("ADMIN")) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
         }
 
         Mitarbeiter referent = mitarbeiterService
                 .getMitarbeiter(fachgruppe.getReferentId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Referent not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Referent nicht gefunden "));
 
         Mitarbeiter stellvertreter = mitarbeiterService
                 .getMitarbeiter(fachgruppe.getStellvertreterId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter nicht gefunden"));
 
         fachgruppe.setFachbereich(fachbereich);
         fachgruppe.setReferent(referent);
@@ -159,18 +161,20 @@ public class FachgruppeController {
             Optional<Nutzer> nutzer = nutzerService.getNutzerByUsername(authentication.getName());
             if (!nutzer.isPresent() || !nutzer.get().getRole().equals("ADMIN")) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                        "Nur Administratoren können Modul aktualisieren");
+                        "Nur Administratoren können Fachgruppe aktualisieren");
             }
+
+            // TODO: erstellen nur mitarbeiter oder admin
 
             // Mitarbeiterreferent, Stellvertreter und Fachbereich anhand ihrer IDs abrufen.
             Mitarbeiter referent = mitarbeiterService.getMitarbeiter(updatedFachgruppe.getReferentId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Referent not found"));
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Referent nicht gefunden"));
 
             Mitarbeiter stellvertreter = mitarbeiterService.getMitarbeiter(updatedFachgruppe.getStellvertreterId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter not found"));
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter nicht gefunden"));
 
             Fachbereich fachbereich = fachbereichService.getFachbereich(updatedFachgruppe.getFachbereichId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fachbereich not found"));
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fachbereich nicht gefunden"));
 
             // Die Eigenschaften der aktualisierten Fachgruppe setzen.
             fachgruppe.setId(updatedFachgruppe.getId());

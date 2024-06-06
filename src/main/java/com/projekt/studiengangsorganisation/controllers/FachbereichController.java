@@ -91,19 +91,21 @@ public class FachbereichController {
     public ResponseEntity<Fachbereich> createFachbereich(@RequestBody Fachbereich fachbereich) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht authorisiert"));
 
         if (!nutzer.getRole().equals("ADMIN")) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authorized");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht authorisiert");
         }
+
+        // TODO: erstellen nur mitarbeiter oder admin
 
         Mitarbeiter referent = mitarbeiterService
                 .getMitarbeiter(fachbereich.getReferentId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Referent not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Referent micht gefunden"));
 
         Mitarbeiter stellvertreter = mitarbeiterService
                 .getMitarbeiter(fachbereich.getStellvertreterId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter nicht gefunden"));
 
         fachbereich.setReferent(referent);
         fachbereich.setStellvertreter(stellvertreter);
@@ -142,14 +144,16 @@ public class FachbereichController {
                         "Nur Administratoren können Fachbereiche aktualisieren");
             }
 
+            // TODO: bearbeiten nur referent und leiter oder admin
+
             // Referent und Stellvertreter finden
             Mitarbeiter referent = mitarbeiterService
                     .getMitarbeiter(updatedFachbereich.getReferentId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Referent not found"));
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Referent nicht gefunden"));
 
             Mitarbeiter stellvertreter = mitarbeiterService
                     .getMitarbeiter(updatedFachbereich.getStellvertreterId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter not found"));
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter nicht gefunden"));
 
             // Fachbereich aktualisieren
             fachbereich.setReferent(referent);

@@ -229,13 +229,13 @@ public class StudiengangController {
             // Den Mitarbeiter für den Leiter des aktualisierten Studiengangs abrufen
             Mitarbeiter leiter = mitarbeiterService
                     .getMitarbeiter(updateStudiengang.getLeiterId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Leiter not found"));
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Leiter nicht gefunden"));
 
             // Den Mitarbeiter für den stellvertretenden Leiter des aktualisierten
             // Studiengangs abrufen
             Mitarbeiter stellvertretenderLeiter = mitarbeiterService
                     .getMitarbeiter(updateStudiengang.getStellvertreterId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter not found"));
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter nicht gefunden"));
 
             // Den Leiter und den stellvertretenden Leiter des Studiengangs aktualisieren
             studiengang.setLeiter(leiter);

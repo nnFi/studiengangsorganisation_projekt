@@ -120,7 +120,7 @@ public class PruefungsordnungController {
                 || pruefungsordnung.getStudiengang().getStellvertretenderLeiter().getId() == nutzer.getId()
                 || pruefungsordnung.getStudiengang().getFachbereich().getReferent().getId() == nutzer.getId()
                 || pruefungsordnung.getStudiengang().getFachbereich().getStellvertreter().getId() == nutzer.getId()))) {
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User nicht authorisiert");
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
     }
 
         // Den Studiengang anhand der ID aus der Prüfungsordnungsinformationen abrufen
@@ -161,7 +161,7 @@ public class PruefungsordnungController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
                     .orElseThrow(
-                            () -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht authorisiert"));
+                            () -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert"));
 
             // Überprüft ob der Benutzer eine Prüfung bearbeiten darf und gibt im Fehlerfall 401 zurück
             if (!(nutzer.getRole().equals("ADMIN")
@@ -170,7 +170,7 @@ public class PruefungsordnungController {
                         || pruefungsordnung.getStudiengang().getStellvertretenderLeiter().getId() == nutzer.getId()
                         || pruefungsordnung.getStudiengang().getFachbereich().getReferent().getId() == nutzer.getId()
                         || pruefungsordnung.getStudiengang().getFachbereich().getStellvertreter().getId() == nutzer.getId()))) {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User nicht authorisiert");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
             }
 
             // Aktualisieren der Prüfungsordnung, sofern sie noch nicht veröffentlicht wurde

@@ -159,7 +159,7 @@ public class PruefungController {
         // Benutzerinformationen aus dem NutzerService abrufen und sicherstellen, dass
         // der Benutzer autorisiert ist
         Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User nicht authorisiert"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert"));
 
         // Überprüft ob der Benutzer eine Prüfung erstellen darf und gibt im Fehlerfall
         // 401 zurück
@@ -172,7 +172,7 @@ public class PruefungController {
                                         .getReferent().getId() == nutzer.getId()
                                 || pruefung.getPruefungsordnung().getStudiengang().getFachbereich()
                                         .getStellvertreter().getId() == nutzer.getId()))) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User nicht authorisiert");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
         }
 
         // Die Prüfungsordnung für die zu erstellende Prüfung abrufen und sicherstellen,

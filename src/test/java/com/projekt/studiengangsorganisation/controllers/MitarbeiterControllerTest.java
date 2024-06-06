@@ -1,4 +1,4 @@
-package com.projekt.studiengangsorganisation.tests;
+package com.projekt.studiengangsorganisation.controllers;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;

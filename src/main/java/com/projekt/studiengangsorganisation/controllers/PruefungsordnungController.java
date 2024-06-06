@@ -115,7 +115,7 @@ public class PruefungsordnungController {
 
         // Überprüft ob der Benutzer eine Prüfung erstellen darf und gibt im Fehlerfall 401 zurück
         if (!(nutzer.getRole().equals("ADMIN")
-        || nutzer.getRole().equals("Mitarbeiter")
+        || nutzer.getRole().equals("MITARBEITER")
             && (pruefungsordnung.getStudiengang().getLeiter().getId() == nutzer.getId()
                 || pruefungsordnung.getStudiengang().getStellvertretenderLeiter().getId() == nutzer.getId()
                 || pruefungsordnung.getStudiengang().getFachbereich().getReferent().getId() == nutzer.getId()
@@ -165,7 +165,7 @@ public class PruefungsordnungController {
 
             // Überprüft ob der Benutzer eine Prüfung bearbeiten darf und gibt im Fehlerfall 401 zurück
             if (!(nutzer.getRole().equals("ADMIN")
-                || nutzer.getRole().equals("Mitarbeiter")
+                || nutzer.getRole().equals("MITARBEITER")
                     && (pruefungsordnung.getStudiengang().getLeiter().getId() == nutzer.getId()
                         || pruefungsordnung.getStudiengang().getStellvertretenderLeiter().getId() == nutzer.getId()
                         || pruefungsordnung.getStudiengang().getFachbereich().getReferent().getId() == nutzer.getId()

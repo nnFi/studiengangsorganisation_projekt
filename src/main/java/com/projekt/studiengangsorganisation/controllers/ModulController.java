@@ -162,22 +162,18 @@ public class ModulController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
         }
 
-        // Überprüfe, ob der Benutzer berechtigt ist, das Modul für die Fachgruppe zu
-        // erstellen
+        // Hole die Fachgruppe
         Fachgruppe fachgruppe = fachgruppeService
                 .getFachgruppe(modul.getFachgruppeId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fachgruppe nicht gefunden"));
-
-        if (!fachgruppe.getReferent().getId().equals(nutzer.getId())
-                && !fachgruppe.getStellvertreter().getId().equals(nutzer.getId())
+        
+        // Überprüfe, ob der Benutzer berechtigt ist, das Modul für die Fachgruppe zu
+        // erstellen. Nur der Fachbereichsreferent/stellvertreter oder der Admin sind berechtigt,
+        // Module zu erstellen.
+        if (!fachgruppe.getFachbereich().getReferentId().equals(nutzer.getId())
+                && !fachgruppe.getFachbereich().getStellvertreterId().equals(nutzer.getId())
                 && !nutzer.getRole().equals("ADMIN")) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
-        }
-
-        // Validierungslogik für die Eingabefelder
-        List<String> errors = validateModul (modul);
-        if (!errors.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
         }
 
         // Hole den Modulbeauftragten und die Modulgruppe
@@ -200,6 +196,12 @@ public class ModulController {
         String modulnummer = (fachgruppe.getFachbereich().getId() + " " + fachgruppe.getKuerzel() + " "
                 + savedModul.getId());
         savedModul.setModulnummer(modulnummer);
+
+        // Validierungslogik für die Eingabefelder
+        List<String> errors = validateModul (modul);
+        if (!errors.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
+        }
 
         // Speichere das Modul mit der Modulnummer
         modulService.saveAndFlush(savedModul);
@@ -241,18 +243,22 @@ public class ModulController {
             // extrahieren
             Modul modul = existingModul.get();
 
-            // Überprüfe, ob der Benutzer ein Modulbeauftrager oder Admin ist
-            if (!(modul.getModulbeauftragter().getId() == nutzer.getId()
+            Fachgruppe fachgruppe = fachgruppeService
+                .getFachgruppe(modul.getFachgruppeId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fachgruppe nicht gefunden"));
+
+            // Überprüfe, ob der Benutzer Fachbereichsreferent/Stellvertreter, 
+            // Fachgruppenreferent/Stellvertreter, Modulbeauftrager oder Admin ist.
+            if (!(fachgruppe.getReferent().getId() == nutzer.getId()
+                    || fachgruppe.getStellvertreter().getId() == nutzer.getId()
+                    || fachgruppe.getFachbereich().getReferent().getId() == nutzer.getId()
+                    || fachgruppe.getFachbereich().getStellvertreter().getId() == nutzer.getId()
+                    || modul.getModulbeauftragter().getId() == nutzer.getId()
                     || nutzer.getRole().equals("ADMIN"))) {
-                // Falls der Benutzer nicht der Modulbeauftrager des Moduls ist oder kein 
+                // Falls der Benutzer nicht der Fachbereichsreferent/Stellvertreter, 
+                // Fachgruppenreferent/Stellvertreter, Modulbeauftrager des Moduls ist oder kein 
                 // Administrator ist, einen 401 Fehler zurückgeben
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
-            }
-
-            // Validierungslogik für die Eingabefelder
-            List<String> errors = validateModul(updatedModul);
-            if (!errors.isEmpty()) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
             }
 
             Mitarbeiter modulbeauftragter = mitarbeiterService
@@ -273,6 +279,13 @@ public class ModulController {
             modul.setLehrveranstaltungsort(updatedModul.getLehrveranstaltungsort());
             modul.setModulbeauftragter(modulbeauftragter);
             modul.setModulgruppe(modulgruppe);
+
+            // Validierungslogik für die Eingabefelder
+            List<String> errors = validateModul(updatedModul);
+            if (!errors.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
+            }
+
             modulService.saveAndFlush(modul);
 
             return new ResponseEntity<>(modul, HttpStatus.OK);

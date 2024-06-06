@@ -1,5 +1,6 @@
 package com.projekt.studiengangsorganisation.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -244,5 +245,55 @@ public class StudiengangController {
             // Falls der Studiengang nicht gefunden wird, einen 404 Fehler zurückgeben
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
+    }
+
+    /**
+     * Validiert das übergebene Fachbereich-Objekt.
+     * 
+     * @param studiengang das zu validierende Fachbereich-Objekt
+     * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler
+     *         vorliegen
+     */
+    public static List<String> validateStudiengang(Studiengang studiengang) {
+        List<String> errors = new ArrayList<>();
+
+        // Namensprüfung
+        if (studiengang.getName() == null || studiengang.getName().isEmpty()) {
+            errors.add("Das Feld 'Name' ist erforderlich.");
+        }
+
+        // Längenprüfung
+        if (studiengang.getName() != null && studiengang.getName().length() < 2) {
+            errors.add("Das Feld 'Name' muss mindestens 2 Zeichen lang sein.");
+        }
+
+        // Überprüfen, ob Abschluss ausgewählt ist
+        if (studiengang.getAbschluss() == null) {
+            errors.add("Abschluss ist nicht gesetzt");
+
+        }
+
+        // Überprüfen, ob Regelstudienzeit ausgewählt ist
+        int regelstudienzeit = studiengang.getRegelstudienzeit();
+        if (regelstudienzeit <= 0) {
+            errors.add("Regelstudienzeit muss eine positive Zahl sein und darf nicht 0 oder negativ sein.");
+        }
+
+        // Überprüfen, ob Leiter ausgewählt ist
+        if (studiengang.getLeiter() == null) {
+            errors.add("Leiter ist nicht gesetzt");
+        }
+
+        // Überprüfen, ob Stellvertreter ausgewählt ist
+        if (studiengang.getStellvertretenderLeiter() == null) {
+            errors.add("Stellvertreter ist nicht gesetzt");
+        }
+
+        // Überprüfen, ob Fachbereich ausgewählt ist
+        if (studiengang.getFachbereich() == null) {
+            errors.add("Fachbereich ist nicht gesetzt");
+        }
+
+        return errors;
     }
 }

@@ -28,6 +28,7 @@ public class PruefungService {
 
     /**
      * Holt eine Prüfung anhand ihrer ID.
+     * 
      * @param id Die ID der Prüfung.
      * @return Ein Optional, das die gefundene Prüfung enthält, falls vorhanden.
      */
@@ -37,6 +38,7 @@ public class PruefungService {
 
     /**
      * Holt alle Prüfungen.
+     * 
      * @return Eine Liste aller vorhandenen Prüfungen.
      */
     public List<Pruefung> getPruefungen() {
@@ -45,6 +47,7 @@ public class PruefungService {
 
     /**
      * Holt eine Liste von Prüfungen anhand ihrer IDs.
+     * 
      * @param ids Die Liste der IDs der Prüfungen.
      * @return Eine Liste der gefundenen Prüfungen.
      */
@@ -54,6 +57,7 @@ public class PruefungService {
 
     /**
      * Speichert eine Prüfung und aktualisiert die Änderungen.
+     * 
      * @param pruefung Die Prüfung, die gespeichert werden soll.
      * @return Die gespeicherte und aktualisierte Prüfung.
      */
@@ -63,8 +67,9 @@ public class PruefungService {
 
     /**
      * Fügt Testdaten für eine Prüfung ein.
+     * 
      * @param pruefungsordnung Die Prüfungsordnung, zu der die Prüfung gehört.
-     * @param modul Das Modul, zu dem die Prüfung gehört.
+     * @param modul            Das Modul, zu dem die Prüfung gehört.
      * @return Die erstellte Prüfung mit Testdaten.
      */
     public Pruefung insertTestData(Pruefungsordnung pruefungsordnung, Modul modul) {
@@ -84,5 +89,17 @@ public class PruefungService {
         pruefungRepository.saveAndFlush(pruefung);
 
         return pruefung;
+    }
+
+    /**
+     * Diese Methode gibt eine Liste von Prüfungen zurück, die durch ihre IDs
+     * identifiziert werden.
+     *
+     * @param list Eine Liste von Prüfungs-IDs, für die Prüfungen abgerufen werden
+     *             sollen.
+     * @return Eine Liste von Prüfungen, die den angegebenen IDs entsprechen.
+     */
+    public List<Pruefung> getPruefungenByIds(List<Long> list) {
+        return pruefungRepository.findAllById(list);
     }
 }

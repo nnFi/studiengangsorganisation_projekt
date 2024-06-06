@@ -188,7 +188,7 @@ public class StudentController {
 
         // Benutzername-Formatprüfung
         String username = (student.getVorname().toLowerCase() + "." + student.getNachname().toLowerCase()).replace("ß", "ss");
-        if (!username.matches("^[a-z]+\\.[a-z]+$")) {
+        if (!username.matches("^[a-z0-9]+\\.[a-z0-9]+$")) {
             errors.add("Das Feld 'Username' hat ein ungültiges Format.");
         }
 

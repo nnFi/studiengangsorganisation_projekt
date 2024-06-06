@@ -170,13 +170,13 @@ public class FachgruppeController {
         if (existingFachgruppe.isPresent()) {
             Fachgruppe fachgruppe = existingFachgruppe.get();
 
-            // Überprüfen, ob der Benutzer die erforderliche Rolle hat, um die Operation
-            // auszuführen
-            if (!nutzer.getRole().equals("MITARBEITER") && !nutzer.getRole().equals("ADMIN")) {
+            // Überprüft ob der Benutzer eine Prüfung bearbeiten darf und gibt im Fehlerfall 401 zurück
+            if (!(nutzer.getRole().equals("ADMIN")
+                || nutzer.getRole().equals("MITARBEITER")
+                    && (fachgruppe.getReferent().getId() == nutzer.getId()
+                        || fachgruppe.getStellvertreter().getId() == nutzer.getId()))) {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
             }
-
-            // TODO: Wer darf bearbeiten
 
             // Mitarbeiterreferent, Stellvertreter und Fachbereich anhand ihrer IDs abrufen.
             Mitarbeiter referent = mitarbeiterService.getMitarbeiter(updatedFachgruppe.getReferentId())

@@ -123,18 +123,19 @@ public class PruefungController {
         // Authentifizierung des Benutzers
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        // Benutzerinformationen aus dem NutzerService abrufen und sicherstellen, dass
-        // der Benutzer autorisiert ist
+        // Benutzerinformationen aus dem NutzerService abrufen und sicherstellen, dass der Benutzer autorisiert ist
         Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User nicht authorisiert"));
 
-        // Überprüfen, ob der Benutzer die erforderliche Rolle hat
-        if (!nutzer.getRole().equals("MITARBEITER") && !nutzer.getRole().equals("ADMIN")) {
+        // Überprüft ob der Benutzer eine Prüfung erstellen darf und gibt im Fehlerfall 401 zurück
+        if (!(nutzer.getRole().equals("ADMIN")
+                || nutzer.getRole().equals("Mitarbeiter")
+                    && (pruefung.getPruefungsordnung().getStudiengang().getLeiterId() == nutzer.getId()
+                        || pruefung.getPruefungsordnung().getStudiengang().getStellvertreterId() == nutzer.getId()
+                        || pruefung.getPruefungsordnung().getStudiengang().getFachbereich().getReferentId() == nutzer.getId()
+                        || pruefung.getPruefungsordnung().getStudiengang().getFachbereich().getStellvertreterId() == nutzer.getId()))) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User nicht authorisiert");
         }
-
-        // TODO: Nur der Studiengangsleiter, dessen Vertreter, der Fachbereichsleiter
-        // oder der Administrator können Prüfungen erstellen
 
         // Die Prüfungsordnung für die zu erstellende Prüfung abrufen und sicherstellen,
         // dass sie existiert

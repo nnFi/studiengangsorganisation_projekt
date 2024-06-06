@@ -180,12 +180,12 @@ public class FachbereichController {
 
         // Namensprüfung
         if (fachbereich.getName() == null || fachbereich.getName().isEmpty()) {
-            errors.add("Das Feld 'Nachname' ist erforderlich.");
+            errors.add("Das Feld 'Nname' ist erforderlich.");
         }
 
         // Längenprüfung
         if (fachbereich.getName() != null && fachbereich.getName().length() < 2) {
-            errors.add("Das Feld 'Vorname' muss mindestens 2 Zeichen lang sein.");
+            errors.add("Das Feld 'Name' muss mindestens 2 Zeichen lang sein.");
         }
 
         // Überprüfen, ob das Feld ReferentId gesetzt ist

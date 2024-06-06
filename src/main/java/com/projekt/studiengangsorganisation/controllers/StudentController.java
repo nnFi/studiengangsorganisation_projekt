@@ -191,7 +191,6 @@ public class StudentController {
         if (!username.matches("^[a-z]+\\.[a-z]+$")) {
             errors.add("Das Feld 'Username' hat ein ungültiges Format.");
         }
-        
 
         return errors;
     }

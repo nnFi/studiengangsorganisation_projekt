@@ -191,7 +191,6 @@ public class MitarbeiterController {
         if (mitarbeiter.getNachname() != null && mitarbeiter.getNachname().length() < 2) {
             errors.add("Das Feld 'Nachname' muss mindestens 2 Zeichen lang sein.");
         }
-
         
         // Benutzername-Formatprüfung
         String username = (mitarbeiter.getVorname().toLowerCase() + "." + mitarbeiter.getNachname().toLowerCase()).replace("ß", "ss");

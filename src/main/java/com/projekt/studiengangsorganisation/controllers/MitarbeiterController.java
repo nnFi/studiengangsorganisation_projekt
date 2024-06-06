@@ -99,6 +99,12 @@ public class MitarbeiterController {
             // Setze den Benutzernamen des Mitarbeiters basierend auf Vorname und Nachname
             mitarbeiter.setUsername(mitarbeiter.getVorname().toLowerCase() + "." + mitarbeiter.getNachname().toLowerCase());
 
+            // Validierungslogik für die Eingabefelder
+            List<String> errors = validateMitarbeiter(mitarbeiter);
+            if (!errors.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
+            }
+
             // Speichere den neuen Mitarbeiter in der Datenbank
             mitarbeiterService.saveAndFlush(mitarbeiter);
 

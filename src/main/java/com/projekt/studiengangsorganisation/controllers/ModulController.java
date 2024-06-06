@@ -1,5 +1,6 @@
 package com.projekt.studiengangsorganisation.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +23,7 @@ import com.projekt.studiengangsorganisation.entity.Mitarbeiter;
 import com.projekt.studiengangsorganisation.entity.Modul;
 import com.projekt.studiengangsorganisation.entity.Modulgruppe;
 import com.projekt.studiengangsorganisation.entity.Nutzer;
+import com.projekt.studiengangsorganisation.entity.Student;
 import com.projekt.studiengangsorganisation.service.FachgruppeService;
 import com.projekt.studiengangsorganisation.service.MitarbeiterService;
 import com.projekt.studiengangsorganisation.service.ModulService;
@@ -138,6 +140,12 @@ public class ModulController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
         }
 
+        // Validierungslogik für die Eingabefelder
+        /*List<String> errors = validateModul (modul);
+        if (!errors.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
+        }*/
+
         // Hole den Modulbeauftragten und die Modulgruppe
         Mitarbeiter modulbeauftragter = mitarbeiterService
                 .getMitarbeiter(modul.getModulbeauftragterId())
@@ -177,20 +185,41 @@ public class ModulController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<Modul> updateModul(@PathVariable String id, @RequestBody Modul updatedModul) {
+        // Vorhandenes Modul anhand der ID abrufen
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Benutzerinformationen abrufen und sicherstellen, dass der Benutzer
+        // autorisiert ist
+        Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert"));
+
+        // Überprüfen, ob der Benutzer die erforderliche Rolle hat, um die Operation
+        // auszuführen
+        if (!nutzer.getRole().equals("MITARBEITER") && !nutzer.getRole().equals("ADMIN")) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
+        }
+
         Optional<Modul> existingModul = modulService.getModul(Long.parseLong(id));
 
+        //Überprüfen, ob das Modul vorhanden ist
         if (existingModul.isPresent()) {
+            // Wenn das Modul vorhanden ist, das Modul-Objekt aus dem Optional
+            // extrahieren
             Modul modul = existingModul.get();
 
-            // Überprüfe, ob der Benutzer ein ADMIN ist
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Optional<Nutzer> nutzer = nutzerService.getNutzerByUsername(authentication.getName());
-            if (!nutzer.isPresent() || !nutzer.get().getRole().equals("ADMIN")) {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                        "Nur Administratoren können Modul aktualisieren");
+            // Überprüfe, ob der Benutzer ein Modulbeauftrager oder Admin ist
+            if (!(modul.getModulbeauftragter().getId() == nutzer.getId()
+                    || nutzer.getRole().equals("ADMIN"))) {
+                // Falls der Benutzer nicht der Modulbeauftrager des Moduls ist oder kein 
+                //Administrator ist, einen 401 Fehler zurückgeben
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
             }
 
-            // TODO: Modulbeauftragter darf modul aktualisieren
+            // Validierungslogik für die Eingabefelder
+            /*List<String> errors = validateModul(updatedModul);
+            if (!errors.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
+            }*/
 
             Mitarbeiter modulbeauftragter = mitarbeiterService
                     .getMitarbeiter(updatedModul.getModulbeauftragterId())
@@ -217,4 +246,6 @@ public class ModulController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Modul nicht gefunden");
         }
     }
+
+    
 }

@@ -1,7 +1,6 @@
 package com.projekt.studiengangsorganisation.controllers;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.Optional;
@@ -17,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.projekt.studiengangsorganisation.entity.Mitarbeiter;
-import com.projekt.studiengangsorganisation.entity.Nutzer;
 import com.projekt.studiengangsorganisation.service.MitarbeiterService;
 import com.projekt.studiengangsorganisation.service.NutzerService;
 

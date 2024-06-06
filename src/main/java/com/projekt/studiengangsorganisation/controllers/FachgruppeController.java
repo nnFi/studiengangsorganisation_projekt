@@ -1,5 +1,6 @@
 package com.projekt.studiengangsorganisation.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +51,7 @@ public class FachgruppeController {
 
     /**
      * Methode zum Abrufen einer Fachgruppe basierend auf der ID.
+     * 
      * @param id Die ID der Fachgruppe.
      * @return Die gefundene Fachgruppe.
      * @throws ResponseStatusException Falls die Fachgruppe nicht gefunden wird.
@@ -71,6 +73,7 @@ public class FachgruppeController {
 
     /**
      * Methode zum Abrufen aller Fachgruppen.
+     * 
      * @param response Die HTTP-Response.
      * @return Eine Liste aller Fachgruppen.
      */
@@ -90,9 +93,12 @@ public class FachgruppeController {
 
     /**
      * Methode zum Erstellen einer neue Fachgruppe.
+     * 
      * @param fachgruppe Die zu erstellende Fachgruppenentität.
      * @return Die erstellte Fachgruppenentität.
-     * @throws ResponseStatusException Falls der Benutzer nicht autorisiert ist oder erforderliche Ressourcen nicht gefunden werden.
+     * @throws ResponseStatusException Falls der Benutzer nicht autorisiert ist oder
+     *                                 erforderliche Ressourcen nicht gefunden
+     *                                 werden.
      */
     @PostMapping("")
     public ResponseEntity<Fachgruppe> createFachgruppe(@RequestBody Fachgruppe fachgruppe) {
@@ -132,13 +138,17 @@ public class FachgruppeController {
 
     /**
      * Methode zum Aktualisieren einer vorhandene Fachgruppe.
-     * @param id             Die ID der zu aktualisierenden Fachgruppe.
+     * 
+     * @param id                Die ID der zu aktualisierenden Fachgruppe.
      * @param updatedFachgruppe Die aktualisierte Fachgruppenentität.
      * @return Die aktualisierte Fachgruppenentität.
-     * @throws ResponseStatusException Falls der Benutzer nicht autorisiert ist, die Fachgruppe nicht gefunden wird oder die Aktualisierung fehlschlägt.
+     * @throws ResponseStatusException Falls der Benutzer nicht autorisiert ist, die
+     *                                 Fachgruppe nicht gefunden wird oder die
+     *                                 Aktualisierung fehlschlägt.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Fachgruppe> updateFachgruppe(@PathVariable String id, @RequestBody Fachgruppe updatedFachgruppe) {
+    public ResponseEntity<Fachgruppe> updateFachgruppe(@PathVariable String id,
+            @RequestBody Fachgruppe updatedFachgruppe) {
         Optional<Fachgruppe> existingFachgruppe = fachgruppeService.getFachgruppe(Long.parseLong(id));
 
         if (existingFachgruppe.isPresent()) {
@@ -170,6 +180,12 @@ public class FachgruppeController {
             fachgruppe.setReferent(referent);
             fachgruppe.setStellvertreter(stellvertreter);
 
+            // Validierungslogik für die Eingabefelder
+            List<String> errors = validateFachgruppe(fachgruppe);
+            if (!errors.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
+            }
+
             // Die aktualisierte Fachgruppe speichern.
             fachgruppeService.saveAndFlush(fachgruppe);
 
@@ -177,5 +193,47 @@ public class FachgruppeController {
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Fachgruppe nicht gefunden");
         }
+    }
+
+    /**
+     * Validiert das übergebene Fachbereich-Objekt.
+     * 
+     * @param fachgruppe das zu validierende Fachbereich-Objekt
+     * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler
+     *         vorliegen
+     */
+    public static List<String> validateFachgruppe(Fachgruppe fachgruppe) {
+        List<String> errors = new ArrayList<>();
+
+        // Namensprüfung
+        if (fachgruppe.getName() == null || fachgruppe.getName().isEmpty()) {
+            errors.add("Das Feld 'Name' ist erforderlich.");
+        }
+
+        // Längenprüfung
+        if (fachgruppe.getName() != null && fachgruppe.getName().length() < 2) {
+            errors.add("Das Feld 'Name' muss mindestens 2 Zeichen lang sein.");
+        }
+
+        // Überprüfen, Kürzel gesetzt ist
+        if (fachgruppe.getKuerzel() == null) {
+            errors.add("Kuerzel ist nicht gesetzt");
+        }
+
+        // Überprüfen, ob das Feld ReferentId gesetzt ist
+        if (fachgruppe.getReferent() == null) {
+            errors.add("Referent ist nicht gesetzt.");
+        }
+
+        // Überprüfen, ob das Feld StellvertreterId gesetzt ist
+        if (fachgruppe.getStellvertreter() == null) {
+            errors.add("Stellvertreter ist nicht gesetzt.");
+        }
+
+        // Überprüfen, ob das Feld Fachbereich gesetzt ist
+        if (fachgruppe.getFachbereich() == null) {
+            errors.add("Fachbereich ist nicht gesetzt.");
+        }
+        return errors;
     }
 }

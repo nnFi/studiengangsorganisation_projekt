@@ -220,12 +220,12 @@ public class FachgruppeController {
             errors.add("Kuerzel ist nicht gesetzt");
         }
 
-        // Überprüfen, ob das Feld ReferentId gesetzt ist
+        // Überprüfen, ob das Feld Referent gesetzt ist
         if (fachgruppe.getReferent() == null) {
             errors.add("Referent ist nicht gesetzt.");
         }
 
-        // Überprüfen, ob das Feld StellvertreterId gesetzt ist
+        // Überprüfen, ob das Feld Stellvertreter gesetzt ist
         if (fachgruppe.getStellvertreter() == null) {
             errors.add("Stellvertreter ist nicht gesetzt.");
         }

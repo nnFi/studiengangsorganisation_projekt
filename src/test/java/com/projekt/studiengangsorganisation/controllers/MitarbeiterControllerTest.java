@@ -35,6 +35,7 @@ public class MitarbeiterControllerTest {
     @InjectMocks
     private MitarbeiterController controller;
 
+    @SuppressWarnings("deprecation")
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);

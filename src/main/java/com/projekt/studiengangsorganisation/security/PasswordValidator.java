@@ -45,7 +45,7 @@ public class PasswordValidator {
     }
     
     private static boolean containsSpecialCharacter(String password) {
-        Pattern specialCharPattern = Pattern.compile("[!@#$%&]");
+        Pattern specialCharPattern = Pattern.compile("[!@#$%&-_]");
         return specialCharPattern.matcher(password).find();
     }
 }

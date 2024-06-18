@@ -9,6 +9,8 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -205,51 +207,53 @@ public class MitarbeiterControllerTest {
         assertEquals(HttpStatus.FORBIDDEN, exception.getStatusCode());
     }
 
-    @Test
-    public void testValidateMitarbeiter_Valid() {
+    @ParameterizedTest
+    @CsvSource({
+            "John, Doe, Valid1!password",
+            "Alice, Smith, AnotherValid1Passwo-rd",
+            "Emily, Johnson, Secure!Pass123",
+    })
+    public void testValidateMitarbeiter_ValidInputs(String vorname, String nachname, String password) {
+        // Stelle sicher, dass keine der Eingaben null ist
+        vorname = vorname != null ? vorname : "";
+        nachname = nachname != null ? nachname : "";
+        password = password != null ? password : "";
+
         Mitarbeiter mitarbeiter = new Mitarbeiter();
-        mitarbeiter.setVorname("John");
-        mitarbeiter.setNachname("Doe");
-        mitarbeiter.setPassword("Valid1!password");
+        mitarbeiter.setVorname(vorname);
+        mitarbeiter.setNachname(nachname);
+        mitarbeiter.setPassword(password);
 
         List<String> errors = controller.validateMitarbeiter(mitarbeiter);
 
-        assertEquals(0, errors.size(), "Es sollten keine Validierungsfehler auftreten.");
+        assertTrue(errors.isEmpty(), "Es sollte keine Validierungsfehler auftreten.");
     }
 
-    @Test
-    public void testValidateMitarbeiter_InvalidPassword() {
+    @ParameterizedTest
+    @CsvSource({
+            ", Doe, Valid1!password", // Leerzeichen als Vorname
+            "John, , Valid1!password", // Leerzeichen als Nachname
+            ", , Valid1!password", // Leerzeichen als Vor- und Nachname
+            "John, Doe, ", // Leerzeichen als Passwort
+            "John, Doe, 123", // Passwort zu kurz
+            "John, Doe, invalid", // Passwort enthält kein Sonderzeichen
+            "John, Doe, invalidpassword", // Passwort enthält kein Großbuchstaben
+            "John, Doe, invalidPassword", // Passwort enthält keine Zahl
+            "John, Doe, invalidPassword!", // Passwort enthält keine Kleinbuchstaben
+    })
+    public void testValidateMitarbeiter_InvalidInputs(String vorname, String nachname, String password) {
+
+        vorname = vorname != null ? vorname : "";
+        nachname = nachname != null ? nachname : "";
+        password = password != null ? password : "";
+
         Mitarbeiter mitarbeiter = new Mitarbeiter();
-        mitarbeiter.setVorname("John");
-        mitarbeiter.setNachname("Doe");
-        mitarbeiter.setPassword("invalid");
+        mitarbeiter.setVorname(vorname);
+        mitarbeiter.setNachname(nachname);
+        mitarbeiter.setPassword(password);
 
         List<String> errors = controller.validateMitarbeiter(mitarbeiter);
 
-        assertEquals(1, errors.size(), "Es sollte ein Validierungsfehler für das Passwort auftreten.");
-    }
-
-    @Test
-    public void testValidateMitarbeiter_InvalidVorname() {
-        Mitarbeiter mitarbeiter = new Mitarbeiter();
-        mitarbeiter.setVorname("");
-        mitarbeiter.setNachname("Doe");
-        mitarbeiter.setPassword("Valid1!password");
-
-        List<String> errors = controller.validateMitarbeiter(mitarbeiter);
-
-        assertTrue(!errors.isEmpty(), "Es sollte ein Validierungsfehler für den Vornamen auftreten.");
-    }
-
-    @Test
-    public void testValidateMitarbeiter_InvalidNachname() {
-        Mitarbeiter mitarbeiter = new Mitarbeiter();
-        mitarbeiter.setVorname("John");
-        mitarbeiter.setNachname("");
-        mitarbeiter.setPassword("Valid1!password");
-
-        List<String> errors = controller.validateMitarbeiter(mitarbeiter);
-
-        assertTrue(!errors.isEmpty(), "Es sollte ein Validierungsfehler für den Nachnamen auftreten.");
+        assertTrue(!errors.isEmpty(), "Es sollte ein Validierungsfehler auftreten.");
     }
 }

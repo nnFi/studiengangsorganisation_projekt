@@ -242,8 +242,7 @@ public class FachbereichControllerTest {
         when(fachbereichService.getFachbereich(1L)).thenReturn(Optional.of(existingFachbereich));
         when(mitarbeiterService.getMitarbeiter(2L)).thenReturn(Optional.of(referent));
         when(mitarbeiterService.getMitarbeiter(3L)).thenReturn(Optional.of(stellvertreter));
-        when(fachbereichService.saveAndFlush(any(Fachbereich.class))).thenAnswer(invocation -> invocation.getArgument(0)); // Rückgabe des aktualisierten Fachbereichs
-
+        
         // Aufruf der Controller-Methode
         ResponseEntity<Fachbereich> response = controller.updateFachbereich(1L, updatedFachbereich);
 

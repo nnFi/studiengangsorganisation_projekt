@@ -242,6 +242,12 @@ public class PruefungControllerTest {
         assertThrows(ResponseStatusException.class, () -> {
             controller.createPruefung(pruefung);
         });
+
+        ResponseStatusException response = assertThrows(ResponseStatusException.class, () -> {
+            controller.createPruefung(pruefung);
+        });
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 
     /**

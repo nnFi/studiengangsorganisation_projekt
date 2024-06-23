@@ -40,7 +40,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Controller-Klasse für die Verwaltung von Modulen.
  */
-@RequestMapping("/modul")
+@RequestMapping("/api/modul")
 @RestController
 public class ModulController {
 

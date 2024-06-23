@@ -32,7 +32,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Controller-Klasse für die Verwaltung von Fachgruppen.
  */
-@RequestMapping("/fachgruppe")
+@RequestMapping("/api/fachgruppe")
 @RestController
 public class FachgruppeController {
 
@@ -156,7 +156,6 @@ public class FachgruppeController {
     public ResponseEntity<Fachgruppe> updateFachgruppe(@PathVariable String id,
             @RequestBody Fachgruppe updatedFachgruppe) {
 
-
         Optional<Fachgruppe> existingFachgruppe = fachgruppeService.getFachgruppe(Long.parseLong(id));
 
         // Authentifizierung des Benutzers über den SecurityContextHolder
@@ -170,11 +169,12 @@ public class FachgruppeController {
         if (existingFachgruppe.isPresent()) {
             Fachgruppe fachgruppe = existingFachgruppe.get();
 
-            // Überprüft ob der Benutzer eine Prüfung bearbeiten darf und gibt im Fehlerfall 401 zurück
+            // Überprüft ob der Benutzer eine Prüfung bearbeiten darf und gibt im Fehlerfall
+            // 401 zurück
             if (!(nutzer.getRole().equals("ADMIN")
-                || nutzer.getRole().equals("MITARBEITER")
-                    && (fachgruppe.getReferent().getId() == nutzer.getId()
-                        || fachgruppe.getStellvertreter().getId() == nutzer.getId()))) {
+                    || nutzer.getRole().equals("MITARBEITER")
+                            && (fachgruppe.getReferent().getId() == nutzer.getId()
+                                    || fachgruppe.getStellvertreter().getId() == nutzer.getId()))) {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
             }
 
@@ -183,7 +183,8 @@ public class FachgruppeController {
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Referent nicht gefunden"));
 
             Mitarbeiter stellvertreter = mitarbeiterService.getMitarbeiter(updatedFachgruppe.getStellvertreterId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter nicht gefunden"));
+                    .orElseThrow(
+                            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter nicht gefunden"));
 
             Fachbereich fachbereich = fachbereichService.getFachbereich(updatedFachgruppe.getFachbereichId())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fachbereich nicht gefunden"));

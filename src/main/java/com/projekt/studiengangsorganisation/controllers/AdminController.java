@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Controller für die Verwaltung von Admins.
  */
-@RequestMapping("/admin")
+@RequestMapping("/api/admin")
 @RestController
 public class AdminController {
 
@@ -29,9 +29,11 @@ public class AdminController {
 
     /**
      * Methode zum Abrufen eines einzelnen Admin anhand seiner ID.
+     * 
      * @param id Die ID des Admins.
      * @return Der Admin, falls gefunden.
-     * @throws ResponseStatusException Falls kein Admin mit der angegebenen ID gefunden wurde (Status: NOT_FOUND).
+     * @throws ResponseStatusException Falls kein Admin mit der angegebenen ID
+     *                                 gefunden wurde (Status: NOT_FOUND).
      */
     @GetMapping("/{id}")
     public Admin getOne(@PathVariable String id) {
@@ -46,6 +48,7 @@ public class AdminController {
 
     /**
      * Methode zum Abrufen aller Admins.
+     * 
      * @param response Das HTTP-Response-Objekt.
      * @return Die Liste aller Admins.
      */

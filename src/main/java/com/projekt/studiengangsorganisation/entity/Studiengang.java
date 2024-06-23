@@ -26,77 +26,78 @@ import jakarta.persistence.Transient;
 @Table(name = "studiengang")
 public class Studiengang {
 
-    /** 
-     * Die eindeutige ID des Studiengangs. 
+    /**
+     * Die eindeutige ID des Studiengangs.
      */
     @Id
     @Column(name = "studiengang_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    /** 
-     * Der Name des Studiengangs. 
+    /**
+     * Der Name des Studiengangs.
      */
-    @Column(name = "studiengang_name")
+    @Column(name = "studiengang_name", unique = true)
     private String name;
 
-    /** 
-     * Der Abschluss des Studiengangs (z.B. Bachelor, Master). 
+    /**
+     * Der Abschluss des Studiengangs (z.B. Bachelor, Master).
      */
     @Column(name = "studiengang_abschluss")
     @Enumerated(EnumType.ORDINAL)
     private Abschluss abschluss;
 
-    /** 
-     * Die Regelstudienzeit des Studiengangs in Semestern. 
+    /**
+     * Die Regelstudienzeit des Studiengangs in Semestern.
      */
     @Column(name = "studiengang_regelstudienzeit")
     private int regelstudienzeit;
 
-    /** 
-     * Der Leiter des Studiengangs. 
+    /**
+     * Der Leiter des Studiengangs.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne
     @JoinColumn(name = "leiter_id")
     private Mitarbeiter leiter;
 
-    /** 
-     Die ID des Leiters des Studiengangs. 
+    /**
+     * Die ID des Leiters des Studiengangs.
      */
     @Transient
     private Long leiterId;
 
-    /** 
-     * Der stellvertretende Leiter des Studiengangs. 
+    /**
+     * Der stellvertretende Leiter des Studiengangs.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne
     @JoinColumn(name = "stellvertretenderLeiter_id")
     private Mitarbeiter stellvertretenderLeiter;
 
-    /** 
-     * Die ID des stellvertretenden Leiters des Studiengangs. 
+    /**
+     * Die ID des stellvertretenden Leiters des Studiengangs.
      */
     @Transient
     private Long stellvertreterId;
 
-    /** 
-     * Der Fachbereich, dem der Studiengang zugeordnet ist. 
+    /**
+     * Der Fachbereich, dem der Studiengang zugeordnet ist.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne
     @JoinColumn(name = "fachbereich_id")
     private Fachbereich fachbereich;
 
-    /** 
-     * Die ID des Fachbereichs. 
+    /**
+     * Die ID des Fachbereichs.
      */
     @Transient
     private Long fachbereichId;
 
     /**
      * Gibt die ID des Studiengangs zurück.
+     * 
      * @return die ID des Studiengangs.
      */
     public long getId() {
@@ -105,6 +106,7 @@ public class Studiengang {
 
     /**
      * Setzt die ID des Studiengangs.
+     * 
      * @param id die ID des Studiengangs.
      */
     public void setId(long id) {
@@ -113,6 +115,7 @@ public class Studiengang {
 
     /**
      * Gibt den Namen des Studiengangs zurück.
+     * 
      * @return der Name des Studiengangs.
      */
     public String getName() {
@@ -121,6 +124,7 @@ public class Studiengang {
 
     /**
      * Setzt den Namen des Studiengangs.
+     * 
      * @param name der Name des Studiengangs.
      */
     public void setName(String name) {
@@ -129,6 +133,7 @@ public class Studiengang {
 
     /**
      * Gibt den Abschluss des Studiengangs zurück.
+     * 
      * @return der Abschluss des Studiengangs.
      */
     public Abschluss getAbschluss() {
@@ -137,6 +142,7 @@ public class Studiengang {
 
     /**
      * Setzt den Abschluss des Studiengangs.
+     * 
      * @param abschluss der Abschluss des Studiengangs.
      */
     public void setAbschluss(Abschluss abschluss) {
@@ -145,6 +151,7 @@ public class Studiengang {
 
     /**
      * Gibt die Regelstudienzeit des Studiengangs zurück.
+     * 
      * @return die Regelstudienzeit des Studiengangs.
      */
     public int getRegelstudienzeit() {
@@ -153,6 +160,7 @@ public class Studiengang {
 
     /**
      * Setzt die Regelstudienzeit des Studiengangs.
+     * 
      * @param regelstudienzeit die Regelstudienzeit des Studiengangs.
      */
     public void setRegelstudienzeit(int regelstudienzeit) {
@@ -161,6 +169,7 @@ public class Studiengang {
 
     /**
      * Gibt den Leiter des Studiengangs zurück.
+     * 
      * @return der Leiter des Studiengangs.
      */
     public Mitarbeiter getLeiter() {
@@ -169,6 +178,7 @@ public class Studiengang {
 
     /**
      * Setzt den Leiter des Studiengangs.
+     * 
      * @param leiter der Leiter des Studiengangs.
      */
     public void setLeiter(Mitarbeiter leiter) {
@@ -177,6 +187,7 @@ public class Studiengang {
 
     /**
      * Gibt den stellvertretenden Leiter des Studiengangs zurück.
+     * 
      * @return der stellvertretende Leiter des Studiengangs.
      */
     public Mitarbeiter getStellvertretenderLeiter() {
@@ -185,6 +196,7 @@ public class Studiengang {
 
     /**
      * Setzt den stellvertretenden Leiter des Studiengangs.
+     * 
      * @param stellvertretenderLeiter der stellvertretende Leiter des Studiengangs.
      */
     public void setStellvertretenderLeiter(Mitarbeiter stellvertretenderLeiter) {
@@ -193,6 +205,7 @@ public class Studiengang {
 
     /**
      * Gibt den Fachbereich des Studiengangs zurück.
+     * 
      * @return der Fachbereich des Studiengangs.
      */
     public Fachbereich getFachbereich() {
@@ -201,6 +214,7 @@ public class Studiengang {
 
     /**
      * Setzt den Fachbereich des Studiengangs.
+     * 
      * @param fachbereich der Fachbereich des Studiengangs.
      */
     public void setFachbereich(Fachbereich fachbereich) {
@@ -209,6 +223,7 @@ public class Studiengang {
 
     /**
      * Gibt die ID des Leiters des Studiengangs zurück.
+     * 
      * @return die ID des Leiters des Studiengangs.
      */
     public Long getLeiterId() {
@@ -217,6 +232,7 @@ public class Studiengang {
 
     /**
      * Setzt die ID des Leiters des Studiengangs.
+     * 
      * @param leiterId die ID des Leiters des Studiengangs.
      */
     public void setLeiterId(Long leiterId) {
@@ -225,6 +241,7 @@ public class Studiengang {
 
     /**
      * Gibt die ID des stellvertretenden Leiters des Studiengangs zurück.
+     * 
      * @return die ID des stellvertretenden Leiters des Studiengangs.
      */
     public Long getStellvertreterId() {
@@ -233,7 +250,9 @@ public class Studiengang {
 
     /**
      * Setzt die ID des stellvertretenden Leiters des Studiengangs.
-     * @param stellvertreterId die ID des stellvertretenden Leiters des Studiengangs.
+     * 
+     * @param stellvertreterId die ID des stellvertretenden Leiters des
+     *                         Studiengangs.
      */
     public void setStellvertreterId(Long stellvertreterId) {
         this.stellvertreterId = stellvertreterId;
@@ -241,6 +260,7 @@ public class Studiengang {
 
     /**
      * Gibt die ID des Fachbereichs des Studiengangs zurück.
+     * 
      * @return die ID des Fachbereichs des Studiengangs.
      */
     public Long getFachbereichId() {
@@ -249,6 +269,7 @@ public class Studiengang {
 
     /**
      * Setzt die ID des Fachbereichs des Studiengangs.
+     * 
      * @param fachbereichId die ID des Fachbereichs des Studiengangs.
      */
     public void setFachbereichId(Long fachbereichId) {

@@ -36,7 +36,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Controller-Klasse für die Verwaltung von Pruefungen.
  */
-@RequestMapping("/pruefung")
+@RequestMapping("/api/pruefung")
 @RestController
 public class PruefungController {
 
@@ -166,8 +166,9 @@ public class PruefungController {
         if (!(nutzer.getRole().equals("ADMIN")
                 || nutzer.getRole().equals("MITARBEITER")
                         && (pruefung.getPruefungsordnung().getStudiengang().getLeiter().getId() == nutzer.getId()
-                                || pruefung.getPruefungsordnung().getStudiengang().getStellvertretenderLeiter().getId() == nutzer
-                                        .getId()
+                                || pruefung.getPruefungsordnung().getStudiengang().getStellvertretenderLeiter()
+                                        .getId() == nutzer
+                                                .getId()
                                 || pruefung.getPruefungsordnung().getStudiengang().getFachbereich()
                                         .getReferent().getId() == nutzer.getId()
                                 || pruefung.getPruefungsordnung().getStudiengang().getFachbereich()

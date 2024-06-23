@@ -30,7 +30,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Controller-Klasse für Pruefungsordnung-Ressourcen.
  */
-@RequestMapping("/pruefungsordnung")
+@RequestMapping("/api/pruefungsordnung")
 @RestController
 public class PruefungsordnungController {
 
@@ -113,15 +113,19 @@ public class PruefungsordnungController {
         Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert"));
 
-        // Überprüft ob der Benutzer eine Prüfung erstellen darf und gibt im Fehlerfall 401 zurück
+        // Überprüft ob der Benutzer eine Prüfung erstellen darf und gibt im Fehlerfall
+        // 401 zurück
         if (!(nutzer.getRole().equals("ADMIN")
-        || nutzer.getRole().equals("MITARBEITER")
-            && (pruefungsordnung.getStudiengang().getLeiter().getId() == nutzer.getId()
-                || pruefungsordnung.getStudiengang().getStellvertretenderLeiter().getId() == nutzer.getId()
-                || pruefungsordnung.getStudiengang().getFachbereich().getReferent().getId() == nutzer.getId()
-                || pruefungsordnung.getStudiengang().getFachbereich().getStellvertreter().getId() == nutzer.getId()))) {
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
-    }
+                || nutzer.getRole().equals("MITARBEITER")
+                        && (pruefungsordnung.getStudiengang().getLeiter().getId() == nutzer.getId()
+                                || pruefungsordnung.getStudiengang().getStellvertretenderLeiter().getId() == nutzer
+                                        .getId()
+                                || pruefungsordnung.getStudiengang().getFachbereich().getReferent().getId() == nutzer
+                                        .getId()
+                                || pruefungsordnung.getStudiengang().getFachbereich().getStellvertreter()
+                                        .getId() == nutzer.getId()))) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
+        }
 
         // Den Studiengang anhand der ID aus der Prüfungsordnungsinformationen abrufen
         Studiengang studiengang = studiengangService
@@ -163,13 +167,17 @@ public class PruefungsordnungController {
                     .orElseThrow(
                             () -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert"));
 
-            // Überprüft ob der Benutzer eine Prüfung bearbeiten darf und gibt im Fehlerfall 401 zurück
+            // Überprüft ob der Benutzer eine Prüfung bearbeiten darf und gibt im Fehlerfall
+            // 401 zurück
             if (!(nutzer.getRole().equals("ADMIN")
-                || nutzer.getRole().equals("MITARBEITER")
-                    && (pruefungsordnung.getStudiengang().getLeiter().getId() == nutzer.getId()
-                        || pruefungsordnung.getStudiengang().getStellvertretenderLeiter().getId() == nutzer.getId()
-                        || pruefungsordnung.getStudiengang().getFachbereich().getReferent().getId() == nutzer.getId()
-                        || pruefungsordnung.getStudiengang().getFachbereich().getStellvertreter().getId() == nutzer.getId()))) {
+                    || nutzer.getRole().equals("MITARBEITER")
+                            && (pruefungsordnung.getStudiengang().getLeiter().getId() == nutzer.getId()
+                                    || pruefungsordnung.getStudiengang().getStellvertretenderLeiter().getId() == nutzer
+                                            .getId()
+                                    || pruefungsordnung.getStudiengang().getFachbereich().getReferent()
+                                            .getId() == nutzer.getId()
+                                    || pruefungsordnung.getStudiengang().getFachbereich().getStellvertreter()
+                                            .getId() == nutzer.getId()))) {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
             }
 

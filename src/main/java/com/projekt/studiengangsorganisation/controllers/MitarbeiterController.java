@@ -30,7 +30,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /*
  * Controller-Klasse für die Verwaltung von Mitarbeitern.
  */
-@RequestMapping("/mitarbeiter")
+@RequestMapping("/api/mitarbeiter")
 @RestController
 public class MitarbeiterController {
 

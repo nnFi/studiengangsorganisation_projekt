@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 /**
  * Controller-Klasse für die Verwaltung von Studiengängen.
  */
-@RequestMapping("/studiengang")
+@RequestMapping("/api/studiengang")
 @RestController
 public class StudiengangController {
 
@@ -235,7 +235,8 @@ public class StudiengangController {
             // Studiengangs abrufen
             Mitarbeiter stellvertretenderLeiter = mitarbeiterService
                     .getMitarbeiter(updateStudiengang.getStellvertreterId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter nicht gefunden"));
+                    .orElseThrow(
+                            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter nicht gefunden"));
 
             // Den Leiter und den stellvertretenden Leiter des Studiengangs aktualisieren
             studiengang.setLeiter(leiter);

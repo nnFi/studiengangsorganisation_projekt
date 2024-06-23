@@ -30,13 +30,13 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Controller-Klasse für Fachbereich-Operationen.
  */
-@RequestMapping("/fachbereich")
+@RequestMapping("/api/fachbereich")
 @RestController
 public class FachbereichController {
 
     // Deklarierung Services
     @Autowired
-    FachbereichService fachbereichService; 
+    FachbereichService fachbereichService;
 
     @Autowired
     NutzerService nutzerService;
@@ -46,9 +46,11 @@ public class FachbereichController {
 
     /**
      * Methode zum Abrufen eines Fachbereich anhand seiner ID.
+     * 
      * @param id Die ID des Fachbereichs.
      * @return Der Fachbereich, falls gefunden.
-     * @throws ResponseStatusException Falls kein Fachbereich mit der angegebenen ID gefunden wurde (Status: NOT_FOUND).
+     * @throws ResponseStatusException Falls kein Fachbereich mit der angegebenen ID
+     *                                 gefunden wurde (Status: NOT_FOUND).
      */
     @GetMapping("/{id}")
     public Fachbereich getOne(@PathVariable String id) {
@@ -66,6 +68,7 @@ public class FachbereichController {
 
     /**
      * Methode zum Abrufen aller Fachbereiche.
+     * 
      * @param response Das HTTP-Response-Objekt.
      * @return Die Liste aller Fachbereiche.
      */
@@ -84,8 +87,10 @@ public class FachbereichController {
 
     /**
      * Methode zum Erstellen eines neuen Fachbereich.
+     * 
      * @param fachbereich Der zu erstellende Fachbereich.
-     * @return Die HTTP-Response-Entität mit dem erstellten Fachbereich und dem Statuscode 201 (CREATED).
+     * @return Die HTTP-Response-Entität mit dem erstellten Fachbereich und dem
+     *         Statuscode 201 (CREATED).
      */
     @PostMapping("")
     public ResponseEntity<Fachbereich> createFachbereich(@RequestBody Fachbereich fachbereich) {
@@ -123,14 +128,19 @@ public class FachbereichController {
 
     /**
      * Methode zum Aktualisieren eines vorhandenen Fachbereich.
-     * @param id Die ID des zu aktualisierenden Fachbereichs.
+     * 
+     * @param id                 Die ID des zu aktualisierenden Fachbereichs.
      * @param updatedFachbereich Der aktualisierte Fachbereich.
-     * @return Die HTTP-Response-Entität mit dem aktualisierten Fachbereich und dem Statuscode 200 (OK).
-     * @throws ResponseStatusException Falls der Fachbereich nicht gefunden wurde (Status: NOT_FOUND) oder
-     *                                  der Benutzer keine Berechtigung hat (Status: FORBIDDEN).
+     * @return Die HTTP-Response-Entität mit dem aktualisierten Fachbereich und dem
+     *         Statuscode 200 (OK).
+     * @throws ResponseStatusException Falls der Fachbereich nicht gefunden wurde
+     *                                 (Status: NOT_FOUND) oder
+     *                                 der Benutzer keine Berechtigung hat (Status:
+     *                                 FORBIDDEN).
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Fachbereich> updateFachbereich(@PathVariable Long id, @RequestBody Fachbereich updatedFachbereich) {
+    public ResponseEntity<Fachbereich> updateFachbereich(@PathVariable Long id,
+            @RequestBody Fachbereich updatedFachbereich) {
         Optional<Fachbereich> existingFachbereich = fachbereichService.getFachbereich(id);
 
         if (existingFachbereich.isPresent()) {
@@ -142,13 +152,15 @@ public class FachbereichController {
             // Benutzerinformationen abrufen und sicherstellen, dass der Benutzer
             // autorisiert ist
             Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert"));
+                    .orElseThrow(
+                            () -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert"));
 
-            // Überprüft ob der Benutzer eine Prüfung bearbeiten darf und gibt im Fehlerfall 401 zurück
+            // Überprüft ob der Benutzer eine Prüfung bearbeiten darf und gibt im Fehlerfall
+            // 401 zurück
             if (!(nutzer.getRole().equals("ADMIN")
-                || nutzer.getRole().equals("MITARBEITER")
-                    && (fachbereich.getReferent().getId() == nutzer.getId()
-                        || fachbereich.getStellvertreter().getId() == nutzer.getId()))) {
+                    || nutzer.getRole().equals("MITARBEITER")
+                            && (fachbereich.getReferent().getId() == nutzer.getId()
+                                    || fachbereich.getStellvertreter().getId() == nutzer.getId()))) {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
             }
 
@@ -159,7 +171,8 @@ public class FachbereichController {
 
             Mitarbeiter stellvertreter = mitarbeiterService
                     .getMitarbeiter(updatedFachbereich.getStellvertreterId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter nicht gefunden"));
+                    .orElseThrow(
+                            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter nicht gefunden"));
 
             // Fachbereich aktualisieren
             fachbereich.setReferent(referent);
@@ -183,7 +196,8 @@ public class FachbereichController {
      * Validiert das übergebene Fachbereich-Objekt.
      * 
      * @param fachbereich das zu validierende Fachbereich-Objekt
-     * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler vorliegen
+     * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler
+     *         vorliegen
      */
     static List<String> validateFachbereich(Fachbereich fachbereich) {
         List<String> errors = new ArrayList<>();

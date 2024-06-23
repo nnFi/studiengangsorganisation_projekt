@@ -27,7 +27,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Controller-Klasse für die Verwaltung von Modulgruppen.
  */
-@RequestMapping("/modulgruppe")
+@RequestMapping("/api/modulgruppe")
 @RestController
 public class ModulgruppeController {
 
@@ -40,6 +40,7 @@ public class ModulgruppeController {
 
     /**
      * Methode zum Abrufen einer Modulgruppe anhand ihrer ID.
+     * 
      * @param id Die ID der Modulgruppe.
      * @return Die gefundene Modulgruppe.
      * @throws ResponseStatusException Falls die Modulgruppe nicht gefunden wird.
@@ -60,6 +61,7 @@ public class ModulgruppeController {
 
     /**
      * Methode zum Abrufen aller Modulgruppen.
+     * 
      * @param response Der HTTP-Response.
      * @return Eine Liste aller Modulgruppen.
      */
@@ -67,15 +69,18 @@ public class ModulgruppeController {
     public List<Modulgruppe> getAll(HttpServletResponse response) {
         // Erhalte eine Liste aller Modulgruppen
         List<Modulgruppe> list = modulgruppeService.getModulgruppen();
-        // Setze den Content-Range Header im Response, um die Anzahl der Modulgruppen anzugeben
+        // Setze den Content-Range Header im Response, um die Anzahl der Modulgruppen
+        // anzugeben
         response.setHeader("Content-Range", "1-" + list.size());
         return list;
     }
 
     /**
      * Methode zum Erstellen einer neuen Modulgruppe.
+     * 
      * @param modulgruppe Die zu erstellende Modulgruppe.
-     * @return Eine ResponseEntity, die die erstellte Modulgruppe und den HTTP-Statuscode enthält.
+     * @return Eine ResponseEntity, die die erstellte Modulgruppe und den
+     *         HTTP-Statuscode enthält.
      * @throws ResponseStatusException Falls der Benutzer nicht autorisiert ist.
      */
     @PostMapping("")
@@ -87,7 +92,8 @@ public class ModulgruppeController {
 
         // Erlaubt sind MITARBEITER und ADMIN
         if (!nutzer.getRole().equals("MITARBEITER") && !nutzer.getRole().equals("ADMIN")) {
-            // Wenn der Benutzer nicht autorisiert ist, wirf einen Fehler 401 - Nicht autorisiert
+            // Wenn der Benutzer nicht autorisiert ist, wirf einen Fehler 401 - Nicht
+            // autorisiert
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
         }
 
@@ -108,7 +114,8 @@ public class ModulgruppeController {
      * Validiert das übergebene Modulgruppe-Objekt.
      * 
      * @param modulgruppe das zu validierende Modulgruppe-Objekt
-     * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler vorliegen
+     * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler
+     *         vorliegen
      */
     static List<String> validateModulgruppe(Modulgruppe modulgruppe) {
         List<String> errors = new ArrayList<>();

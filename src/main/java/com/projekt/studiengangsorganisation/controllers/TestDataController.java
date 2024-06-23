@@ -24,7 +24,7 @@ import com.projekt.studiengangsorganisation.service.PruefungsordnungService;
 import com.projekt.studiengangsorganisation.service.StudentService;
 import com.projekt.studiengangsorganisation.service.StudiengangService;
 
-@RequestMapping("/testdata")
+@RequestMapping("/api/testdata")
 @RestController
 public class TestDataController {
 

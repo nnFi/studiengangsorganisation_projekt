@@ -15,7 +15,7 @@ import com.projekt.studiengangsorganisation.repository.FachbereichRepository;
  */
 @Service
 public class FachbereichService {
-    
+
     @Autowired
     FachbereichRepository fachbereichRepository;
 
@@ -28,6 +28,7 @@ public class FachbereichService {
 
     /**
      * Holt alle Fachbereiche.
+     * 
      * @return Eine Liste aller vorhandenen Fachbereiche.
      */
     public List<Fachbereich> getFachbereiche() {
@@ -36,15 +37,29 @@ public class FachbereichService {
 
     /**
      * Holt einen Fachbereich anhand seiner ID.
+     * 
      * @param id Die ID des Fachbereichs.
-     * @return Ein Optional, das den gefundenen Fachbereich enthält, falls vorhanden.
+     * @return Ein Optional, das den gefundenen Fachbereich enthält, falls
+     *         vorhanden.
      */
     public Optional<Fachbereich> getFachbereich(Long id) {
         return fachbereichRepository.findById(id);
     }
 
     /**
+     * Holt einen Fachbereich anhand seiner ID.
+     * 
+     * @param name Der Name des Fachbereichs.
+     * @return Ein Optional, das den gefundenen Fachbereich enthält, falls
+     *         vorhanden.
+     */
+    public Optional<Fachbereich> getFachbereichByName(String name) {
+        return fachbereichRepository.findByName(name);
+    }
+
+    /**
      * Speichert einen Fachbereich und aktualisiert die Änderungen.
+     * 
      * @param fachbereich Der Fachbereich, der gespeichert werden soll.
      * @return Der gespeicherte und aktualisierte Fachbereich.
      */
@@ -54,7 +69,8 @@ public class FachbereichService {
 
     /**
      * Fügt Testdaten für einen Fachbereich ein.
-     * @param referent Der Referent des Fachbereichs.
+     * 
+     * @param referent       Der Referent des Fachbereichs.
      * @param stellvertreter Der Stellvertreter des Fachbereichs.
      * @return Der erstellte Fachbereich mit Testdaten.
      */

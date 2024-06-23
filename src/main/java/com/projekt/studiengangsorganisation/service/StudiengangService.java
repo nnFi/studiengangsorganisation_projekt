@@ -30,6 +30,7 @@ public class StudiengangService {
 
     /**
      * Holt alle Studiengänge.
+     * 
      * @return Eine Liste aller vorhandenen Studiengänge.
      */
     public List<Studiengang> getStudiengaenge() {
@@ -38,15 +39,30 @@ public class StudiengangService {
 
     /**
      * Holt einen Studiengang anhand seiner ID.
+     * 
      * @param id Die ID des Studiengangs.
-     * @return Ein Optional, das den gefundenen Studiengang enthält, falls vorhanden.
+     * @return Ein Optional, das den gefundenen Studiengang enthält, falls
+     *         vorhanden.
      */
     public Optional<Studiengang> getStudiengang(Long id) {
         return studiengangRepository.findById(id);
     }
 
     /**
+     * Holt einen Studiengang anhand von Name und Abschluss.
+     * 
+     * @param name      Der Name des Studiengangs.
+     * @param abschluss Der Abschluss des Studiengangs.
+     * @return Ein Optional, das den gefundenen Studiengang enthält, falls
+     *         vorhanden.
+     */
+    public Optional<Studiengang> getStudiengang(String name, Abschluss abschluss) {
+        return studiengangRepository.findByNameAndAbschluss(name, abschluss);
+    }
+
+    /**
      * Speichert einen Studiengang und aktualisiert die Änderungen.
+     * 
      * @param studiengang Der Studiengang, der gespeichert werden soll.
      * @return Der gespeicherte und aktualisierte Studiengang.
      */
@@ -56,9 +72,10 @@ public class StudiengangService {
 
     /**
      * Fügt Testdaten für einen Studiengang ein.
-     * @param leiter Der Leiter des Studiengangs.
+     * 
+     * @param leiter         Der Leiter des Studiengangs.
      * @param stellvertreter Der stellvertretende Leiter des Studiengangs.
-     * @param fachbereich Der Fachbereich, zu dem der Studiengang gehört.
+     * @param fachbereich    Der Fachbereich, zu dem der Studiengang gehört.
      * @return Der erstellte Studiengang mit Testdaten.
      */
     public Studiengang insertTestData(Mitarbeiter leiter, Mitarbeiter stellvertreter, Fachbereich fachbereich) {

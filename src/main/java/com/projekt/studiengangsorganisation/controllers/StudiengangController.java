@@ -121,7 +121,7 @@ public class StudiengangController {
      *                                 wird ein 404 Fehler zurückgegeben.
      */
     @PostMapping("")
-    public ResponseEntity<Studiengang> createFachbereich(@RequestBody Studiengang studiengang) {
+    public ResponseEntity<Studiengang> createStudiengang(@RequestBody Studiengang studiengang) {
         // Authentifizierung des Benutzers über den SecurityContextHolder
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -157,6 +157,12 @@ public class StudiengangController {
         if (!(fachbereich.getReferent().getId() == nutzer.getId()
                 || fachbereich.getStellvertreter().getId() == nutzer.getId() || nutzer.getRole().equals("ADMIN"))) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
+        }
+
+        // Überprüfen, ob es bereits einen Studiengang mit dem gleichen Namen und
+        // Abschluss gibt
+        if (studiengangService.getStudiengang(studiengang.getName(), studiengang.getAbschluss()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Studiengang bereits vorhanden");
         }
 
         // Die Informationen für Leiter, stellvertretenden Leiter und Fachbereich im

@@ -105,7 +105,7 @@ public class PruefungsordnungController {
      * @return Die erstellte Pruefungsordnung.
      */
     @PostMapping("")
-    public ResponseEntity<Pruefungsordnung> createFachbereich(@RequestBody Pruefungsordnung pruefungsordnung) {
+    public ResponseEntity<Pruefungsordnung> createPruefgungsordnung(@RequestBody Pruefungsordnung pruefungsordnung) {
         // Den aktuellen Benutzer über die Authentifizierungsinformationen abrufen
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

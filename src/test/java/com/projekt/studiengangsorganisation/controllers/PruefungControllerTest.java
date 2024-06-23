@@ -23,11 +23,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.projekt.studiengangsorganisation.entity.Admin;
-import com.projekt.studiengangsorganisation.entity.Mitarbeiter;
 import com.projekt.studiengangsorganisation.entity.Modul;
 import com.projekt.studiengangsorganisation.entity.Nutzer;
 import com.projekt.studiengangsorganisation.entity.Pruefung;
 import com.projekt.studiengangsorganisation.entity.Pruefungsordnung;
+import com.projekt.studiengangsorganisation.entity.Student;
 import com.projekt.studiengangsorganisation.service.ModulService;
 import com.projekt.studiengangsorganisation.service.NutzerService;
 import com.projekt.studiengangsorganisation.service.PruefungService;
@@ -220,7 +220,7 @@ public class PruefungControllerTest {
     @Test
     public void testCreatePruefung_NotAuthorized_ThrowsResponseStatusException() {
         // Mocken eines nicht autorisierten Nutzers (Mitarbeiter)
-        Nutzer nutzer = new Mitarbeiter();
+        Nutzer nutzer = new Student();
         nutzer.setUsername("sam.student");
         nutzer.setRole("STUDENT");
 

@@ -40,6 +40,9 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class PruefungsordnungControllerTest {
 
+    // Mock-Objekte für die Abhängigkeiten der MitarbeiterController-Klasse
+    // Mock: Simuliert eine Abhängigkeit, kontrolliert Antwrten, überprüft
+    // Interaktionen
     @Mock
     private PruefungsordnungService pruefungsordnungService;
 
@@ -148,6 +151,7 @@ public class PruefungsordnungControllerTest {
         assertEquals(pruefungsordnung, response.getBody());
     }
 
+    @SuppressWarnings("null")
     @Test
     public void testUpdatePruefungsordnung_Administrator_SuccessfullyUpdated() {
         Nutzer admin = new Admin();

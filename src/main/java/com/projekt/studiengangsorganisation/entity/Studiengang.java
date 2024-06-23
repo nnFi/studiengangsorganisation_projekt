@@ -37,7 +37,7 @@ public class Studiengang {
     /**
      * Der Name des Studiengangs.
      */
-    @Column(name = "studiengang_name", unique = true)
+    @Column(name = "studiengang_name")
     private String name;
 
     /**

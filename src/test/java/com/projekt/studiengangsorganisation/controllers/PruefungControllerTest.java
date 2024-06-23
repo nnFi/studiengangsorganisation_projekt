@@ -38,6 +38,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Testklasse für den PruefungController.
  * Verwendet Mockito, um Abhängigkeiten zu mocken und das Verhalten der Methoden zu testen.
+ * 
  */
 public class PruefungControllerTest {
 

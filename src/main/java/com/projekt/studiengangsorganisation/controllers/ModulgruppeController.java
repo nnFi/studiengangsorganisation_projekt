@@ -110,7 +110,7 @@ public class ModulgruppeController {
      * @param modulgruppe das zu validierende Modulgruppe-Objekt
      * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler vorliegen
      */
-    static List<String> validateModulgruppe(Modulgruppe modulgruppe) {
+    List<String> validateModulgruppe(Modulgruppe modulgruppe) {
         List<String> errors = new ArrayList<>();
 
         // Namensprüfung

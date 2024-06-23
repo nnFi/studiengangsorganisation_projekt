@@ -218,7 +218,7 @@ public class FachgruppeController {
      * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler
      *         vorliegen
      */
-    static List<String> validateFachgruppe(Fachgruppe fachgruppe) {
+    List<String> validateFachgruppe(Fachgruppe fachgruppe) {
         List<String> errors = new ArrayList<>();
 
         // Namensprüfung

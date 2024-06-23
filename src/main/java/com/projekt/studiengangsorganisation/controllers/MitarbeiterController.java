@@ -46,6 +46,7 @@ public class MitarbeiterController {
 
     /**
      * Methode zum Abrufen eines Mitarbeiters anhand seiner ID.
+     * 
      * @param id Die ID des Mitarbeiters.
      * @return Der Mitarbeiter, falls gefunden.
      * @throws ResponseStatusException Falls der Mitarbeiter nicht gefunden wird.
@@ -66,6 +67,7 @@ public class MitarbeiterController {
 
     /**
      * Methode zum Abrufen aller Mitarbeiter.
+     * 
      * @param response Der HTTP-Response.
      * @return Eine Liste aller Mitarbeiter.
      */
@@ -74,7 +76,8 @@ public class MitarbeiterController {
         // Erhalte eine Liste aller Mitarbeiter
         List<Mitarbeiter> list = mitarbeiterService.getMitarbeiter();
 
-        // Setze den Content-Range Header im Response, um die Anzahl der Mitarbeiter anzugeben
+        // Setze den Content-Range Header im Response, um die Anzahl der Mitarbeiter
+        // anzugeben
         response.setHeader("Content-Range", "1-" + list.size());
 
         // Gib die Liste der Mitarbeiter zurück
@@ -83,13 +86,16 @@ public class MitarbeiterController {
 
     /**
      * Methode zum Erstellen eines neuen Mitarbeiters.
+     * 
      * @param mitarbeiter Der Mitarbeiter, der erstellt werden soll.
-     * @return Eine ResponseEntity, die den erstellten Mitarbeiter und den HTTP-Statuscode enthält.
+     * @return Eine ResponseEntity, die den erstellten Mitarbeiter und den
+     *         HTTP-Statuscode enthält.
      * @throws ResponseStatusException Falls der Benutzer kein Administrator ist.
      */
     @PostMapping("")
     public ResponseEntity<Mitarbeiter> createMitarbeiter(@RequestBody Mitarbeiter mitarbeiter) {
-        // Überprüfe, ob der Benutzer ein Administrator ist, um einen Mitarbeiter zu erstellen
+        // Überprüfe, ob der Benutzer ein Administrator ist, um einen Mitarbeiter zu
+        // erstellen
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<Nutzer> nutzer = nutzerService.getNutzerByUsername(authentication.getName());
 
@@ -98,7 +104,8 @@ public class MitarbeiterController {
             // Verschlüssele das Passwort des Mitarbeiters
             mitarbeiter.setPassword(passwordEncoder.encode(mitarbeiter.getPassword()));
             // Setze den Benutzernamen des Mitarbeiters basierend auf Vorname und Nachname
-            mitarbeiter.setUsername(mitarbeiter.getVorname().toLowerCase() + "." + mitarbeiter.getNachname().toLowerCase());
+            mitarbeiter.setUsername(
+                    mitarbeiter.getVorname().toLowerCase() + "." + mitarbeiter.getNachname().toLowerCase());
 
             // Validierungslogik für die Eingabefelder
             List<String> errors = validateMitarbeiter(mitarbeiter);
@@ -113,20 +120,24 @@ public class MitarbeiterController {
             return new ResponseEntity<>(mitarbeiter, HttpStatus.CREATED);
         } else {
             // Andernfalls wirf einen Fehler 404 - Ressource nicht gefunden
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Nur Administratoren können Mitarbeiter erstellen");
         }
     }
 
     /**
      * Methode zum Aktualisieren eines Mitarbeiters.
-     * @param id                Die ID des zu aktualisierenden Mitarbeiters.
+     * 
+     * @param id                 Die ID des zu aktualisierenden Mitarbeiters.
      * @param updatedMitarbeiter Der aktualisierte Mitarbeiter.
-     * @return Eine ResponseEntity, die den aktualisierten Mitarbeiter und den HTTP-Statuscode enthält.
-     * @throws ResponseStatusException Falls der Mitarbeiter nicht gefunden wird oder der Benutzer kein Administrator ist.
+     * @return Eine ResponseEntity, die den aktualisierten Mitarbeiter und den
+     *         HTTP-Statuscode enthält.
+     * @throws ResponseStatusException Falls der Mitarbeiter nicht gefunden wird
+     *                                 oder der Benutzer kein Administrator ist.
      */
     @PutMapping("/{id}")
     public ResponseEntity<Mitarbeiter> updateMitarbeiter(@PathVariable String id,
-                                                         @RequestBody Mitarbeiter updatedMitarbeiter) {
+            @RequestBody Mitarbeiter updatedMitarbeiter) {
         // Versuche, den vorhandenen Mitarbeiter anhand seiner ID zu erhalten
         Optional<Mitarbeiter> existingMitarbeiter = mitarbeiterService.getMitarbeiter(Long.parseLong(id));
 
@@ -139,7 +150,7 @@ public class MitarbeiterController {
             Optional<Nutzer> nutzer = nutzerService.getNutzerByUsername(authentication.getName());
             if (!nutzer.isPresent() || !nutzer.get().getRole().equals("ADMIN")) {
                 // Wenn der Benutzer kein Administrator ist, wirf einen Fehler 403 - Verboten
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         "Nur Administratoren können Mitarbeiter aktualisieren");
             }
 
@@ -153,7 +164,8 @@ public class MitarbeiterController {
             mitarbeiter.setVorname(updatedMitarbeiter.getVorname());
             mitarbeiter.setNachname(updatedMitarbeiter.getNachname());
             mitarbeiter.setUsername(
-                    (updatedMitarbeiter.getVorname().toLowerCase() + "." + updatedMitarbeiter.getNachname().toLowerCase()).replace("ß", "ss"));
+                    (updatedMitarbeiter.getVorname().toLowerCase() + "."
+                            + updatedMitarbeiter.getNachname().toLowerCase()).replace("ß", "ss"));
 
             // Speichere die aktualisierten Mitarbeiterdaten
             mitarbeiterService.saveAndFlush(mitarbeiter);
@@ -170,7 +182,8 @@ public class MitarbeiterController {
      * Validiert das übergebene Mitarbeiter-Objekt.
      * 
      * @param mitarbeiter das zu validierende Mitarbeiter-Objekt
-     * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler vorliegen
+     * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler
+     *         vorliegen
      */
     List<String> validateMitarbeiter(Mitarbeiter mitarbeiter) {
         List<String> errors = new ArrayList<>();
@@ -192,16 +205,18 @@ public class MitarbeiterController {
         if (mitarbeiter.getNachname() != null && mitarbeiter.getNachname().length() < 2) {
             errors.add("Das Feld 'Nachname' muss mindestens 2 Zeichen lang sein.");
         }
-        
+
         // Benutzername-Formatprüfung
-        String username = (mitarbeiter.getVorname().toLowerCase() + "." + mitarbeiter.getNachname().toLowerCase()).replace("ß", "ss");
+        String username = (mitarbeiter.getVorname().toLowerCase() + "." + mitarbeiter.getNachname().toLowerCase())
+                .replace("ß", "ss");
         if (!username.matches("^[a-z0-9]+\\.[a-z0-9]+$")) {
             errors.add("Das Feld 'Username' hat ein ungültiges Format.");
         }
 
         // Passwort prüfen
         if (!PasswordValidator.validate(mitarbeiter.getPassword())) {
-            errors.add("Passwort entspricht nicht den Anforderungen. (Groß- und Kleinbuchstaben, Sonderzeichen, Zahlen, Mindeslänge 8)");
+            errors.add(
+                    "Passwort entspricht nicht den Anforderungen. (Groß- und Kleinbuchstaben, Sonderzeichen, Zahlen, Mindeslänge 8)");
         }
 
         return errors;

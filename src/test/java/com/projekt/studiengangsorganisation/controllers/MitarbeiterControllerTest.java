@@ -30,12 +30,14 @@ import com.projekt.studiengangsorganisation.service.NutzerService;
 
 /**
  * Testklasse für den MitarbeiterController.
- * Verwendet Mockito, um Abhängigkeiten zu mocken und das Verhalten der Methoden zu testen.
+ * Verwendet Mockito, um Abhängigkeiten zu mocken und das Verhalten der Methoden
+ * zu testen.
  */
 public class MitarbeiterControllerTest {
 
     // Mock-Objekte für die Abhängigkeiten der MitarbeiterController-Klasse
-    // Mock: Simuliert eine Abhängigkeit, kontrolliert Antwrten, überprüft Interaktionen
+    // Mock: Simuliert eine Abhängigkeit, kontrolliert Antwrten, überprüft
+    // Interaktionen
     @Mock
     private MitarbeiterService mitarbeiterService;
 
@@ -112,7 +114,7 @@ public class MitarbeiterControllerTest {
      * @return void
      */
     @Test
-    public void testCreateMitarbeiter_Administrator_SuccessfullyCreated() {        
+    public void testCreateMitarbeiter_Administrator_SuccessfullyCreated() {
         // Test für das Erstellen eines Mitarbeiters durch einen Administrator
         Nutzer admin = new Admin();
         admin.setUsername("test.admin");
@@ -143,7 +145,8 @@ public class MitarbeiterControllerTest {
 
     /**
      * Testet die Methode createMitarbeiter durch einen Nicht-Administrator.
-     * Erwartet, dass der Mitarbeiter nicht erstellt wird und eine Ausnahme ausgelöst wird.
+     * Erwartet, dass der Mitarbeiter nicht erstellt wird und eine Ausnahme
+     * ausgelöst wird.
      * 
      * @return void
      */
@@ -154,7 +157,8 @@ public class MitarbeiterControllerTest {
         user.setUsername("mia.mitarbeiter1");
         user.setRole("MITARBEITER");
 
-        // Setzt den Sicherheitskontext, um den Nicht-Administrator-Benutzer zurückzugeben
+        // Setzt den Sicherheitskontext, um den Nicht-Administrator-Benutzer
+        // zurückzugeben
         when(authentication.getName()).thenReturn("mia.mitarbeiter1");
         when(nutzerService.getNutzerByUsername("mia.mitarbeiter1")).thenReturn(Optional.of(user));
 
@@ -220,7 +224,8 @@ public class MitarbeiterControllerTest {
 
     /**
      * Testet die Methode updateMitarbeiter durch einen Nicht-Administrator.
-     * Erwartet, dass der Mitarbeiter nicht aktualisiert wird und eine Ausnahme ausgelöst wird.
+     * Erwartet, dass der Mitarbeiter nicht aktualisiert wird und eine Ausnahme
+     * ausgelöst wird.
      * 
      * @return void
      */
@@ -231,7 +236,8 @@ public class MitarbeiterControllerTest {
         user.setUsername("mia.mitarbeiter1");
         user.setRole("MITARBEITER");
 
-        // Setzt den Sicherheitskontext, um den Nicht-Administrator-Benutzer zurückzugeben
+        // Setzt den Sicherheitskontext, um den Nicht-Administrator-Benutzer
+        // zurückzugeben
         when(authentication.getName()).thenReturn("mia.mitarbeiter1");
         when(nutzerService.getNutzerByUsername("mia.mitarbeiter1")).thenReturn(Optional.of(user));
 
@@ -256,16 +262,16 @@ public class MitarbeiterControllerTest {
         });
 
         // Assertions
-        assertEquals(HttpStatus.FORBIDDEN, exception.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
     }
 
     /**
      * Testet die Validierung eines Mitarbeiters mit gültigen Eingaben.
      * Erwartet, dass keine Validierungsfehler auftreten.
      *
-     * @param vorname   der Vorname des Mitarbeiters
-     * @param nachname  der Nachname des Mitarbeiters
-     * @param password  das Passwort des Mitarbeiters
+     * @param vorname  der Vorname des Mitarbeiters
+     * @param nachname der Nachname des Mitarbeiters
+     * @param password das Passwort des Mitarbeiters
      */
     @ParameterizedTest
     @CsvSource({
@@ -293,9 +299,9 @@ public class MitarbeiterControllerTest {
      * Testet die Validierung eines Mitarbeiters mit ungültigen Eingaben.
      * Erwartet, dass Validierungsfehler auftreten.
      *
-     * @param vorname   der Vorname des Mitarbeiters
-     * @param nachname  der Nachname des Mitarbeiters
-     * @param password  das Passwort des Mitarbeiters
+     * @param vorname  der Vorname des Mitarbeiters
+     * @param nachname der Nachname des Mitarbeiters
+     * @param password das Passwort des Mitarbeiters
      */
     @ParameterizedTest
     @CsvSource({

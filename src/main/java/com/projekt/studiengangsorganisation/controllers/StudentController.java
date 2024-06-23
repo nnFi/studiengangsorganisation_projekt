@@ -109,7 +109,8 @@ public class StudentController {
             return new ResponseEntity<>(student, HttpStatus.CREATED);
         } else {
             // Andernfalls: Nicht gefunden Fehler
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Nur Administratoren können Studenten erstellen");
         }
     }
 
@@ -134,7 +135,7 @@ public class StudentController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             Optional<Nutzer> nutzer = nutzerService.getNutzerByUsername(authentication.getName());
             if (!nutzer.isPresent() || !nutzer.get().getRole().equals("ADMIN")) {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         "Nur Administratoren können Studenten aktualisieren");
             }
 
@@ -148,7 +149,8 @@ public class StudentController {
             student.setVorname(updatedStudent.getVorname());
             student.setNachname(updatedStudent.getNachname());
             student.setUsername(
-                    (updatedStudent.getVorname().toLowerCase() + "." + updatedStudent.getNachname().toLowerCase()).replace("ß", "ss"));
+                    (updatedStudent.getVorname().toLowerCase() + "." + updatedStudent.getNachname().toLowerCase())
+                            .replace("ß", "ss"));
 
             // Speichere die aktualisierten Studentendaten
             studentService.saveAndFlush(student);
@@ -164,7 +166,8 @@ public class StudentController {
      * Validiert das übergebene Mitarbeiter-Objekt.
      * 
      * @param student das zu validierende Student-Objekt
-     * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler vorliegen
+     * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler
+     *         vorliegen
      */
     List<String> validateStudent(Student student) {
         List<String> errors = new ArrayList<>();
@@ -188,14 +191,16 @@ public class StudentController {
         }
 
         // Benutzername-Formatprüfung
-        String username = (student.getVorname().toLowerCase() + "." + student.getNachname().toLowerCase()).replace("ß", "ss");
+        String username = (student.getVorname().toLowerCase() + "." + student.getNachname().toLowerCase()).replace("ß",
+                "ss");
         if (!username.matches("^[a-z0-9]+\\.[a-z0-9]+$")) {
             errors.add("Das Feld 'Username' hat ein ungültiges Format.");
         }
 
         // Passwort prüfen
         if (PasswordValidator.validate(student.getPassword())) {
-            errors.add("Passwort entspricht nicht den Anforderungen. (Groß- und Kleinbuchstaben, Sonderzeichen, Zahlen, Mindeslänge 8)");
+            errors.add(
+                    "Passwort entspricht nicht den Anforderungen. (Groß- und Kleinbuchstaben, Sonderzeichen, Zahlen, Mindeslänge 8)");
         }
 
         return errors;

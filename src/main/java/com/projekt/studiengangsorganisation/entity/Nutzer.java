@@ -1,6 +1,7 @@
 package com.projekt.studiengangsorganisation.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
@@ -49,6 +50,7 @@ public abstract class Nutzer {
      * Das Passwort des Nutzers.
      */
     @Column(name = "password")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     /**
@@ -59,6 +61,7 @@ public abstract class Nutzer {
 
     /**
      * Gibt die ID des Nutzers zurück.
+     * 
      * @return die ID des Nutzers.
      */
     public Long getId() {
@@ -67,6 +70,7 @@ public abstract class Nutzer {
 
     /**
      * Setzt die ID des Nutzers.
+     * 
      * @param id die ID des Nutzers.
      */
     public void setId(Long id) {
@@ -75,6 +79,7 @@ public abstract class Nutzer {
 
     /**
      * Gibt den Nachnamen des Nutzers zurück.
+     * 
      * @return der Nachname des Nutzers.
      */
     public String getNachname() {
@@ -83,6 +88,7 @@ public abstract class Nutzer {
 
     /**
      * Setzt den Nachnamen des Nutzers.
+     * 
      * @param nachname der Nachname des Nutzers.
      */
     public void setNachname(String nachname) {
@@ -91,6 +97,7 @@ public abstract class Nutzer {
 
     /**
      * Gibt den Vornamen des Nutzers zurück.
+     * 
      * @return der Vorname des Nutzers.
      */
     public String getVorname() {
@@ -99,6 +106,7 @@ public abstract class Nutzer {
 
     /**
      * Setzt den Vornamen des Nutzers.
+     * 
      * @param vorname der Vorname des Nutzers.
      */
     public void setVorname(String vorname) {
@@ -107,6 +115,7 @@ public abstract class Nutzer {
 
     /**
      * Gibt den Benutzernamen des Nutzers zurück.
+     * 
      * @return der Benutzername des Nutzers.
      */
     public String getUsername() {
@@ -115,6 +124,7 @@ public abstract class Nutzer {
 
     /**
      * Setzt den Benutzernamen des Nutzers.
+     * 
      * @param username der Benutzername des Nutzers.
      */
     public void setUsername(String username) {
@@ -123,6 +133,7 @@ public abstract class Nutzer {
 
     /**
      * Gibt das Passwort des Nutzers zurück.
+     * 
      * @return das Passwort des Nutzers.
      */
     public String getPassword() {
@@ -131,6 +142,7 @@ public abstract class Nutzer {
 
     /**
      * Setzt das Passwort des Nutzers.
+     * 
      * @param password das Passwort des Nutzers.
      */
     public void setPassword(String password) {
@@ -139,6 +151,7 @@ public abstract class Nutzer {
 
     /**
      * Gibt die Rolle des Nutzers zurück.
+     * 
      * @return die Rolle des Nutzers.
      */
     public String getRole() {
@@ -147,6 +160,7 @@ public abstract class Nutzer {
 
     /**
      * Setzt die Rolle des Nutzers.
+     * 
      * @param role die Rolle des Nutzers.
      */
     public void setRole(String role) {

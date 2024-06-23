@@ -42,6 +42,9 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class PruefungControllerTest {
 
+    // Mock-Objekte für die Abhängigkeiten der MitarbeiterController-Klasse
+    // Mock: Simuliert eine Abhängigkeit, kontrolliert Antwrten, überprüft
+    // Interaktionen
     @Mock
     private PruefungService pruefungService;
 

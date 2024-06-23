@@ -117,7 +117,7 @@ public class ModulgruppeController {
      * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler
      *         vorliegen
      */
-    static List<String> validateModulgruppe(Modulgruppe modulgruppe) {
+    List<String> validateModulgruppe(Modulgruppe modulgruppe) {
         List<String> errors = new ArrayList<>();
 
         // Namensprüfung

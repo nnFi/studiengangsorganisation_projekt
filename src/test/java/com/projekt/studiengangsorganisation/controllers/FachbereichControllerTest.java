@@ -203,6 +203,37 @@ public class FachbereichControllerTest {
     }
 
     /**
+     * Testet die Methode createFachbereich durch einen Studenten.
+     * Erwartet, dass der Fachbereich nicht erstellt wird.
+     * 
+     * @return void
+     */
+    @Test
+    public void testCreateFachbereich_Student_Unauthorized() {
+        // Mocken eines Student-Nutzers
+        Nutzer student = new Student();
+        student.setUsername("test.student");
+        student.setRole("STUDENT");
+
+        when(authentication.getName()).thenReturn("test.student");
+        when(nutzerService.getNutzerByUsername("test.student")).thenReturn(Optional.of(student));
+
+        // Mocken eines zu erstellenden Fachbereichs
+        Fachbereich fachbereich = new Fachbereich();
+        fachbereich.setName("Test Fachbereich");
+        fachbereich.setReferentId(1L);
+        fachbereich.setStellvertreterId(2L);
+
+        // Erwartung einer ResponseStatusException
+        ResponseStatusException response = assertThrows(ResponseStatusException.class, () -> {
+            controller.createFachbereich(fachbereich);
+        });
+
+        // Überprüfung, ob der Statuscode der Exception korrekt ist
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+
+    /**
      * Testet die Methode updateFachbreich durch einen Administrator.
      * Erwartet, dass der Fachbereich erfolgreich aktualisiert wird.
      * 

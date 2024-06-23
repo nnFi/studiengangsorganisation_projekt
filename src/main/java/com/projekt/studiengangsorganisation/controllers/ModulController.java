@@ -166,12 +166,13 @@ public class ModulController {
         Fachgruppe fachgruppe = fachgruppeService
                 .getFachgruppe(modul.getFachgruppeId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fachgruppe nicht gefunden"));
-        
+
         // Überprüfe, ob der Benutzer berechtigt ist, das Modul für die Fachgruppe zu
-        // erstellen. Nur der Fachbereichsreferent/stellvertreter oder der Admin sind berechtigt,
+        // erstellen. Nur der Fachbereichsreferent/stellvertreter oder der Admin sind
+        // berechtigt,
         // Module zu erstellen.
-        if (!fachgruppe.getFachbereich().getReferentId().equals(nutzer.getId())
-                && !fachgruppe.getFachbereich().getStellvertreterId().equals(nutzer.getId())
+        if (fachgruppe.getFachbereich().getReferentId() != nutzer.getId()
+                && fachgruppe.getFachbereich().getStellvertreterId() != nutzer.getId()
                 && !nutzer.getRole().equals("ADMIN")) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
         }
@@ -198,7 +199,7 @@ public class ModulController {
         savedModul.setModulnummer(modulnummer);
 
         // Validierungslogik für die Eingabefelder
-        List<String> errors = validateModul (modul);
+        List<String> errors = validateModul(modul);
         if (!errors.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
         }
@@ -244,10 +245,10 @@ public class ModulController {
             Modul modul = existingModul.get();
 
             Fachgruppe fachgruppe = fachgruppeService
-                .getFachgruppe(modul.getFachgruppeId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fachgruppe nicht gefunden"));
+                    .getFachgruppe(modul.getFachgruppeId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fachgruppe nicht gefunden"));
 
-            // Überprüfe, ob der Benutzer Fachbereichsreferent/Stellvertreter, 
+            // Überprüfe, ob der Benutzer Fachbereichsreferent/Stellvertreter,
             // Fachgruppenreferent/Stellvertreter, Modulbeauftrager oder Admin ist.
             if (!(fachgruppe.getReferent().getId() == nutzer.getId()
                     || fachgruppe.getStellvertreter().getId() == nutzer.getId()
@@ -255,8 +256,8 @@ public class ModulController {
                     || fachgruppe.getFachbereich().getStellvertreter().getId() == nutzer.getId()
                     || modul.getModulbeauftragter().getId() == nutzer.getId()
                     || nutzer.getRole().equals("ADMIN"))) {
-                // Falls der Benutzer nicht der Fachbereichsreferent/Stellvertreter, 
-                // Fachgruppenreferent/Stellvertreter, Modulbeauftrager des Moduls ist oder kein 
+                // Falls der Benutzer nicht der Fachbereichsreferent/Stellvertreter,
+                // Fachgruppenreferent/Stellvertreter, Modulbeauftrager des Moduls ist oder kein
                 // Administrator ist, einen 401 Fehler zurückgeben
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
             }
@@ -298,7 +299,8 @@ public class ModulController {
      * Validiert das übergebene Modul-Objekt.
      * 
      * @param modul das zu validierende Modul-Objekt
-     * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler vorliegen
+     * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler
+     *         vorliegen
      */
     List<String> validateModul(Modul modul) {
         List<String> errors = new ArrayList<>();
@@ -332,13 +334,13 @@ public class ModulController {
         // Überprüfen, ob Art ausgewählt ist
         if (modul.getArt() == null) {
             errors.add("Das Feld 'Art' ist erforderlich.");
-        } 
-        
+        }
+
         // Überprüfen, ob Abschluss ausgewählt ist
         if (modul.getAbschluss() == null) {
             errors.add("Das Feld 'Abschluss' ist erforderlich.");
-        }  
-        
+        }
+
         // Überprüfen, ob Beschreibung vorhanden ist
         if (modul.getBeschreibung() == null || modul.getBeschreibung().isEmpty()) {
             errors.add("Das Feld 'Beschreibung' ist erforderlich.");
@@ -368,5 +370,5 @@ public class ModulController {
 
         return errors;
     }
-    
+
 }

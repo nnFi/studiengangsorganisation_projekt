@@ -71,7 +71,7 @@ public class FachgruppeControllerTest {
         Fachbereich fachbereich = new Fachbereich();
         fachbereich.setId(50L);
         fachbereich.setName("Informatik");
-        
+
         Fachgruppe fachgruppe = new Fachgruppe();
         fachgruppe.setId(1L);
         fachgruppe.setReferent(referent);
@@ -186,8 +186,8 @@ public class FachgruppeControllerTest {
 
         // Assertions
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(updatedFachgruppe.getReferentId(), response.getBody().getReferentId());
-        assertEquals(updatedFachgruppe.getStellvertreterId(), response.getBody().getStellvertreterId());
+        assertEquals(updatedFachgruppe.getReferentId(), response.getBody().getReferent().getId());
+        assertEquals(updatedFachgruppe.getStellvertreterId(), response.getBody().getStellvertreter().getId());
     }
 
     @Test

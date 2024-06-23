@@ -53,7 +53,7 @@ public class FachbereichControllerTest {
     private MitarbeiterService mitarbeiterService;
 
     @InjectMocks
-    private FachbereichController controller; // Der zu testende Controller
+    private FachbereichController controller;
 
     @Mock
     private Authentication authentication;

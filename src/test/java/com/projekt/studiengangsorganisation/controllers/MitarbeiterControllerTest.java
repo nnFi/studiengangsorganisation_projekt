@@ -65,12 +65,9 @@ public class MitarbeiterControllerTest {
     @SuppressWarnings("deprecation")
     @BeforeEach
     public void setup() {
-        // Initialisiert die Mock-Objekte
-        MockitoAnnotations.initMocks(this);
-
-        // Setzt den Sicherheitskontext für die Tests
-        SecurityContextHolder.setContext(securityContext);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
+        MockitoAnnotations.initMocks(this); // Initialisierung der Mocks
+        SecurityContextHolder.setContext(securityContext); // Setzen des SecurityContext
+        when(securityContext.getAuthentication()).thenReturn(authentication); // Mocken der Authentifizierung
     }
 
     /**

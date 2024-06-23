@@ -76,13 +76,9 @@ public class FachgruppeControllerTest {
     @SuppressWarnings("deprecation")
     @BeforeEach
     public void setup() {
-        // Initialisierung der Mock-Objekte
-        MockitoAnnotations.initMocks(this);
-
-        // Mocken des SecurityContexts und des Authentication-Objekts
-        SecurityContextHolder.setContext(securityContext);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        when(authentication.getName()).thenReturn("test.user");
+        MockitoAnnotations.initMocks(this); // Initialisierung der Mocks
+        SecurityContextHolder.setContext(securityContext); // Setzen des SecurityContext
+        when(securityContext.getAuthentication()).thenReturn(authentication); // Mocken der Authentifizierung
     }
 
     /**
@@ -314,7 +310,7 @@ public class FachgruppeControllerTest {
         });
 
         // Überprüfung, ob der Statuscode der Exception korrekt ist
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 
     /**

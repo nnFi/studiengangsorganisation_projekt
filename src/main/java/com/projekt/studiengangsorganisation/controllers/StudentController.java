@@ -88,6 +88,8 @@ public class StudentController {
      */
     @PostMapping("")
     public ResponseEntity<Student> createStudent(@RequestBody Student student) {
+        // Überprüfe, ob der Benutzer ein Administrator ist, um einen Mitarbeiter zu
+        // erstellen
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<Nutzer> nutzer = nutzerService.getNutzerByUsername(authentication.getName());
 
@@ -98,10 +100,10 @@ public class StudentController {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
             }
 
-            // Falls der Benutzer ein ADMIN ist
+            // Verschlüssele das Passwort des Studenten
             student.setPassword(passwordEncoder.encode(student.getPassword())); // Passwort kodieren
-            student.setUsername(student.getVorname().toLowerCase() + "." + student.getNachname().toLowerCase()); // Benutzername
-                                                                                                                 // erstellen
+            // Setze den Benutzernamen des Studenten basierend auf Vorname und Nachname
+            student.setUsername(student.getVorname().toLowerCase() + "." + student.getNachname().toLowerCase());
 
             // Student speichern
             studentService.saveAndFlush(student);
@@ -199,7 +201,7 @@ public class StudentController {
         }
 
         // Passwort prüfen
-        if (PasswordValidator.validate(student.getPassword())) {
+        if (!PasswordValidator.validate(student.getPassword())) {
             errors.add(
                     "Passwort entspricht nicht den Anforderungen. (Groß- und Kleinbuchstaben, Sonderzeichen, Zahlen, Mindeslänge 8)");
         }

@@ -1,5 +1,6 @@
 package com.projekt.studiengangsorganisation.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -105,7 +106,7 @@ public class PruefungsordnungController {
      * @return Die erstellte Pruefungsordnung.
      */
     @PostMapping("")
-    public ResponseEntity<Pruefungsordnung> createPruefgungsordnung(@RequestBody Pruefungsordnung pruefungsordnung) {
+    public ResponseEntity<Pruefungsordnung> createPruefungsordnung(@RequestBody Pruefungsordnung pruefungsordnung) {
         // Den aktuellen Benutzer über die Authentifizierungsinformationen abrufen
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -202,5 +203,32 @@ public class PruefungsordnungController {
             // Fehlermeldung zurückgeben, wenn die Prüfungsordnung nicht gefunden wurde
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pruefungsordnung nicht gefunden");
         }
+    }
+
+    /**
+     * Methode zum Validieren einer Pruefungsordnung.
+     * 
+     * @param pruefungsordnung Die zu validierende Pruefungsordnung.
+     * @return Eine Liste von Fehlern, die bei der Validierung aufgetreten sind.
+     */
+    public List<String> validatePruefungsordnung(Pruefungsordnung pruefungsordnung) {
+        // Liste für Fehlermeldungen erstellen
+        List<String> errors = new ArrayList<>();
+
+        // Überprüfen, ob die Version der Prüfungsordnung gesetzt ist
+        if (pruefungsordnung.getVersion() == null || pruefungsordnung.getVersion().isEmpty()
+                || pruefungsordnung.getVersion().isBlank()) {
+            // Fehlermeldung hinzufügen
+            errors.add("Version der Pruefungsordnung fehlt");
+        }
+
+        // Überprüfen, ob die ID des zugehörigen Studiengangs gesetzt ist
+        if (pruefungsordnung.getStudiengangId() == null) {
+            // Fehlermeldung hinzufügen
+            errors.add("ID des zugehörigen Studiengangs fehlt");
+        }
+
+        // Die Liste der Fehlermeldungen zurückgeben
+        return errors;
     }
 }

@@ -210,9 +210,6 @@ public class MitarbeiterControllerTest {
         // Mocking der getMitarbeiter-Methode
         when(mitarbeiterService.getMitarbeiter(1L)).thenReturn(Optional.of(existingMitarbeiter));
 
-        // Mocking der saveAndFlush-Methode
-        when(mitarbeiterService.saveAndFlush(any(Mitarbeiter.class))).thenReturn(existingMitarbeiter);
-
         // Ausführen des updateMitarbeiter-Aufrufs
         ResponseEntity<Mitarbeiter> response = controller.updateMitarbeiter("1", updatedMitarbeiter);
 

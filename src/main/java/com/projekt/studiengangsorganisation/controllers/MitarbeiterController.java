@@ -101,17 +101,17 @@ public class MitarbeiterController {
 
         // Wenn der Benutzer ein Administrator ist
         if (nutzer.isPresent() && nutzer.get().getRole().equals("ADMIN")) {
-            // Verschlüssele das Passwort des Mitarbeiters
-            mitarbeiter.setPassword(passwordEncoder.encode(mitarbeiter.getPassword()));
-            // Setze den Benutzernamen des Mitarbeiters basierend auf Vorname und Nachname
-            mitarbeiter.setUsername(
-                    mitarbeiter.getVorname().toLowerCase() + "." + mitarbeiter.getNachname().toLowerCase());
-
             // Validierungslogik für die Eingabefelder
             List<String> errors = validateMitarbeiter(mitarbeiter);
             if (!errors.isEmpty()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
             }
+
+            // Verschlüssele das Passwort des Mitarbeiters
+            mitarbeiter.setPassword(passwordEncoder.encode(mitarbeiter.getPassword()));
+            // Setze den Benutzernamen des Mitarbeiters basierend auf Vorname und Nachname
+            mitarbeiter.setUsername(
+                    mitarbeiter.getVorname().toLowerCase() + "." + mitarbeiter.getNachname().toLowerCase());
 
             // Speichere den neuen Mitarbeiter in der Datenbank
             mitarbeiterService.saveAndFlush(mitarbeiter);

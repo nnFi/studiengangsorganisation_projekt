@@ -92,15 +92,16 @@ public class StudentController {
         Optional<Nutzer> nutzer = nutzerService.getNutzerByUsername(authentication.getName());
 
         if (nutzer.isPresent() && nutzer.get().getRole().equals("ADMIN")) {
-            // Falls der Benutzer ein ADMIN ist
-            student.setPassword(passwordEncoder.encode(student.getPassword())); // Passwort kodieren
-            student.setUsername(student.getVorname().toLowerCase() + "." + student.getNachname().toLowerCase()); // Benutzername
-                                                                                                                 // erstellen
             // Validierungslogik für die Eingabefelder
             List<String> errors = validateStudent(student);
             if (!errors.isEmpty()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
             }
+
+            // Falls der Benutzer ein ADMIN ist
+            student.setPassword(passwordEncoder.encode(student.getPassword())); // Passwort kodieren
+            student.setUsername(student.getVorname().toLowerCase() + "." + student.getNachname().toLowerCase()); // Benutzername
+                                                                                                                 // erstellen
 
             // Student speichern
             studentService.saveAndFlush(student);

@@ -112,6 +112,12 @@ public class FachbereichController {
                 .getMitarbeiter(fachbereich.getStellvertreterId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter nicht gefunden"));
 
+        // Überprüfen, ob es bereits einen Fachbereich mit dem gleichen Namen gibt
+        if (fachbereichService.getFachbereichByName(fachbereich.getName()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Ein Fachbereich mit diesem Namen existiert bereits.");
+        }
+
         fachbereich.setReferent(referent);
         fachbereich.setStellvertreter(stellvertreter);
 

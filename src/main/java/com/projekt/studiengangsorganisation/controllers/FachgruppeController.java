@@ -134,6 +134,16 @@ public class FachgruppeController {
                 .getMitarbeiter(fachgruppe.getStellvertreterId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stellvertreter nicht gefunden"));
 
+        // Überprüfen, ob es bereits eine Fachgruppe mit demselben Namen gibt
+        if (fachgruppeService.getFachgruppeByName(fachgruppe.getName()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Fachgruppe mit diesem Namen existiert bereits");
+        }
+
+        // Überprüfen, ob es bereits eine Fachgruppe mit demselben Kürzel gibt
+        if (fachgruppeService.getFachgruppeByKuerzel(fachgruppe.getKuerzel()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Fachgruppe mit diesem Kürzel existiert bereits");
+        }
+
         fachgruppe.setFachbereich(fachbereich);
         fachgruppe.setReferent(referent);
         fachgruppe.setStellvertreter(stellvertreter);

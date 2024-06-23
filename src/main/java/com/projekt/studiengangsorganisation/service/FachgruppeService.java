@@ -29,6 +29,7 @@ public class FachgruppeService {
 
     /**
      * Holt alle Fachgruppen.
+     * 
      * @return Eine Liste aller vorhandenen Fachgruppen.
      */
     public List<Fachgruppe> getFachgruppen() {
@@ -37,6 +38,7 @@ public class FachgruppeService {
 
     /**
      * Holt eine Fachgruppe anhand ihrer ID.
+     * 
      * @param id Die ID der Fachgruppe.
      * @return Ein Optional, das die gefundene Fachgruppe enthält, falls vorhanden.
      */
@@ -45,7 +47,28 @@ public class FachgruppeService {
     }
 
     /**
+     * Holt eine Fachgruppe anhand ihres Namens.
+     * 
+     * @param name Der Name der Fachgruppe.
+     * @return Ein Optional, das die gefundene Fachgruppe enthält, falls vorhanden.
+     */
+    public Optional<Fachgruppe> getFachgruppeByName(String name) {
+        return fachgruppeRepository.findByName(name);
+    }
+
+    /**
+     * Holt eine Fachgruppe anhand ihres Kürzels.
+     * 
+     * @param kuerzel Das Kürzel der Fachgruppe.
+     * @return Ein Optional, das die gefundene Fachgruppe enthält, falls vorhanden.
+     */
+    public Optional<Fachgruppe> getFachgruppeByKuerzel(String kuerzel) {
+        return fachgruppeRepository.findByKuerzel(kuerzel);
+    }
+
+    /**
      * Speichert eine Fachgruppe und aktualisiert die Änderungen.
+     * 
      * @param fachgruppe Die Fachgruppe, die gespeichert werden soll.
      * @return Die gespeicherte und aktualisierte Fachgruppe.
      */
@@ -55,9 +78,10 @@ public class FachgruppeService {
 
     /**
      * Fügt Testdaten für eine Fachgruppe ein.
-     * @param referent Der Referent der Fachgruppe.
+     * 
+     * @param referent       Der Referent der Fachgruppe.
      * @param stellvertreter Der Stellvertreter der Fachgruppe.
-     * @param fachbereich Der Fachbereich, zu dem die Fachgruppe gehört.
+     * @param fachbereich    Der Fachbereich, zu dem die Fachgruppe gehört.
      * @return Die erstellte Fachgruppe mit Testdaten.
      */
     public Fachgruppe insertTestData(Mitarbeiter referent, Mitarbeiter stellvertreter, Fachbereich fachbereich) {

@@ -245,9 +245,8 @@ public class ModulController {
             Modul modul = existingModul.get();
 
             Fachgruppe fachgruppe = fachgruppeService
-                    .getFachgruppe(modul.getFachgruppeId())
+                    .getFachgruppe(updatedModul.getFachgruppeId())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fachgruppe nicht gefunden"));
-
             // Überprüfe, ob der Benutzer Fachbereichsreferent/Stellvertreter,
             // Fachgruppenreferent/Stellvertreter, Modulbeauftrager oder Admin ist.
             if (!(fachgruppe.getReferent().getId() == nutzer.getId()
@@ -282,7 +281,7 @@ public class ModulController {
             modul.setModulgruppe(modulgruppe);
 
             // Validierungslogik für die Eingabefelder
-            List<String> errors = validateModul(updatedModul);
+            List<String> errors = validateModul(modul);
             if (!errors.isEmpty()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
             }

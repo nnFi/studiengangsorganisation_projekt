@@ -284,7 +284,7 @@ public class FachbereichControllerTest {
 
     /**
      * Testet die Methode updateFachbreich durch einen nicht-Admin-Nutzer.
-     * Erwartet, dass der Fachbereich erfolgreich aktualisiert wird.
+     * Erwartet, dass der Fachbereich nicht aktualisiert wird.
      * 
      * @return void
      */
@@ -317,6 +317,8 @@ public class FachbereichControllerTest {
     /**
      * Testet die Validierung eines Fachbereichs mit gültigen Eingaben.
      * Erwartet, dass keine Validierungsfehler auftreten.
+     * 
+     * @return void
      */
     @Test
     public void testValidateFachbereich_ValidInputs() {

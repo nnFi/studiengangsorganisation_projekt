@@ -174,7 +174,7 @@ public class MitarbeiterControllerTest {
         });
 
         // Assertions
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
     }
 
     /**

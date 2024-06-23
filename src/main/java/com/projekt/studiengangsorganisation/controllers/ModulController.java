@@ -300,7 +300,7 @@ public class ModulController {
      * @param modul das zu validierende Modul-Objekt
      * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler vorliegen
      */
-    private List<String> validateModul(Modul modul) {
+    List<String> validateModul(Modul modul) {
         List<String> errors = new ArrayList<>();
 
         // Überprüfung erforderlicher Felder

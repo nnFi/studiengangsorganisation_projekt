@@ -185,7 +185,7 @@ public class FachbereichController {
      * @param fachbereich das zu validierende Fachbereich-Objekt
      * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler vorliegen
      */
-    public static List<String> validateFachbereich(Fachbereich fachbereich) {
+    static List<String> validateFachbereich(Fachbereich fachbereich) {
         List<String> errors = new ArrayList<>();
 
         // Namensprüfung

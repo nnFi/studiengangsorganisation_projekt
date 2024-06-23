@@ -266,7 +266,7 @@ public class StudiengangController {
      * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler
      *         vorliegen
      */
-    public static List<String> validateStudiengang(Studiengang studiengang) {
+    static List<String> validateStudiengang(Studiengang studiengang) {
         List<String> errors = new ArrayList<>();
 
         // Namensprüfung

@@ -166,7 +166,7 @@ public class StudentController {
      * @param student das zu validierende Student-Objekt
      * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler vorliegen
      */
-    private List<String> validateStudent(Student student) {
+    List<String> validateStudent(Student student) {
         List<String> errors = new ArrayList<>();
 
         // Überprüfung erforderlicher Felder

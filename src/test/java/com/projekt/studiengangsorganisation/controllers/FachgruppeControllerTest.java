@@ -142,7 +142,8 @@ public class FachgruppeControllerTest {
         fachbereich2.setId(2L);
         fachbereich2.setName("Physik");
 
-        // Mocken von zwei Fachgruppen mit korrekten Referenten, Stellvertretern und Fachbereichen
+        // Mocken von zwei Fachgruppen mit korrekten Referenten, Stellvertretern und
+        // Fachbereichen
         Mitarbeiter referent1 = new Mitarbeiter();
         referent1.setId(101L);
         Mitarbeiter stellvertreter1 = new Mitarbeiter();
@@ -199,6 +200,7 @@ public class FachgruppeControllerTest {
         // Mocken eines zu erstellenden Fachgruppe
         Fachgruppe fachgruppe = new Fachgruppe();
         fachgruppe.setName("Test Fachgruppe");
+        fachgruppe.setKuerzel("TFG");
         fachgruppe.setFachbereichId(1L);
         fachgruppe.setReferentId(2L);
         fachgruppe.setStellvertreterId(3L);
@@ -325,22 +327,22 @@ public class FachgruppeControllerTest {
         Nutzer user = new Student();
         user.setUsername("test.user");
         user.setRole("STUDENT");
-    
+
         when(authentication.getName()).thenReturn("test.user");
         when(nutzerService.getNutzerByUsername("test.user")).thenReturn(Optional.of(user));
-    
+
         // Mocken eines vorhandenen Fachgruppe
         Fachgruppe existingFachgruppe = new Fachgruppe();
         existingFachgruppe.setId(1L);
         existingFachgruppe.setName("Alte Fachgruppe");
         existingFachgruppe.setReferentId(1L);
         existingFachgruppe.setStellvertreterId(2L);
-    
+
         // Erwartung einer ResponseStatusException
         ResponseStatusException response = assertThrows(ResponseStatusException.class, () -> {
             controller.updateFachgruppe("1", existingFachgruppe);
         });
-    
+
         // Überprüfung, ob der Statuscode der Exception korrekt ist
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
@@ -357,15 +359,15 @@ public class FachgruppeControllerTest {
         Fachgruppe validFachgruppe = new Fachgruppe();
         validFachgruppe.setName("Valid Name");
         validFachgruppe.setKuerzel("KF");
-        
+
         Mitarbeiter referent = new Mitarbeiter();
         referent.setId(1L);
         validFachgruppe.setReferent(referent);
-        
+
         Mitarbeiter stellvertreter = new Mitarbeiter();
         stellvertreter.setId(2L);
         validFachgruppe.setStellvertreter(stellvertreter);
-        
+
         Fachbereich fachbereich = new Fachbereich();
         fachbereich.setId(1L);
         validFachgruppe.setFachbereich(fachbereich);
@@ -381,21 +383,22 @@ public class FachgruppeControllerTest {
      * Testet die Validierung eines Fachbereichs mit ungültigen Eingaben.
      * Erwartet, dass Validierungsfehler auftreten.
      *
-     * @param name  der Name des Fachbereichs
-     * @param kuerzel das Kuerzel des Fachbereichs
-     * @param referentId die Id des Referenten
+     * @param name             der Name des Fachbereichs
+     * @param kuerzel          das Kuerzel des Fachbereichs
+     * @param referentId       die Id des Referenten
      * @param stellvertreterId die Id des Stellvertreters
-     * @param fachbereichId die Id des Fachbereichs
+     * @param fachbereichId    die Id des Fachbereichs
      */
     @ParameterizedTest
     @CsvSource({
-            ", KF123, 1, 2, 3",        // Name fehlt
-            "Testfachgruppe, , 1, 2, 3",  // Kürzel fehlt
-            "Testfachgruppe, KF123, , 2, 3",  // Referent fehlt
-            "Testfachgruppe, KF123, 1, , 3",  // Stellvertreter fehlt
-            "Testfachgruppe, KF123, 1, 2, "   // Fachbereich fehlt
+            ", KF123, 1, 2, 3", // Name fehlt
+            "Testfachgruppe, , 1, 2, 3", // Kürzel fehlt
+            "Testfachgruppe, KF123, , 2, 3", // Referent fehlt
+            "Testfachgruppe, KF123, 1, , 3", // Stellvertreter fehlt
+            "Testfachgruppe, KF123, 1, 2, " // Fachbereich fehlt
     })
-    public void testValidateFachgruppe_InvalidInputs(String name, String kuerzel, String referentId, String stellvertreterId, String fachbereichId) {
+    public void testValidateFachgruppe_InvalidInputs(String name, String kuerzel, String referentId,
+            String stellvertreterId, String fachbereichId) {
         // Vorbereitung einer Fachgruppe mit den gegebenen Eingaben
         Fachgruppe fachgruppe = new Fachgruppe();
         fachgruppe.setName(name);

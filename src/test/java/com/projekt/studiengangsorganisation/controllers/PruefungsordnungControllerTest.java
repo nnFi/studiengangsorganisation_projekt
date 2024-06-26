@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.projekt.studiengangsorganisation.entity.Admin;
 import com.projekt.studiengangsorganisation.entity.Pruefungsordnung;
 import com.projekt.studiengangsorganisation.entity.Studiengang;
@@ -94,13 +97,15 @@ public class PruefungsordnungControllerTest {
         pruefungsordnung.setFreigegeben(true);
         pruefungsordnung.setStudiengang(studiengang);
 
-        // Wenn der Service aufgerufen wird, geben Sie die modellierte Pruefungsordnung zurück
+        // Wenn der Service aufgerufen wird, geben Sie die modellierte Pruefungsordnung
+        // zurück
         when(pruefungsordnungService.getPruefungsordnung(1L)).thenReturn(Optional.of(pruefungsordnung));
 
         // Aufruf der Controller-Methode, um die Pruefungsordnung mit ID "1" zu erhalten
         Pruefungsordnung result = controller.getOne("1");
 
-        // Assertions, um sicherzustellen, dass die zurückgegebene Pruefungsordnung korrekt ist
+        // Assertions, um sicherzustellen, dass die zurückgegebene Pruefungsordnung
+        // korrekt ist
         assertEquals(pruefungsordnung.getId(), result.getId());
         assertEquals(pruefungsordnung.getVersion(), result.getVersion());
         assertTrue(pruefungsordnung.isFreigegeben() == result.isFreigegeben());
@@ -128,9 +133,11 @@ public class PruefungsordnungControllerTest {
      * Erwartet, dass alle Pruefungsordnungen zurückgegeben werden.
      * 
      * @return void
+     * @throws JsonProcessingException
+     * @throws JsonMappingException
      */
     @Test
-    public void testGetAll_ReturnsAllPruefungsordnungen() {
+    public void testGetAll_ReturnsAllPruefungsordnungen() throws JsonMappingException, JsonProcessingException {
         // Mocken von zwei Studiengängen und zugehörigen Pruefungsordnungen
         Studiengang studiengang1 = new Studiengang();
         studiengang1.setId(1L);
@@ -148,16 +155,18 @@ public class PruefungsordnungControllerTest {
 
         List<Pruefungsordnung> pruefungsordnungen = Arrays.asList(pruefungsordnung1, pruefungsordnung2);
 
-        // Wenn der Service aufgerufen wird, geben Sie die modellierten Pruefungsordnungen zurück
+        // Wenn der Service aufgerufen wird, geben Sie die modellierten
+        // Pruefungsordnungen zurück
         when(pruefungsordnungService.getPruefungsordnungen()).thenReturn(pruefungsordnungen);
 
         // Mocken des HttpServletResponse
         HttpServletResponse response = mock(HttpServletResponse.class);
 
         // Aufruf der Controller-Methode, um alle Pruefungsordnungen zu erhalten
-        List<Pruefungsordnung> result = controller.getAll(response);
+        List<Pruefungsordnung> result = controller.getAll(response, "{}");
 
-        // Assertions, um sicherzustellen, dass die richtige Anzahl von Pruefungsordnungen zurückgegeben wurde
+        // Assertions, um sicherzustellen, dass die richtige Anzahl von
+        // Pruefungsordnungen zurückgegeben wurde
         assertEquals(2, result.size());
     }
 
@@ -188,15 +197,18 @@ public class PruefungsordnungControllerTest {
         Studiengang studiengang = new Studiengang();
         studiengang.setId(1L);
 
-        // Wenn der Studiengang-Service aufgerufen wird, geben Sie den mockierten Studiengang zurück
+        // Wenn der Studiengang-Service aufgerufen wird, geben Sie den mockierten
+        // Studiengang zurück
         when(studiengangService.getStudiengang(1L)).thenReturn(Optional.of(studiengang));
-        // Wenn der Pruefungsordnung-Service aufgerufen wird, geben Sie die mockierte Pruefungsordnung zurück
+        // Wenn der Pruefungsordnung-Service aufgerufen wird, geben Sie die mockierte
+        // Pruefungsordnung zurück
         when(pruefungsordnungService.saveAndFlush(any(Pruefungsordnung.class))).thenReturn(pruefungsordnung);
 
         // Aufruf der Controller-Methode, um eine Pruefungsordnung zu erstellen
         ResponseEntity<Pruefungsordnung> response = controller.createPruefungsordnung(pruefungsordnung);
 
-        // Assertions, um sicherzustellen, dass die Pruefungsordnung erfolgreich erstellt wurde
+        // Assertions, um sicherzustellen, dass die Pruefungsordnung erfolgreich
+        // erstellt wurde
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(pruefungsordnung, response.getBody());
     }
@@ -228,12 +240,15 @@ public class PruefungsordnungControllerTest {
         Studiengang studiengang = new Studiengang();
         studiengang.setId(1L);
 
-        // Wenn der Studiengang-Service aufgerufen wird, geben Sie den mockierten Studiengang zurück
+        // Wenn der Studiengang-Service aufgerufen wird, geben Sie den mockierten
+        // Studiengang zurück
         when(studiengangService.getStudiengang(1L)).thenReturn(Optional.of(studiengang));
-        // Wenn der Pruefungsordnung-Service aufgerufen wird, geben Sie die mockierte Pruefungsordnung zurück
+        // Wenn der Pruefungsordnung-Service aufgerufen wird, geben Sie die mockierte
+        // Pruefungsordnung zurück
         when(pruefungsordnungService.saveAndFlush(any(Pruefungsordnung.class))).thenReturn(pruefungsordnung);
 
-        // Erwartung, dass eine ResponseStatusException geworfen wird, wenn ein Student versucht, eine Pruefungsordnung zu erstellen
+        // Erwartung, dass eine ResponseStatusException geworfen wird, wenn ein Student
+        // versucht, eine Pruefungsordnung zu erstellen
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             controller.createPruefungsordnung(pruefungsordnung);
         });
@@ -260,7 +275,8 @@ public class PruefungsordnungControllerTest {
         when(authentication.getName()).thenReturn("test.admin");
         when(nutzerService.getNutzerByUsername("test.admin")).thenReturn(Optional.of(admin));
 
-        // Mocken einer bestehenden Pruefungsordnung und einer aktualisierten Pruefungsordnung
+        // Mocken einer bestehenden Pruefungsordnung und einer aktualisierten
+        // Pruefungsordnung
         Pruefungsordnung existingPruefungsordnung = new Pruefungsordnung();
         existingPruefungsordnung.setId(1L);
         existingPruefungsordnung.setFreigegeben(false);
@@ -271,20 +287,23 @@ public class PruefungsordnungControllerTest {
         updatedPruefungsordnung.setFreigegeben(true);
         updatedPruefungsordnung.setAuslaufend(true);
 
-        // Wenn der Pruefungsordnung-Service aufgerufen wird, geben Sie die mockierte bestehende Pruefungsordnung zurück
+        // Wenn der Pruefungsordnung-Service aufgerufen wird, geben Sie die mockierte
+        // bestehende Pruefungsordnung zurück
         when(pruefungsordnungService.getPruefungsordnung(1L)).thenReturn(Optional.of(existingPruefungsordnung));
-        // Wenn der Pruefungsordnung-Service aufgerufen wird, geben Sie die aktualisierte Pruefungsordnung zurück
+        // Wenn der Pruefungsordnung-Service aufgerufen wird, geben Sie die
+        // aktualisierte Pruefungsordnung zurück
         when(pruefungsordnungService.saveAndFlush(any(Pruefungsordnung.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
         // Aufruf der Controller-Methode, um eine Pruefungsordnung zu aktualisieren
         ResponseEntity<Pruefungsordnung> response = controller.updatePruefungsordnung("1", updatedPruefungsordnung);
 
-        // Assertions, um sicherzustellen, dass die Pruefungsordnung erfolgreich aktualisiert wurde
+        // Assertions, um sicherzustellen, dass die Pruefungsordnung erfolgreich
+        // aktualisiert wurde
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(updatedPruefungsordnung.isFreigegeben(), response.getBody().isFreigegeben());
         assertEquals(updatedPruefungsordnung.isAuslaufend(), response.getBody().isAuslaufend());
-   
+
     }
 
     /**
@@ -309,7 +328,8 @@ public class PruefungsordnungControllerTest {
         existingPruefungsordnung.setId(1L);
         existingPruefungsordnung.setVersion("1.0");
 
-        // Erwartung, dass eine ResponseStatusException geworfen wird, wenn ein Student versucht, eine Pruefungsordnung zu aktualisieren
+        // Erwartung, dass eine ResponseStatusException geworfen wird, wenn ein Student
+        // versucht, eine Pruefungsordnung zu aktualisieren
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             controller.updatePruefungsordnung("1", existingPruefungsordnung);
         });
@@ -330,7 +350,8 @@ public class PruefungsordnungControllerTest {
         pruefungsordnung.setVersion("1.0");
         pruefungsordnung.setStudiengangId(1L);
 
-        // Aufruf der Controller-Methode, um die Validierung der Pruefungsordnung durchzuführen
+        // Aufruf der Controller-Methode, um die Validierung der Pruefungsordnung
+        // durchzuführen
         List<String> errors = controller.validatePruefungsordnung(pruefungsordnung);
 
         // Assertion, dass keine Validierungsfehler auftreten sollten
@@ -354,7 +375,8 @@ public class PruefungsordnungControllerTest {
         pruefungsordnung.setVersion(version);
         pruefungsordnung.setStudiengangId(studiengangId == null ? null : Long.parseLong(studiengangId));
 
-        // Aufruf der Controller-Methode, um die Validierung der Pruefungsordnung durchzuführen
+        // Aufruf der Controller-Methode, um die Validierung der Pruefungsordnung
+        // durchzuführen
         List<String> errors = controller.validatePruefungsordnung(pruefungsordnung);
 
         // Assertion, dass Validierungsfehler auftreten sollten

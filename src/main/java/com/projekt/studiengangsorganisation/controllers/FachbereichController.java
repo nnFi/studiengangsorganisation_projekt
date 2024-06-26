@@ -228,6 +228,12 @@ public class FachbereichController {
             errors.add("StellvertreterId ist nicht gesetzt.");
         }
 
+        // Überprüfen, ob Referent und Stellvertreter identisch sind
+        if (fachbereich.getReferent() != null && fachbereich.getStellvertreter() != null
+                && fachbereich.getReferent().getId() == fachbereich.getStellvertreter().getId()) {
+            errors.add("Referent und Stellvertreter dürfen nicht identisch sein");
+        }
+
         return errors;
     }
 }

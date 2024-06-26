@@ -102,7 +102,7 @@ public class MitarbeiterController {
         // Wenn der Benutzer ein Administrator ist
         if (nutzer.isPresent() && nutzer.get().getRole().equals("ADMIN")) {
             // Validierungslogik für die Eingabefelder
-            List<String> errors = validateMitarbeiter(mitarbeiter);
+            List<String> errors = validateMitarbeiter(mitarbeiter, true);
             if (!errors.isEmpty()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
             }
@@ -155,7 +155,7 @@ public class MitarbeiterController {
             }
 
             // Validierungslogik für die Eingabefelder
-            List<String> errors = validateMitarbeiter(updatedMitarbeiter);
+            List<String> errors = validateMitarbeiter(updatedMitarbeiter, false);
             if (!errors.isEmpty()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
             }
@@ -185,7 +185,7 @@ public class MitarbeiterController {
      * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler
      *         vorliegen
      */
-    List<String> validateMitarbeiter(Mitarbeiter mitarbeiter) {
+    List<String> validateMitarbeiter(Mitarbeiter mitarbeiter, Boolean create) {
         List<String> errors = new ArrayList<>();
 
         // Überprüfung erforderlicher Felder
@@ -214,9 +214,11 @@ public class MitarbeiterController {
         }
 
         // Passwort prüfen
-        if (!PasswordValidator.validate(mitarbeiter.getPassword())) {
-            errors.add(
-                    "Passwort entspricht nicht den Anforderungen. (Groß- und Kleinbuchstaben, Sonderzeichen, Zahlen, Mindeslänge 8)");
+        if(create) {
+            if (!PasswordValidator.validate(mitarbeiter.getPassword())) {
+                errors.add(
+                        "Passwort entspricht nicht den Anforderungen. (Groß- und Kleinbuchstaben, Sonderzeichen, Zahlen, Mindeslänge 8)");
+            }
         }
 
         return errors;

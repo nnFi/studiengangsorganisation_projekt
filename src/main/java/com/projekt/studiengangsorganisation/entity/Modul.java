@@ -72,14 +72,14 @@ public class Modul {
      * Art des Moduls.
      */
     @Column(name = "Art")
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.ORDINAL) // Wert soll nummerisch gespeichert werden
     private ModulArt art;
 
     /**
      * Abschluss, für den das Modul relevant ist.
      */
     @Column(name = "abschluss")
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.ORDINAL) // Wert soll nummerisch gespeichert werden
     private Abschluss abschluss;
 
     /**
@@ -111,7 +111,7 @@ public class Modul {
      * Fachgruppe, zu der das Modul gehört.
      */
     @ManyToOne
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
     @JoinColumn(name = "fachgruppe_id")
     private Fachgruppe fachgruppe;
 
@@ -125,7 +125,7 @@ public class Modul {
      * Mitarbeiter, der für das Modul zuständig ist.
      */
     @ManyToOne
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
     @JoinColumn(name = "modulbeauftragter_id")
     private Mitarbeiter modulbeauftragter;
 
@@ -146,7 +146,7 @@ public class Modul {
      * Prüfungen, die dem Modul zugeordnet sind.
      */
     @ManyToOne
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
     @JoinColumn(name = "modulgruppe_id")
     private Modulgruppe modulgruppe;
 

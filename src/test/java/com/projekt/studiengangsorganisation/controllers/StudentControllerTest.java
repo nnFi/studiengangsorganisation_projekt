@@ -284,7 +284,7 @@ public class StudentControllerTest {
         student.setNachname(nachname);
         student.setPassword(password);
 
-        List<String> errors = controller.validateStudent(student);
+        List<String> errors = controller.validateStudent(student, true);
 
         assertTrue(errors.isEmpty(), "Es sollte keine Validierungsfehler auftreten.");
     }
@@ -320,7 +320,7 @@ public class StudentControllerTest {
         student.setNachname(nachname);
         student.setPassword(password);
 
-        List<String> errors = controller.validateStudent(student);
+        List<String> errors = controller.validateStudent(student, true);
 
         assertTrue(!errors.isEmpty(), "Es sollte ein Validierungsfehler auftreten.");
     }

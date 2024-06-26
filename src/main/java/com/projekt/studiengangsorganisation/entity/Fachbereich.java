@@ -56,7 +56,7 @@ public class Fachbereich {
      * Der Stellvertreter des Fachbereichs.
      */
     @ManyToOne(optional = false)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
     @JoinColumn(name = "stellvertreter_id")
     private Mitarbeiter stellvertreter;
 

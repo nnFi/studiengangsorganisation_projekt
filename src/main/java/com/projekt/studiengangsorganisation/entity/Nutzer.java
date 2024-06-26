@@ -50,7 +50,7 @@ public abstract class Nutzer {
      * Das Passwort des Nutzers.
      */
     @Column(name = "password")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
     private String password;
 
     /**

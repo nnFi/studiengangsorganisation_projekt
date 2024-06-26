@@ -257,6 +257,13 @@ public class FachgruppeController {
         if (fachgruppe.getFachbereich() == null) {
             errors.add("Fachbereich ist nicht gesetzt.");
         }
+
+        // Überprüfen, ob Referent und Stellvertreter identisch sind
+        if (fachgruppe.getReferent() != null && fachgruppe.getStellvertreter() != null
+                && fachgruppe.getReferent().getId() == fachgruppe.getStellvertreter().getId()) {
+            errors.add("Referent und Stellvertreter dürfen nicht identisch sein");
+        }
+
         return errors;
     }
 }

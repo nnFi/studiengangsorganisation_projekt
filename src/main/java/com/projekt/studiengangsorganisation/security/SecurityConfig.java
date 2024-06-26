@@ -42,7 +42,7 @@ public class SecurityConfig {
                                 .csrf(AbstractHttpConfigurer::disable)
                                 // Konfiguriert die Zugriffsberechtigungen für verschiedene URLs
                                 .authorizeHttpRequests(authz -> authz
-                                                .requestMatchers("/api/testdata").permitAll()
+                                                .requestMatchers("/api/testdata", "/api/testdata/clear").permitAll()
                                                 .requestMatchers("/api/**", "/auth/info").authenticated()
                                                 .anyRequest().permitAll())
                                 // Fügt den benutzerdefinierten Authentifizierungsfilter hinzu

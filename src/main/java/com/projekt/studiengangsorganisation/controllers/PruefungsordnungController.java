@@ -133,14 +133,14 @@ public class PruefungsordnungController {
                 .getStudiengang(pruefungsordnung.getStudiengangId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Studiengang nicht gefunden"));
 
+        // Den abgerufenen Studiengang der Prüfungsordnung zuweisen
+        pruefungsordnung.setStudiengang(studiengang);
+
         // Überprüfen, ob es bereits eine Prüfungsordnung mit dem gleichen Studiengang und
         // Version gibt
         if (pruefungsordnungService.getPruefungsordnung(pruefungsordnung.getVersion(), pruefungsordnung.getStudiengang()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Pruefungsordnung bereits vorhanden");
         }
-
-        // Den abgerufenen Studiengang der Prüfungsordnung zuweisen
-        pruefungsordnung.setStudiengang(studiengang);
 
         // Die aktualisierte Prüfungsordnung speichern und HTTP-Statuscode 201 (Created)
         // zurückgeben

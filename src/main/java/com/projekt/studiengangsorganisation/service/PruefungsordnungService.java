@@ -48,8 +48,8 @@ public class PruefungsordnungService {
     /**
      * Holt eine Prüfungsordnung anhand von Version und Studiengang.
      * 
-     * @param version      Die Version der Prüfungsordnung.
-     * @param studiengang   Der Studiengang der zur Prüfungsordnung gehört.
+     * @param version     Die Version der Prüfungsordnung.
+     * @param studiengang Der Studiengang der zur Prüfungsordnung gehört.
      * @return Ein Optional, das den gefundenen Studiengang enthält, falls
      *         vorhanden.
      */
@@ -65,6 +65,16 @@ public class PruefungsordnungService {
      */
     public Pruefungsordnung saveAndFlush(Pruefungsordnung pruefungsordnung) {
         return pruefungsordnungRepository.saveAndFlush(pruefungsordnung);
+    }
+
+    /**
+     * Holt alle Prüfungsordnungen, die zu einem Studiengang gehören.
+     * 
+     * @param studiengang Der Studiengang, zu dem die Prüfungsordnungen gehören.
+     * @return Eine Liste aller Prüfungsordnungen, die zum Studiengang gehören.
+     */
+    public List<Pruefungsordnung> getPruefungsordnungenByStudiengangIds(List<Long> list) {
+        return pruefungsordnungRepository.findByStudiengang_IdIn(list);
     }
 
     /**

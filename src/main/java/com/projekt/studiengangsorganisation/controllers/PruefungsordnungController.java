@@ -1,7 +1,10 @@
 package com.projekt.studiengangsorganisation.controllers;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +18,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projekt.studiengangsorganisation.entity.Nutzer;
 import com.projekt.studiengangsorganisation.entity.Pruefungsordnung;
 import com.projekt.studiengangsorganisation.entity.Studiengang;
@@ -76,15 +84,63 @@ public class PruefungsordnungController {
     }
 
     /**
-     * Methode zum Abrufen aller Pruefungsordnungen.
+     * Methode zum Abrufen aller Prüfungsordnungen oder einer spezifischen Auswahl
+     * von Prüfungsordnungen
+     * basierend auf einem Filter.
      * 
-     * @param response Das HTTP-Response-Objekt.
-     * @return Eine Liste aller Pruefungsordnungen.
+     * @param response Der HTTP-Response, in dem der Content-Range Header gesetzt
+     *                 wird, um die Anzahl der zurückgegebenen Prüfungsordnungen
+     *                 anzugeben.
+     * @param filter   Ein optionaler String, der als JSON-Objekt interpretiert
+     *                 wird. Derzeit unterstützte Filter sind: - studiengang: Eine
+     *                 Liste von Studiengang-IDs.
+     * @return Eine Liste aller Prüfungsordnungen oder eine Liste der
+     *         Prüfungsordnungen, die den
+     *         Filterkriterien entsprechen.
+     * @throws JsonMappingException    Wenn es ein Problem beim Parsen des
+     *                                 Filter-Strings als JSON gibt.
+     * @throws JsonProcessingException Wenn es ein Problem beim Verarbeiten des
+     *                                 Filter-Strings als JSON gibt.
      */
     @GetMapping("")
-    public List<Pruefungsordnung> getAll(HttpServletResponse response) {
-        // Alle Prüfungsordnungen abrufen
-        List<Pruefungsordnung> list = pruefungsordnungService.getPruefungsordnungen();
+    public List<Pruefungsordnung> getAll(HttpServletResponse response, @RequestParam(required = false) String filter)
+            throws JsonMappingException, JsonProcessingException {
+        List<Pruefungsordnung> list;
+
+        if (filter != null && !filter.isEmpty() && !filter.equals("{}")) {
+            // Den Filter als JSON-Objekt parsen
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> rawMap = mapper.readValue(filter, new TypeReference<Map<String, Object>>() {
+            });
+
+            Map<String, List<Long>> filterMap = new HashMap<>();
+
+            for (Map.Entry<String, Object> entry : rawMap.entrySet()) {
+                String key = entry.getKey();
+                Object value = entry.getValue();
+
+                if (value instanceof List) {
+                    // Wenn es sich um eine Liste handelt, konvertiere sie in eine Liste von Longs
+                    filterMap.put(key, mapper.convertValue(value, new TypeReference<List<Long>>() {
+                    }));
+                } else {
+                    // Wenn es sich um einen einzelnen Wert handelt, konvertiere ihn in einen Long
+                    // und füge ihn der Liste hinzu
+                    Long singleValue = mapper.convertValue(value, Long.class);
+                    filterMap.put(key, Collections.singletonList(singleValue));
+                }
+            }
+
+            if (filterMap.containsKey("studiengang")) {
+                list = pruefungsordnungService.getPruefungsordnungenByStudiengangIds(filterMap.get("studiengang"));
+            } else {
+                list = pruefungsordnungService.getPruefungsordnungen();
+            }
+
+        } else {
+            // Alle Prüfungsordnungen abrufen
+            list = pruefungsordnungService.getPruefungsordnungen();
+        }
 
         // Für jede Prüfungsordnung in der Liste
         list.forEach(pruefungsordnung -> {
@@ -133,9 +189,11 @@ public class PruefungsordnungController {
                 .getStudiengang(pruefungsordnung.getStudiengangId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Studiengang nicht gefunden"));
 
-        // Überprüfen, ob es bereits eine Prüfungsordnung mit dem gleichen Studiengang und
+        // Überprüfen, ob es bereits eine Prüfungsordnung mit dem gleichen Studiengang
+        // und
         // Version gibt
-        if (pruefungsordnungService.getPruefungsordnung(pruefungsordnung.getVersion(), pruefungsordnung.getStudiengang()).isPresent()) {
+        if (pruefungsordnungService
+                .getPruefungsordnung(pruefungsordnung.getVersion(), pruefungsordnung.getStudiengang()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Pruefungsordnung bereits vorhanden");
         }
 

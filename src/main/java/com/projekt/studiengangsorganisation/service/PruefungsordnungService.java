@@ -43,6 +43,18 @@ public class PruefungsordnungService {
     }
 
     /**
+     * Holt eine Prüfungsordnung anhand von Version und Studiengang.
+     * 
+     * @param version      Die Version der Prüfungsordnung.
+     * @param studiengang   Der Studiengang der zur Prüfungsordnung gehört.
+     * @return Ein Optional, das den gefundenen Studiengang enthält, falls
+     *         vorhanden.
+     */
+    public Optional<Pruefungsordnung> getPruefungsordnung(String version, Studiengang studiengang) {
+        return pruefungsordnungRepository.findByVersionAndStudiengang(version, studiengang);
+    }
+
+    /**
      * Speichert eine Prüfungsordnung und aktualisiert die Änderungen.
      * @param pruefungsordnung Die Prüfungsordnung, die gespeichert werden soll.
      * @return Die gespeicherte und aktualisierte Prüfungsordnung.

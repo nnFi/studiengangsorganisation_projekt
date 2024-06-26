@@ -143,6 +143,13 @@ public class FachgruppeController {
         fachgruppe.setFachbereich(fachbereich);
         fachgruppe.setReferent(referent);
         fachgruppe.setStellvertreter(stellvertreter);
+
+        // Validierungslogik für die Eingabefelder
+        List<String> errors = validateFachgruppe(fachgruppe);
+        if (!errors.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
+        }
+
         fachgruppeService.saveAndFlush(fachgruppe); // Fachgruppe speichern
 
         return new ResponseEntity<>(fachgruppe, HttpStatus.CREATED); // Erfolgreiche Erstellung

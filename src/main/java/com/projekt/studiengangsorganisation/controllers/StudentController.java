@@ -95,7 +95,7 @@ public class StudentController {
 
         if (nutzer.isPresent() && nutzer.get().getRole().equals("ADMIN")) {
             // Validierungslogik für die Eingabefelder
-            List<String> errors = validateStudent(student);
+            List<String> errors = validateStudent(student, true);
             if (!errors.isEmpty()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
             }
@@ -143,7 +143,7 @@ public class StudentController {
             }
 
             // Validierungslogik für die Eingabefelder
-            List<String> errors = validateStudent(updatedStudent);
+            List<String> errors = validateStudent(updatedStudent, false);
             if (!errors.isEmpty()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
             }
@@ -172,7 +172,7 @@ public class StudentController {
      * @return eine Liste von Fehlermeldungen, leer wenn keine Validierungsfehler
      *         vorliegen
      */
-    List<String> validateStudent(Student student) {
+    List<String> validateStudent(Student student, Boolean create) {
         List<String> errors = new ArrayList<>();
 
         // Überprüfung erforderlicher Felder
@@ -201,9 +201,11 @@ public class StudentController {
         }
 
         // Passwort prüfen
-        if (!PasswordValidator.validate(student.getPassword())) {
-            errors.add(
-                    "Passwort entspricht nicht den Anforderungen. (Groß- und Kleinbuchstaben, Sonderzeichen, Zahlen, Mindeslänge 8)");
+        if(create) {
+            if (!PasswordValidator.validate(student.getPassword())) {
+                errors.add(
+                        "Passwort entspricht nicht den Anforderungen. (Groß- und Kleinbuchstaben, Sonderzeichen, Zahlen, Mindeslänge 8)");
+            }
         }
 
         return errors;

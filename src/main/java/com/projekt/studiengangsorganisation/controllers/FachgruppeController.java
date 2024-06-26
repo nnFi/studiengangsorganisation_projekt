@@ -143,6 +143,13 @@ public class FachgruppeController {
         fachgruppe.setFachbereich(fachbereich);
         fachgruppe.setReferent(referent);
         fachgruppe.setStellvertreter(stellvertreter);
+
+        // Validierungslogik für die Eingabefelder
+        List<String> errors = validateFachgruppe(fachgruppe);
+        if (!errors.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
+        }
+
         fachgruppeService.saveAndFlush(fachgruppe); // Fachgruppe speichern
 
         return new ResponseEntity<>(fachgruppe, HttpStatus.CREATED); // Erfolgreiche Erstellung
@@ -257,6 +264,13 @@ public class FachgruppeController {
         if (fachgruppe.getFachbereich() == null) {
             errors.add("Fachbereich ist nicht gesetzt.");
         }
+
+        // Überprüfen, ob Referent und Stellvertreter identisch sind
+        if (fachgruppe.getReferent() != null && fachgruppe.getStellvertreter() != null
+                && fachgruppe.getReferent().getId() == fachgruppe.getStellvertreter().getId()) {
+            errors.add("Referent und Stellvertreter dürfen nicht identisch sein");
+        }
+
         return errors;
     }
 }

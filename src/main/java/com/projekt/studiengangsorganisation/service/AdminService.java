@@ -27,6 +27,7 @@ public class AdminService {
 
     /**
      * Holt einen Admin anhand seiner ID.
+     * 
      * @param id Die ID des Admins.
      * @return Ein Optional, das den gefundenen Admin enthält, falls vorhanden.
      */
@@ -36,6 +37,7 @@ public class AdminService {
 
     /**
      * Holt alle Admins.
+     * 
      * @return Eine Liste aller vorhandenen Admins.
      */
     public List<Admin> getAdmin() {
@@ -44,6 +46,7 @@ public class AdminService {
 
     /**
      * Speichert einen Admin und aktualisiert die Änderungen.
+     * 
      * @param admin Der Admin, der gespeichert werden soll.
      * @return Der gespeicherte und aktualisierte Admin.
      */
@@ -52,16 +55,9 @@ public class AdminService {
     }
 
     /**
-     * Fügt Testdaten für einen Admin ein.
-     * @return Der erstellte Admin mit Testdaten.
+     * Löscht alle Einträge in der Datenbank.
      */
-    public Admin insertTestData() {
-        Admin admin = new Admin();
-        admin.setVorname("Max");
-        admin.setNachname("Mustermann");
-
-        adminRepository.saveAndFlush(admin);
-
-        return admin;
+    public void deleteAll() {
+        adminRepository.deleteAll();
     }
 }

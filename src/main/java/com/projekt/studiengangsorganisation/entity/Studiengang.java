@@ -44,7 +44,7 @@ public class Studiengang {
      * Der Abschluss des Studiengangs (z.B. Bachelor, Master).
      */
     @Column(name = "studiengang_abschluss")
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.ORDINAL) // Wert soll nummerisch gespeichert werden
     private Abschluss abschluss;
 
     /**
@@ -56,7 +56,7 @@ public class Studiengang {
     /**
      * Der Leiter des Studiengangs.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
     @ManyToOne
     @JoinColumn(name = "leiter_id")
     private Mitarbeiter leiter;
@@ -70,7 +70,7 @@ public class Studiengang {
     /**
      * Der stellvertretende Leiter des Studiengangs.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
     @ManyToOne
     @JoinColumn(name = "stellvertretenderLeiter_id")
     private Mitarbeiter stellvertretenderLeiter;
@@ -84,7 +84,7 @@ public class Studiengang {
     /**
      * Der Fachbereich, dem der Studiengang zugeordnet ist.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
     @ManyToOne
     @JoinColumn(name = "fachbereich_id")
     private Fachbereich fachbereich;

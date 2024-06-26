@@ -14,7 +14,7 @@ import com.projekt.studiengangsorganisation.repository.ModulgruppeRepository;
  */
 @Service
 public class ModulgruppeService {
-    
+
     @Autowired
     ModulgruppeRepository modulgruppeRepository;
 
@@ -27,6 +27,7 @@ public class ModulgruppeService {
 
     /**
      * Holt alle Modulgruppen.
+     * 
      * @return Eine Liste aller vorhandenen Modulgruppen.
      */
     public List<Modulgruppe> getModulgruppen() {
@@ -35,6 +36,7 @@ public class ModulgruppeService {
 
     /**
      * Holt eine Modulgruppe anhand ihrer ID.
+     * 
      * @param id Die ID der Modulgruppe.
      * @return Ein Optional, das die gefundene Modulgruppe enthält, falls vorhanden.
      */
@@ -44,6 +46,7 @@ public class ModulgruppeService {
 
     /**
      * Speichert eine Modulgruppe und aktualisiert die Änderungen.
+     * 
      * @param modulgruppe Die Modulgruppe, die gespeichert werden soll.
      * @return Die gespeicherte und aktualisierte Modulgruppe.
      */
@@ -52,15 +55,9 @@ public class ModulgruppeService {
     }
 
     /**
-     * Fügt Testdaten für eine Modulgruppe ein.
-     * @return Die erstellte Modulgruppe mit Testdaten.
+     * Löscht alle Einträge in der Datenbank.
      */
-    public Modulgruppe insertTestData() {
-        Modulgruppe modulgruppe = new Modulgruppe();
-        modulgruppe.setName("IBM");
-
-        modulgruppeRepository.saveAndFlush(modulgruppe);
-
-        return modulgruppe;
+    public void deleteAll() {
+        modulgruppeRepository.deleteAll();
     }
 }

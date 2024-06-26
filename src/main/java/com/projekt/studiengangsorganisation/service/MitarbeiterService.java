@@ -27,8 +27,10 @@ public class MitarbeiterService {
 
     /**
      * Holt einen Mitarbeiter anhand seiner ID.
+     * 
      * @param id Die ID des Mitarbeiters.
-     * @return Ein Optional, das den gefundenen Mitarbeiter enthält, falls vorhanden.
+     * @return Ein Optional, das den gefundenen Mitarbeiter enthält, falls
+     *         vorhanden.
      */
     public Optional<Mitarbeiter> getMitarbeiter(Long id) {
         return mitarbeiterRepository.findById(id);
@@ -36,6 +38,7 @@ public class MitarbeiterService {
 
     /**
      * Holt alle Mitarbeiter.
+     * 
      * @return Eine Liste aller vorhandenen Mitarbeiter.
      */
     public List<Mitarbeiter> getMitarbeiter() {
@@ -44,6 +47,7 @@ public class MitarbeiterService {
 
     /**
      * Speichert einen Mitarbeiter und aktualisiert die Änderungen.
+     * 
      * @param mitarbeiter Der Mitarbeiter, der gespeichert werden soll.
      * @return Der gespeicherte und aktualisierte Mitarbeiter.
      */
@@ -52,16 +56,9 @@ public class MitarbeiterService {
     }
 
     /**
-     * Fügt Testdaten für einen Mitarbeiter ein.
-     * @return Der erstellte Mitarbeiter mit Testdaten.
+     * Löscht alle Einträge in der Datenbank.
      */
-    public Mitarbeiter insertTestData() {
-        Mitarbeiter mitarbeiter = new Mitarbeiter();
-        mitarbeiter.setVorname("Max");
-        mitarbeiter.setNachname("Mustermann");
-
-        mitarbeiterRepository.saveAndFlush(mitarbeiter);
-
-        return mitarbeiter;
+    public void deleteAll() {
+        mitarbeiterRepository.deleteAll();
     }
 }

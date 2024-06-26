@@ -6,9 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.projekt.studiengangsorganisation.entity.Modul;
 import com.projekt.studiengangsorganisation.entity.Pruefung;
-import com.projekt.studiengangsorganisation.entity.Pruefungsordnung;
 import com.projekt.studiengangsorganisation.repository.PruefungRepository;
 
 /**
@@ -66,32 +64,6 @@ public class PruefungService {
     }
 
     /**
-     * Fügt Testdaten für eine Prüfung ein.
-     * 
-     * @param pruefungsordnung Die Prüfungsordnung, zu der die Prüfung gehört.
-     * @param modul            Das Modul, zu dem die Prüfung gehört.
-     * @return Die erstellte Prüfung mit Testdaten.
-     */
-    public Pruefung insertTestData(Pruefungsordnung pruefungsordnung, Modul modul) {
-        Pruefung pruefung = new Pruefung();
-        pruefung.setPruefungsnummer(1);
-        pruefung.setFachsemester(1);
-        pruefung.setPruefungsordnung(pruefungsordnung);
-        pruefung.setModul(modul);
-        /*
-         * PruefungKey key = new PruefungKey();
-         * key.setModulId(modul.getId());
-         * key.setPruefungsordnungId(pruefungsordnung.getId());
-         */
-
-        pruefung.setId(1l);
-
-        pruefungRepository.saveAndFlush(pruefung);
-
-        return pruefung;
-    }
-
-    /**
      * Diese Methode gibt eine Liste von Prüfungen zurück, die durch ihre IDs
      * identifiziert werden.
      *
@@ -101,5 +73,12 @@ public class PruefungService {
      */
     public List<Pruefung> getPruefungenByIds(List<Long> list) {
         return pruefungRepository.findAllById(list);
+    }
+
+    /**
+     * Löscht alle Einträge in der Datenbank.
+     */
+    public void deleteAll() {
+        pruefungRepository.deleteAll();
     }
 }

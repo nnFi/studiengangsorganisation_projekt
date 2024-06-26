@@ -36,7 +36,7 @@ public class Pruefung {
      * Das Modul, zu dem die Prüfung gehört.
      */
     @ManyToOne
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
     @JoinColumn(name = "modul_id")
     private Modul modul;
 
@@ -50,7 +50,7 @@ public class Pruefung {
      * Die Prüfungsordnung, zu der die Prüfung gehört.
      */
     @ManyToOne
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
     @JoinColumn(name = "pruefungsordnung_id")
     private Pruefungsordnung pruefungsordnung;
 

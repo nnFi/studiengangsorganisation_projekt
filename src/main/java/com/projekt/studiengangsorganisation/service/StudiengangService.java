@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.projekt.studiengangsorganisation.entity.Abschluss;
-import com.projekt.studiengangsorganisation.entity.Fachbereich;
-import com.projekt.studiengangsorganisation.entity.Mitarbeiter;
 import com.projekt.studiengangsorganisation.entity.Studiengang;
 import com.projekt.studiengangsorganisation.repository.StudiengangRepository;
 
@@ -71,24 +69,10 @@ public class StudiengangService {
     }
 
     /**
-     * Fügt Testdaten für einen Studiengang ein.
-     * 
-     * @param leiter         Der Leiter des Studiengangs.
-     * @param stellvertreter Der stellvertretende Leiter des Studiengangs.
-     * @param fachbereich    Der Fachbereich, zu dem der Studiengang gehört.
-     * @return Der erstellte Studiengang mit Testdaten.
+     * Löscht alle Einträge in der Datenbank.
      */
-    public Studiengang insertTestData(Mitarbeiter leiter, Mitarbeiter stellvertreter, Fachbereich fachbereich) {
-        Studiengang studiengang = new Studiengang();
-        studiengang.setName("Informatik");
-        studiengang.setAbschluss(Abschluss.BACHELOR_OF_SCIENCE);
-        studiengang.setRegelstudienzeit(6);
-        studiengang.setLeiter(leiter);
-        studiengang.setStellvertretenderLeiter(stellvertreter);
-        studiengang.setFachbereich(fachbereich);
-
-        studiengangRepository.saveAndFlush(studiengang);
-
-        return studiengang;
+    public void deleteAll() {
+        studiengangRepository.deleteAll();
     }
+
 }

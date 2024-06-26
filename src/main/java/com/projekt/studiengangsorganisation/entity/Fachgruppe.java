@@ -48,7 +48,7 @@ public class Fachgruppe {
      * Der Referent der Fachgruppe.
      */
     @ManyToOne
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
     @JoinColumn(name = "referent")
     private Mitarbeiter referent;
 
@@ -62,7 +62,7 @@ public class Fachgruppe {
      * Der Stellvertreter der Fachgruppe.
      */
     @ManyToOne
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
     @JoinColumn(name = "stellvertreter_id")
     private Mitarbeiter stellvertreter;
 
@@ -76,7 +76,7 @@ public class Fachgruppe {
      * Der Fachbereich, zu dem die Fachgruppe gehört.
      */
     @ManyToOne
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
     @JoinColumn(name = "fachbereich_id")
     private Fachbereich fachbereich;
 

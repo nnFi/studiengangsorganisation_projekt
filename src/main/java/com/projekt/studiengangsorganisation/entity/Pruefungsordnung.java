@@ -52,7 +52,7 @@ public class Pruefungsordnung {
      * Der zugehörige Studiengang der Prüfungsordnung.
      */
     @ManyToOne
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
     @JoinColumn(name = "studiengang_id")
     private Studiengang studiengang;
 

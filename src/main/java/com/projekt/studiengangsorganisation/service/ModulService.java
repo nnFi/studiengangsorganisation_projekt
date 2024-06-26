@@ -66,6 +66,16 @@ public class ModulService {
     }
 
     /**
+     * Holt alle Module, die zu einer Modulgruppe gehören.
+     * 
+     * @param modulgruppeIds Die IDs der Modulgruppen.
+     * @return Eine Liste aller Module, die zur Modulgruppe gehören.
+     */
+    public List<Modul> getModuleByModulgruppeIds(List<Long> modulgruppeIds) {
+        return modulRepository.findByModulgruppe_IdIn(modulgruppeIds);
+    }
+
+    /**
      * Löscht alle Einträge in der Datenbank.
      */
     public void deleteAll() {

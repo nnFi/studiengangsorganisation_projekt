@@ -1,6 +1,8 @@
 package com.projekt.studiengangsorganisation.controllers;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -110,13 +112,34 @@ public class ModulController {
         if (filter != null && !filter.isEmpty() && !filter.equals("{}")) {
             // Den Filter als JSON-Objekt parsen
             ObjectMapper mapper = new ObjectMapper();
-            Map<String, List<Long>> filterMap = mapper.readValue(filter, new TypeReference<Map<String, List<Long>>>() {
+            Map<String, Object> rawMap = mapper.readValue(filter, new TypeReference<Map<String, Object>>() {
             });
+
+            Map<String, List<Long>> filterMap = new HashMap<>();
+
+            for (Map.Entry<String, Object> entry : rawMap.entrySet()) {
+                String key = entry.getKey();
+                Object value = entry.getValue();
+
+                if (value instanceof List) {
+                    // Wenn es sich um eine Liste handelt, konvertiere sie in eine Liste von Longs
+                    filterMap.put(key, mapper.convertValue(value, new TypeReference<List<Long>>() {
+                    }));
+                } else {
+                    // Wenn es sich um einen einzelnen Wert handelt, konvertiere ihn in einen Long
+                    // und füge ihn der Liste hinzu
+                    Long singleValue = mapper.convertValue(value, Long.class);
+                    filterMap.put(key, Collections.singletonList(singleValue));
+                }
+            }
 
             // Wenn ein Filter bereitgestellt wird und "id" enthält, nur diese Prüfungen
             // abrufen
             if (filterMap.containsKey("id")) {
                 list = modulService.getModuleByIds(filterMap.get("id"));
+            } else if (filterMap.containsKey("modulgruppeId")) {
+                list = modulService.getModuleByModulgruppeIds(filterMap.get("modulgruppeId"));
+
             } else {
                 list = modulService.getModule();
             }

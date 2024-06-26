@@ -12,12 +12,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
+import org.springframework.session.web.http.CookieSerializer;
+import org.springframework.session.web.http.DefaultCookieSerializer;
 
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Konfigurationsklasse für die Sicherheitseinstellungen der Webanwendung.
  */
+@SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -60,6 +64,8 @@ public class SecurityConfig {
                                                         response.setStatus(HttpServletResponse.SC_OK);
                                                 }));
 
+                http.addFilterBefore(new SameSiteCookieFilter(), SecurityContextPersistenceFilter.class);
+
                 return http.build();
         }
 
@@ -86,4 +92,17 @@ public class SecurityConfig {
                         throws Exception {
                 return authenticationConfiguration.getAuthenticationManager();
         }
+
+        /**
+         * Bean für den CookieSerializer.
+         * 
+         * @return Ein CookieSerializer.
+         */
+        @Bean
+        public CookieSerializer cookieSerializer() {
+                DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+                serializer.setSameSite(null);
+                return serializer;
+        }
+
 }

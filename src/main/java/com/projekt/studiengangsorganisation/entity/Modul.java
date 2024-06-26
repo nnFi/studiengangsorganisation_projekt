@@ -85,7 +85,7 @@ public class Modul {
     /**
      * Beschreibung des Moduls.
      */
-    @Column(name = "beschreibung")
+    @Column(name = "beschreibung", columnDefinition = "TEXT")
     private String beschreibung;
 
     /**
@@ -151,13 +151,14 @@ public class Modul {
     private Modulgruppe modulgruppe;
 
     /**
-     *Die Modulgruppe-ID.
+     * Die Modulgruppe-ID.
      */
     @Transient
     private Long modulgruppeId;
 
     /**
      * Gibt die ID des Moduls zurück.
+     * 
      * @return Die ID des Moduls.
      */
     public Long getId() {
@@ -166,6 +167,7 @@ public class Modul {
 
     /**
      * Setzt die ID des Moduls.
+     * 
      * @param id Die ID des Moduls.
      */
     public void setId(Long id) {
@@ -174,6 +176,7 @@ public class Modul {
 
     /**
      * Gibt den Namen des Moduls zurück.
+     * 
      * @return Der Name des Moduls.
      */
     public String getName() {
@@ -182,6 +185,7 @@ public class Modul {
 
     /**
      * Setzt den Namen des Moduls.
+     * 
      * @param name Der Name des Moduls.
      */
     public void setName(String name) {
@@ -190,6 +194,7 @@ public class Modul {
 
     /**
      * Gibt die Modulnummer zurück.
+     * 
      * @return Die Modulnummer.
      */
     public String getModulnummer() {
@@ -198,6 +203,7 @@ public class Modul {
 
     /**
      * Setzt die Modulnummer.
+     * 
      * @param modulnummer Die Modulnummer.
      */
     public void setModulnummer(String modulnummer) {
@@ -206,6 +212,7 @@ public class Modul {
 
     /**
      * Gibt die Arbeitsbelastung des Moduls zurück.
+     * 
      * @return Die Arbeitsbelastung des Moduls.
      */
     public int getWorkload() {
@@ -214,6 +221,7 @@ public class Modul {
 
     /**
      * Setzt die Arbeitsbelastung des Moduls.
+     * 
      * @param workload Die Arbeitsbelastung des Moduls.
      */
     public void setWorkload(int workload) {
@@ -222,6 +230,7 @@ public class Modul {
 
     /**
      * Gibt die Anzahl der Credits des Moduls zurück.
+     * 
      * @return Die Anzahl der Credits des Moduls.
      */
     public int getCredits() {
@@ -230,6 +239,7 @@ public class Modul {
 
     /**
      * Setzt die Anzahl der Credits des Moduls.
+     * 
      * @param credits Die Anzahl der Credits des Moduls.
      */
     public void setCredits(int credits) {
@@ -238,6 +248,7 @@ public class Modul {
 
     /**
      * Gibt die Dauer des Moduls zurück.
+     * 
      * @return Die Dauer des Moduls.
      */
     public int getDauer() {
@@ -246,6 +257,7 @@ public class Modul {
 
     /**
      * Setzt die Dauer des Moduls.
+     * 
      * @param dauer Die Dauer des Moduls.
      */
     public void setDauer(int dauer) {
@@ -254,6 +266,7 @@ public class Modul {
 
     /**
      * Gibt die Art des Moduls zurück.
+     * 
      * @return Die Art des Moduls.
      */
     public ModulArt getArt() {
@@ -262,6 +275,7 @@ public class Modul {
 
     /**
      * Setzt die Art des Moduls.
+     * 
      * @param art Die Art des Moduls.
      */
     public void setArt(ModulArt art) {
@@ -270,6 +284,7 @@ public class Modul {
 
     /**
      * Gibt den Abschluss zurück, für den das Modul relevant ist.
+     * 
      * @return Der Abschluss, für den das Modul relevant ist.
      */
     public Abschluss getAbschluss() {
@@ -278,6 +293,7 @@ public class Modul {
 
     /**
      * Setzt den Abschluss, für den das Modul relevant ist.
+     * 
      * @param abschluss Der Abschluss, für den das Modul relevant ist.
      */
     public void setAbschluss(Abschluss abschluss) {
@@ -286,6 +302,7 @@ public class Modul {
 
     /**
      * Gibt die Beschreibung des Moduls zurück.
+     * 
      * @return Die Beschreibung des Moduls.
      */
     public String getBeschreibung() {
@@ -294,6 +311,7 @@ public class Modul {
 
     /**
      * Setzt die Beschreibung des Moduls.
+     * 
      * @param beschreibung Die Beschreibung des Moduls.
      */
     public void setBeschreibung(String beschreibung) {
@@ -302,6 +320,7 @@ public class Modul {
 
     /**
      * Gibt den Lehrveranstaltungsort des Moduls zurück.
+     * 
      * @return Der Lehrveranstaltungsort des Moduls.
      */
     public String getLehrveranstaltungsort() {
@@ -310,6 +329,7 @@ public class Modul {
 
     /**
      * Setzt den Lehrveranstaltungsort des Moduls.
+     * 
      * @param lehrveranstaltungsort Der Lehrveranstaltungsort des Moduls.
      */
     public void setLehrveranstaltungsort(String lehrveranstaltungsort) {
@@ -318,6 +338,7 @@ public class Modul {
 
     /**
      * Gibt die Sprache des Moduls zurück.
+     * 
      * @return Die Sprache des Moduls.
      */
     public Sprache getSprache() {
@@ -326,6 +347,7 @@ public class Modul {
 
     /**
      * Setzt die Sprache des Moduls.
+     * 
      * @param sprache Die Sprache des Moduls.
      */
     public void setSprache(Sprache sprache) {
@@ -334,6 +356,7 @@ public class Modul {
 
     /**
      * Gibt zurück, ob das Modul freigegeben ist.
+     * 
      * @return True, wenn das Modul freigegeben ist, sonst false.
      */
     public boolean isFreigegeben() {
@@ -342,6 +365,7 @@ public class Modul {
 
     /**
      * Setzt, ob das Modul freigegeben ist.
+     * 
      * @param freigegeben True, wenn das Modul freigegeben ist, sonst false.
      */
     public void setFreigegeben(boolean freigegeben) {
@@ -350,6 +374,7 @@ public class Modul {
 
     /**
      * Gibt die Fachgruppe zurück, zu der das Modul gehört.
+     * 
      * @return Die Fachgruppe des Moduls.
      */
     public Fachgruppe getFachgruppe() {
@@ -358,6 +383,7 @@ public class Modul {
 
     /**
      * Setzt die Fachgruppe, zu der das Modul gehört.
+     * 
      * @param fachgruppe Die Fachgruppe des Moduls.
      */
     public void setFachgruppe(Fachgruppe fachgruppe) {
@@ -366,6 +392,7 @@ public class Modul {
 
     /**
      * Gibt den Mitarbeiter zurück, der für das Modul zuständig ist.
+     * 
      * @return Der Mitarbeiter, der für das Modul zuständig ist.
      */
     public Mitarbeiter getModulbeauftragter() {
@@ -374,6 +401,7 @@ public class Modul {
 
     /**
      * Setzt den Mitarbeiter, der für das Modul zuständig ist.
+     * 
      * @param modulbeauftragter Der Mitarbeiter, der für das Modul zuständig ist.
      */
     public void setModulbeauftragter(Mitarbeiter modulbeauftragter) {
@@ -418,6 +446,7 @@ public class Modul {
 
     /**
      * Gibt die ID der Fachgruppe zurück.
+     * 
      * @return Die ID der Fachgruppe.
      */
     public Long getFachgruppeId() {
@@ -426,6 +455,7 @@ public class Modul {
 
     /**
      * Setzt die ID der Fachgruppe.
+     * 
      * @param fachgruppeId Die ID der Fachgruppe.
      */
     public void setFachgruppeId(Long fachgruppeId) {
@@ -434,6 +464,7 @@ public class Modul {
 
     /**
      * Gibt die ID der Modulgruppe zurück.
+     * 
      * @return Die ID der Modulgruppe.
      */
     public Long getModulgruppeId() {
@@ -442,6 +473,7 @@ public class Modul {
 
     /**
      * Setzt die ID der Modulgruppe.
+     * 
      * @param modulgruppeId Die ID der Modulgruppe.
      */
     public void setModulgruppeId(Long modulgruppeId) {
@@ -450,6 +482,7 @@ public class Modul {
 
     /**
      * Gibt die ID des Modulbeauftragten zurück.
+     * 
      * @return Die ID des Modulbeauftragten.
      */
     public Long getModulbeauftragterId() {
@@ -458,6 +491,7 @@ public class Modul {
 
     /**
      * Setzt die ID des Modulbeauftragten.
+     * 
      * @param modulbeauftragterId Die ID des Modulbeauftragten.
      */
     public void setModulbeauftragterId(Long modulbeauftragterId) {

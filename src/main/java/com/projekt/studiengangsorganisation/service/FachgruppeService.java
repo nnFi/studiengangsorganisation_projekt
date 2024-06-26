@@ -6,9 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.projekt.studiengangsorganisation.entity.Fachbereich;
 import com.projekt.studiengangsorganisation.entity.Fachgruppe;
-import com.projekt.studiengangsorganisation.entity.Mitarbeiter;
 import com.projekt.studiengangsorganisation.repository.FachgruppeRepository;
 
 /**
@@ -77,22 +75,9 @@ public class FachgruppeService {
     }
 
     /**
-     * Fügt Testdaten für eine Fachgruppe ein.
-     * 
-     * @param referent       Der Referent der Fachgruppe.
-     * @param stellvertreter Der Stellvertreter der Fachgruppe.
-     * @param fachbereich    Der Fachbereich, zu dem die Fachgruppe gehört.
-     * @return Die erstellte Fachgruppe mit Testdaten.
+     * Löscht alle Einträge in der Datenbank.
      */
-    public Fachgruppe insertTestData(Mitarbeiter referent, Mitarbeiter stellvertreter, Fachbereich fachbereich) {
-        Fachgruppe fachgruppe = new Fachgruppe();
-        fachgruppe.setName("Marketing");
-        fachgruppe.setFachbereich(fachbereich);
-        fachgruppe.setReferent(referent);
-        fachgruppe.setStellvertreter(stellvertreter);
-
-        fachgruppeRepository.saveAndFlush(fachgruppe);
-
-        return fachgruppe;
+    public void deleteAll() {
+        fachgruppeRepository.deleteAll();
     }
 }

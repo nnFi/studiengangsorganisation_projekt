@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.projekt.studiengangsorganisation.entity.Fachbereich;
-import com.projekt.studiengangsorganisation.entity.Mitarbeiter;
 import com.projekt.studiengangsorganisation.repository.FachbereichRepository;
 
 /**
@@ -68,20 +67,9 @@ public class FachbereichService {
     }
 
     /**
-     * Fügt Testdaten für einen Fachbereich ein.
-     * 
-     * @param referent       Der Referent des Fachbereichs.
-     * @param stellvertreter Der Stellvertreter des Fachbereichs.
-     * @return Der erstellte Fachbereich mit Testdaten.
+     * Löscht alle Einträge in der Datenbank.
      */
-    public Fachbereich insertTestData(Mitarbeiter referent, Mitarbeiter stellvertreter) {
-        Fachbereich fachbereich = new Fachbereich();
-        fachbereich.setName("Wirtschaft");
-        fachbereich.setReferent(referent);
-        fachbereich.setStellvertreter(stellvertreter);
-
-        fachbereichRepository.saveAndFlush(fachbereich);
-
-        return fachbereich;
+    public void deleteAll() {
+        fachbereichRepository.deleteAll();
     }
 }

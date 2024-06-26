@@ -27,6 +27,7 @@ public class NutzerService {
 
     /**
      * Holt alle Nutzer.
+     * 
      * @return Eine Liste aller vorhandenen Nutzer.
      */
     public List<Nutzer> getNutzer() {
@@ -35,6 +36,7 @@ public class NutzerService {
 
     /**
      * Holt einen Nutzer anhand seiner ID.
+     * 
      * @param id Die ID des Nutzers.
      * @return Ein Optional, das den gefundenen Nutzer enthält, falls vorhanden.
      */
@@ -44,6 +46,7 @@ public class NutzerService {
 
     /**
      * Holt einen Nutzer anhand seines Benutzernamens.
+     * 
      * @param username Der Benutzername des Nutzers.
      * @return Ein Optional, das den gefundenen Nutzer enthält, falls vorhanden.
      */
@@ -53,10 +56,18 @@ public class NutzerService {
 
     /**
      * Speichert einen Nutzer und aktualisiert die Änderungen.
+     * 
      * @param nutzer Der Nutzer, der gespeichert werden soll.
      * @return Der gespeicherte und aktualisierte Nutzer.
      */
     public Nutzer saveAndFlush(Nutzer nutzer) {
         return nutzerRepository.saveAndFlush(nutzer);
+    }
+
+    /**
+     * Löscht alle Einträge in der Datenbank.
+     */
+    public void deleteAll() {
+        nutzerRepository.deleteAll();
     }
 }

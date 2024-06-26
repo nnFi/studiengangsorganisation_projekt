@@ -27,6 +27,7 @@ public class StudentService {
 
     /**
      * Holt einen Studenten anhand seiner ID.
+     * 
      * @param id Die ID des Studenten.
      * @return Ein Optional, das den gefundenen Studenten enthält, falls vorhanden.
      */
@@ -36,6 +37,7 @@ public class StudentService {
 
     /**
      * Holt alle Studenten.
+     * 
      * @return Eine Liste aller vorhandenen Studenten.
      */
     public List<Student> getStudenten() {
@@ -44,6 +46,7 @@ public class StudentService {
 
     /**
      * Speichert einen Studenten und aktualisiert die Änderungen.
+     * 
      * @param student Der Student, der gespeichert werden soll.
      * @return Der gespeicherte und aktualisierte Student.
      */
@@ -52,16 +55,9 @@ public class StudentService {
     }
 
     /**
-     * Fügt Testdaten für einen Studenten ein.
-     * @return Der erstellte Student mit Testdaten.
+     * Löscht alle Einträge in der Datenbank.
      */
-    public Student insertTestData() {
-        Student student = new Student();
-        student.setVorname("Maria");
-        student.setNachname("Musterfrau");
-
-        studentRepository.saveAndFlush(student);
-
-        return student;
+    public void deleteAll() {
+        studentRepository.deleteAll();
     }
 }

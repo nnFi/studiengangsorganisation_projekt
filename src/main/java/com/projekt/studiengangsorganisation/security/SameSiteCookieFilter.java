@@ -25,11 +25,11 @@ public class SameSiteCookieFilter extends OncePerRequestFilter {
         boolean firstHeader = true;
         for (String header : headers) {
             if (firstHeader) {
-                response.setHeader(HttpHeaders.SET_COOKIE, String.format("%s; %s", header, "SameSite=None; Secure"));
+                response.setHeader(HttpHeaders.SET_COOKIE, String.format("%s; %s", header, "SameSite=Origin"));
                 firstHeader = false;
                 continue;
             }
-            response.addHeader(HttpHeaders.SET_COOKIE, String.format("%s; %s", header, "SameSite=None; Secure"));
+            response.addHeader(HttpHeaders.SET_COOKIE, String.format("%s; %s", header, "SameSite=Origin"));
         }
     }
 }

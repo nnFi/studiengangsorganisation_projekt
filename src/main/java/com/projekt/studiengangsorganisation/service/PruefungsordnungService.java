@@ -12,6 +12,8 @@ import com.projekt.studiengangsorganisation.repository.PruefungsordnungRepositor
 
 /**
  * Service-Klasse für die Verwaltung von Prüfungsordnungen.
+ * 
+ * @author Finn Plassmeier
  */
 @Service
 public class PruefungsordnungService {

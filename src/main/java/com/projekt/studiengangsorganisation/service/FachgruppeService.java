@@ -11,6 +11,8 @@ import com.projekt.studiengangsorganisation.repository.FachgruppeRepository;
 
 /**
  * Service-Klasse für die Verwaltung von Fachgruppen.
+ * 
+ * @author Bao Chau Kathi Doan
  */
 @Service
 public class FachgruppeService {

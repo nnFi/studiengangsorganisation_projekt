@@ -11,6 +11,8 @@ import com.projekt.studiengangsorganisation.repository.ModulRepository;
 
 /**
  * Service-Klasse für die Verwaltung von Modulen.
+ * 
+ * @author Paul Rakow
  */
 @Service
 public class ModulService {

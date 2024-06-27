@@ -11,6 +11,8 @@ import com.projekt.studiengangsorganisation.repository.MitarbeiterRepository;
 
 /**
  * Service-Klasse für die Verwaltung von Mitarbeitern.
+ * 
+ * @author Erkan Yüzer
  */
 @Service
 public class MitarbeiterService {

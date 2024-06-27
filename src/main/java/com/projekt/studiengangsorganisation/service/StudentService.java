@@ -11,6 +11,8 @@ import com.projekt.studiengangsorganisation.repository.StudentRepository;
 
 /**
  * Service-Klasse für die Verwaltung von Studenten.
+ * 
+ * @author Erkan Yüzer
  */
 @Service
 public class StudentService {

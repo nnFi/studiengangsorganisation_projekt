@@ -11,6 +11,8 @@ import com.projekt.studiengangsorganisation.repository.AdminRepository;
 
 /**
  * Service-Klasse für die Verwaltung von Admin-Daten.
+ * 
+ * @author Erkan Yüzer
  */
 @Service
 public class AdminService {

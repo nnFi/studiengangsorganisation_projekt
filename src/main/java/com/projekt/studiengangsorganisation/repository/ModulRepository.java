@@ -15,5 +15,11 @@ import com.projekt.studiengangsorganisation.entity.Modul;
 @Repository
 public interface ModulRepository extends JpaRepository<com.projekt.studiengangsorganisation.entity.Modul, Long> {
 
+    /**
+     * Findet Module anhand der IDs ihrer Modulgruppen.
+     * 
+     * @param modulgruppeIds eine Liste von IDs der Modulgruppen
+     * @return eine Liste von Modulen, die zu den angegebenen Modulgruppen gehören
+     */
     List<Modul> findByModulgruppe_IdIn(List<Long> modulgruppeIds);
 }

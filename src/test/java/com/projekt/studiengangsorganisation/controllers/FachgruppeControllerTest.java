@@ -357,7 +357,7 @@ public class FachgruppeControllerTest {
     public void testValidateFachgruppe_ValidInput_NoErrors() {
         // Arrange
         Fachgruppe validFachgruppe = new Fachgruppe();
-        validFachgruppe.setName("Valid Name");
+        validFachgruppe.setName("Testfachbereich");
         validFachgruppe.setKuerzel("KF");
 
         Mitarbeiter referent = new Mitarbeiter();
@@ -376,7 +376,7 @@ public class FachgruppeControllerTest {
         List<String> errors = controller.validateFachgruppe(validFachgruppe);
 
         // Assertions
-        assertTrue(errors.isEmpty(), "Expected no validation errors, but got some.");
+        assertTrue(errors.isEmpty(), "Es sollten keine Fehler auftreten.");
     }
 
     /**

@@ -32,6 +32,8 @@ import com.projekt.studiengangsorganisation.service.NutzerService;
  * Testklasse für den StudentController.
  * Verwendet Mockito, um Abhängigkeiten zu mocken und das Verhalten der Methoden
  * zu testen.
+ * 
+ * @author Paul Rakow
  */
 public class StudentControllerTest {
 

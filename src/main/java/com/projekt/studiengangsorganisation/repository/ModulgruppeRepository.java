@@ -5,8 +5,11 @@ import org.springframework.stereotype.Repository;
 
 /**
  * Ein Repository für die Entität Modulgruppe.
+ * 
+ * @author Erkan Yüzer
  */
 @Repository
-public interface ModulgruppeRepository extends JpaRepository<com.projekt.studiengangsorganisation.entity.Modulgruppe, Long> {
+public interface ModulgruppeRepository
+        extends JpaRepository<com.projekt.studiengangsorganisation.entity.Modulgruppe, Long> {
 
 }

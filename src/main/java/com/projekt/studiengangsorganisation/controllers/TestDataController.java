@@ -46,6 +46,11 @@ import com.projekt.studiengangsorganisation.service.PruefungsordnungService;
 import com.projekt.studiengangsorganisation.service.StudentService;
 import com.projekt.studiengangsorganisation.service.StudiengangService;
 
+/**
+ * Controller-Klasse für die Erstellung von Testdaten.
+ * 
+ * @author Paul Rakow
+ */
 @RequestMapping("/api/testdata")
 @RestController
 public class TestDataController {

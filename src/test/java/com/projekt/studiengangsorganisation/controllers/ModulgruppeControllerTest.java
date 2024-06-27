@@ -39,6 +39,8 @@ import jakarta.servlet.http.HttpServletResponse;
  * Testklasse für den FachbereichController.
  * Verwendet Mockito, um Abhängigkeiten zu mocken und das Verhalten der Methoden
  * zu testen.
+ * 
+ * @author Erkan Yüzer
  */
 public class ModulgruppeControllerTest {
 
@@ -81,7 +83,8 @@ public class ModulgruppeControllerTest {
         modulgruppe.setId(1L);
         modulgruppe.setName("Test Modulgruppe");
 
-        // Wenn der Service aufgerufen wird, geben Sie die modellierte Modulgruppe zurück
+        // Wenn der Service aufgerufen wird, geben Sie die modellierte Modulgruppe
+        // zurück
         when(modulgruppeService.getModulgruppe(1L)).thenReturn(Optional.of(modulgruppe));
 
         // Aufruf der Controller-Methode, um die Modulgruppe mit ID "1" zu erhalten
@@ -91,6 +94,7 @@ public class ModulgruppeControllerTest {
         assertEquals(modulgruppe.getId(), result.getId(), "Die ID der Modulgruppe stimmt nicht überein.");
         assertEquals(modulgruppe.getName(), result.getName(), "Der Name der Modulgruppe stimmt nicht überein.");
     }
+
     /**
      * Testet die Methode getOne mit einer ungültigen ID.
      * Erwartet, dass keine Modulgruppe zurückgegeben wird.
@@ -110,6 +114,7 @@ public class ModulgruppeControllerTest {
         // Überprüfen, ob der Statuscode der Exception korrekt ist
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
+
     /**
      * Testet die Methode getAll.
      * Erwartet, dass alle Modulgruppen zurückgegeben werden.
@@ -231,7 +236,7 @@ public class ModulgruppeControllerTest {
      * Testet die Validierung einer Modulgruppe mit ungültigen Eingaben.
      * Erwartet, dass Validierungsfehler auftreten.
      *
-     * @param name  der Name der Modulgruppe
+     * @param name der Name der Modulgruppe
      */
     @ParameterizedTest
     @CsvSource({

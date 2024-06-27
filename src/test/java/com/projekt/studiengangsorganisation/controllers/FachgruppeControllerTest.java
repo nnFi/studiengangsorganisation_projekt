@@ -40,6 +40,8 @@ import static org.mockito.Mockito.*;
  * Testklasse für den FachgruppeController.
  * Verwendet Mockito, um Abhängigkeiten zu mocken und das Verhalten der Methoden
  * zu testen.
+ * 
+ * @author Bao Chau Kathi Doan
  */
 public class FachgruppeControllerTest {
 

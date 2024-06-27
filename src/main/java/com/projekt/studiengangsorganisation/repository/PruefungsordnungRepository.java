@@ -11,13 +11,16 @@ import com.projekt.studiengangsorganisation.entity.Studiengang;
 
 /**
  * Ein Repository für die Entität Priefungsordnung.
+ * 
+ * @author Finn Plassmeier
  */
 @Repository
 public interface PruefungsordnungRepository
-        extends JpaRepository<com.projekt.studiengangsorganisation.entity.Pruefungsordnung, Long> {
+                extends JpaRepository<com.projekt.studiengangsorganisation.entity.Pruefungsordnung, Long> {
 
-    Optional<com.projekt.studiengangsorganisation.entity.Pruefungsordnung> findByVersionAndStudiengang(String version,
-            Studiengang studiengang);
+        Optional<com.projekt.studiengangsorganisation.entity.Pruefungsordnung> findByVersionAndStudiengang(
+                        String version,
+                        Studiengang studiengang);
 
-    List<Pruefungsordnung> findByStudiengang_IdIn(List<Long> studiengangIds);
+        List<Pruefungsordnung> findByStudiengang_IdIn(List<Long> studiengangIds);
 }

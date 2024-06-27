@@ -17,6 +17,8 @@ import jakarta.persistence.Transient;
 
 /**
  * Repräsentiert einen Fachbereich.
+ * 
+ * @author Erkan Yüzer
  */
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -47,7 +49,7 @@ public class Fachbereich {
     private Mitarbeiter referent;
 
     /**
-     *Die Referent-ID.
+     * Die Referent-ID.
      */
     @Transient
     private Long referentId;
@@ -56,7 +58,7 @@ public class Fachbereich {
      * Der Stellvertreter des Fachbereichs.
      */
     @ManyToOne(optional = false)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // wird in der JSON angezeigt bei Objekt Konvertierung
     @JoinColumn(name = "stellvertreter_id")
     private Mitarbeiter stellvertreter;
 
@@ -70,6 +72,7 @@ public class Fachbereich {
 
     /**
      * Gibt die ID des Fachbereichs zurück.
+     * 
      * @return die ID des Fachbereichs.
      */
     public Long getId() {
@@ -78,6 +81,7 @@ public class Fachbereich {
 
     /**
      * Setzt die ID des Fachbereichs.
+     * 
      * @param id die ID des Fachbereichs.
      */
     public void setId(Long id) {
@@ -86,6 +90,7 @@ public class Fachbereich {
 
     /**
      * Gibt den Namen des Fachbereichs zurück.
+     * 
      * @return der Name des Fachbereichs.
      */
     public String getName() {
@@ -94,6 +99,7 @@ public class Fachbereich {
 
     /**
      * Setzt den Namen des Fachbereichs.
+     * 
      * @param name der Name des Fachbereichs.
      */
     public void setName(String name) {
@@ -102,6 +108,7 @@ public class Fachbereich {
 
     /**
      * Gibt den Referenten des Fachbereichs zurück.
+     * 
      * @return der Referent des Fachbereichs.
      */
     public Mitarbeiter getReferent() {
@@ -110,6 +117,7 @@ public class Fachbereich {
 
     /**
      * Setzt den Referenten des Fachbereichs.
+     * 
      * @param referent der Referent des Fachbereichs.
      */
     public void setReferent(Mitarbeiter referent) {
@@ -118,6 +126,7 @@ public class Fachbereich {
 
     /**
      * Gibt den Stellvertreter des Fachbereichs zurück.
+     * 
      * @return der Stellvertreter des Fachbereichs.
      */
     public Mitarbeiter getStellvertreter() {
@@ -126,6 +135,7 @@ public class Fachbereich {
 
     /**
      * Setzt den Stellvertreter des Fachbereichs.
+     * 
      * @param stellvertreter der Stellvertreter des Fachbereichs.
      */
     public void setStellvertreter(Mitarbeiter stellvertreter) {
@@ -134,6 +144,7 @@ public class Fachbereich {
 
     /**
      * Gibt die Referent-ID zurück.
+     * 
      * @return die Referent-ID.
      */
     public Long getReferentId() {
@@ -142,6 +153,7 @@ public class Fachbereich {
 
     /**
      * Setzt die Referent-ID.
+     * 
      * @param referentId die Referent-ID.
      */
     public void setReferentId(Long referentId) {
@@ -150,6 +162,7 @@ public class Fachbereich {
 
     /**
      * Gibt die Stellvertreter-ID zurück.
+     * 
      * @return die Stellvertreter-ID.
      */
     public Long getStellvertreterId() {
@@ -158,6 +171,7 @@ public class Fachbereich {
 
     /**
      * Setzt die Stellvertreter-ID.
+     * 
      * @param stellvertreterId die Stellvertreter-ID.
      */
     public void setStellvertreterId(Long stellvertreterId) {

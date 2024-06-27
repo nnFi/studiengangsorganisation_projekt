@@ -29,6 +29,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Controller-Klasse für Fachbereich-Operationen.
+ * 
+ * @author Erkan Yüzer
  */
 @RequestMapping("/api/fachbereich")
 @RestController

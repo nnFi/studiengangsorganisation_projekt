@@ -17,6 +17,8 @@ import com.projekt.studiengangsorganisation.service.NutzerService;
 
 /**
  * Controller-Klasse für die Authentifizierung.
+ * 
+ * @author Paul Rakow
  */
 @RestController
 @RequestMapping("/auth")
@@ -36,6 +38,7 @@ public class AuthController {
 
     /**
      * Methode zum Registrieren eines Admin-Benutzers.
+     * 
      * @param user Der zu registrierende Admin-Benutzer.
      * @return Eine Bestätigungsnachricht.
      */
@@ -51,6 +54,7 @@ public class AuthController {
 
     /**
      * Methode zum Abrufen von Informationen über den angemeldeten Benutzer.
+     * 
      * @return Informationen über den angemeldeten Benutzer.
      */
     @GetMapping("/info")

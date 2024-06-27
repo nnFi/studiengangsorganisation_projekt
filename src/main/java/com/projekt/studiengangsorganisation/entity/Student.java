@@ -7,7 +7,10 @@ import jakarta.persistence.Entity;
 
 /**
  * Repräsentiert einen Student-Benutzer, welcher von Nutzer erbt.
+ * 
  * @see Nutzer
+ * 
+ * @author Erkan Yüzer
  */
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")

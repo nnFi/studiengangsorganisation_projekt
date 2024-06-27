@@ -2,6 +2,8 @@ package com.projekt.studiengangsorganisation.entity;
 
 /**
  * Enumerationsklasse, die verschiedene Arten von Modulen repräsentiert.
+ * 
+ * @author Paul Rakow
  */
 public enum ModulArt {
 
@@ -27,6 +29,7 @@ public enum ModulArt {
 
     /**
      * Konstruktor für ModulArt.
+     * 
      * @param bezeichnung Die Bezeichnung der Modulart.
      */
     ModulArt(String bezeichnung) {
@@ -35,6 +38,7 @@ public enum ModulArt {
 
     /**
      * Gibt die Bezeichnung der Modulart zurück.
+     * 
      * @return Die Bezeichnung der Modulart.
      */
     public String getBezeichnung() {

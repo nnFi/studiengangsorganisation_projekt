@@ -17,6 +17,8 @@ import jakarta.persistence.Transient;
 
 /**
  * Repräsentiert eine Prüfung.
+ * 
+ * @author Finn Plassmeier
  */
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -36,7 +38,7 @@ public class Pruefung {
      * Das Modul, zu dem die Prüfung gehört.
      */
     @ManyToOne
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // wird in der JSON angezeigt bei Objekt Konvertierung
     @JoinColumn(name = "modul_id")
     private Modul modul;
 
@@ -50,7 +52,7 @@ public class Pruefung {
      * Die Prüfungsordnung, zu der die Prüfung gehört.
      */
     @ManyToOne
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // wird in der JSON angezeigt bei Objekt Konvertierung
     @JoinColumn(name = "pruefungsordnung_id")
     private Pruefungsordnung pruefungsordnung;
 
@@ -74,6 +76,7 @@ public class Pruefung {
 
     /**
      * Gibt die ID der Prüfung zurück.
+     * 
      * @return die ID der Prüfung.
      */
     public Long getId() {
@@ -82,6 +85,7 @@ public class Pruefung {
 
     /**
      * Setzt die ID der Prüfung.
+     * 
      * @param id die ID der Prüfung.
      */
     public void setId(Long id) {
@@ -90,6 +94,7 @@ public class Pruefung {
 
     /**
      * Gibt das Modul zurück, zu dem die Prüfung gehört.
+     * 
      * @return das Modul der Prüfung.
      */
     public Modul getModul() {
@@ -98,6 +103,7 @@ public class Pruefung {
 
     /**
      * Setzt das Modul der Prüfung.
+     * 
      * @param modul das Modul der Prüfung.
      */
     public void setModul(Modul modul) {
@@ -106,6 +112,7 @@ public class Pruefung {
 
     /**
      * Gibt die Prüfungsordnung zurück, zu der die Prüfung gehört.
+     * 
      * @return die Prüfungsordnung der Prüfung.
      */
     public Pruefungsordnung getPruefungsordnung() {
@@ -114,6 +121,7 @@ public class Pruefung {
 
     /**
      * Setzt die Prüfungsordnung der Prüfung.
+     * 
      * @param pruefungsordnung die Prüfungsordnung der Prüfung.
      */
     public void setPruefungsordnung(Pruefungsordnung pruefungsordnung) {
@@ -122,6 +130,7 @@ public class Pruefung {
 
     /**
      * Gibt die Prüfungsnummer zurück.
+     * 
      * @return die Prüfungsnummer.
      */
     public int getPruefungsnummer() {
@@ -130,6 +139,7 @@ public class Pruefung {
 
     /**
      * Setzt die Prüfungsnummer.
+     * 
      * @param pruefungsnummer die Prüfungsnummer.
      */
     public void setPruefungsnummer(int pruefungsnummer) {
@@ -138,6 +148,7 @@ public class Pruefung {
 
     /**
      * Gibt das Fachsemester zurück.
+     * 
      * @return das Fachsemester.
      */
     public int getFachsemester() {
@@ -146,6 +157,7 @@ public class Pruefung {
 
     /**
      * Setzt das Fachsemester.
+     * 
      * @param fachsemester das Fachsemester.
      */
     public void setFachsemester(int fachsemester) {
@@ -154,6 +166,7 @@ public class Pruefung {
 
     /**
      * Gibt die ID des Moduls zurück.
+     * 
      * @return die ID des Moduls.
      */
     public Long getModulId() {
@@ -162,6 +175,7 @@ public class Pruefung {
 
     /**
      * Setzt die ID des Moduls.
+     * 
      * @param modulId die ID des Moduls.
      */
     public void setModulId(Long modulId) {
@@ -170,6 +184,7 @@ public class Pruefung {
 
     /**
      * Gibt die ID der Prüfungsordnung zurück.
+     * 
      * @return die ID der Prüfungsordnung.
      */
     public Long getPruefungsordnungId() {
@@ -178,6 +193,7 @@ public class Pruefung {
 
     /**
      * Setzt die ID der Prüfungsordnung.
+     * 
      * @param pruefungsordnungId die ID der Prüfungsordnung.
      */
     public void setPruefungsordnungId(Long pruefungsordnungId) {

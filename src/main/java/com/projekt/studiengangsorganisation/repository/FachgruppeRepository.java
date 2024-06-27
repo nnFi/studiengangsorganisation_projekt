@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 /**
  * Ein Repository für die Entität Fachgruppe.
+ * 
+ * @author Bao Chau Kathi Doan
  */
 @Repository
 public interface FachgruppeRepository

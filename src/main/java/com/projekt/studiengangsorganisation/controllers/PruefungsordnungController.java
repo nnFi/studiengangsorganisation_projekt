@@ -38,6 +38,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Controller-Klasse für Pruefungsordnung-Ressourcen.
+ * 
+ * @author Finn Plassmeier
  */
 @RequestMapping("/api/pruefungsordnung")
 @RestController

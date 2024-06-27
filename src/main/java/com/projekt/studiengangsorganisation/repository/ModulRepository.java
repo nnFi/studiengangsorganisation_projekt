@@ -9,6 +9,8 @@ import com.projekt.studiengangsorganisation.entity.Modul;
 
 /**
  * Ein Repository für die Entität Modul.
+ * 
+ * @author Paul Rakow
  */
 @Repository
 public interface ModulRepository extends JpaRepository<com.projekt.studiengangsorganisation.entity.Modul, Long> {

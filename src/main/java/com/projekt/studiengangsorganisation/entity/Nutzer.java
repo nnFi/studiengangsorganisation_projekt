@@ -14,6 +14,8 @@ import jakarta.persistence.InheritanceType;
 
 /**
  * Abstrakte Klasse, die einen Nutzer im System repräsentiert.
+ * 
+ * @author Erkan Yüzer
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -50,7 +52,7 @@ public abstract class Nutzer {
      * Das Passwort des Nutzers.
      */
     @Column(name = "password")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // wird in der JSON angezeigt bei Objekt Konvertierung
     private String password;
 
     /**

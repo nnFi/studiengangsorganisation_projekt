@@ -12,6 +12,8 @@ import jakarta.persistence.Table;
 
 /**
  * Repräsentiert eine Modulgruppe.
+ * 
+ * @author Erkan Yüzer
  */
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -34,6 +36,7 @@ public class Modulgruppe {
 
     /**
      * Gibt die ID der Modulgruppe zurück.
+     * 
      * @return die ID der Modulgruppe.
      */
     public Long getId() {
@@ -42,6 +45,7 @@ public class Modulgruppe {
 
     /**
      * Setzt die ID der Modulgruppe.
+     * 
      * @param id die ID der Modulgruppe.
      */
     public void setId(Long id) {
@@ -50,6 +54,7 @@ public class Modulgruppe {
 
     /**
      * Gibt den Namen der Modulgruppe zurück.
+     * 
      * @return der Name der Modulgruppe.
      */
     public String getName() {
@@ -58,6 +63,7 @@ public class Modulgruppe {
 
     /**
      * Setzt den Namen der Modulgruppe.
+     * 
      * @param name der Name der Modulgruppe.
      */
     public void setName(String name) {

@@ -17,6 +17,8 @@ import jakarta.persistence.Transient;
 
 /**
  * Repräsentiert eine Fachgruppe.
+ * 
+ * @author Bao Chau Kathi Doan
  */
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -48,7 +50,7 @@ public class Fachgruppe {
      * Der Referent der Fachgruppe.
      */
     @ManyToOne
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // wird in der JSON angezeigt bei Objekt Konvertierung
     @JoinColumn(name = "referent")
     private Mitarbeiter referent;
 
@@ -62,7 +64,7 @@ public class Fachgruppe {
      * Der Stellvertreter der Fachgruppe.
      */
     @ManyToOne
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // wird in der JSON angezeigt bei Objekt Konvertierung
     @JoinColumn(name = "stellvertreter_id")
     private Mitarbeiter stellvertreter;
 
@@ -76,7 +78,7 @@ public class Fachgruppe {
      * Der Fachbereich, zu dem die Fachgruppe gehört.
      */
     @ManyToOne
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // wird in der JSON angezeigt bei Objekt Konvertierung
     @JoinColumn(name = "fachbereich_id")
     private Fachbereich fachbereich;
 
@@ -88,6 +90,7 @@ public class Fachgruppe {
 
     /**
      * Gibt die ID der Fachgruppe zurück.
+     * 
      * @return die ID der Fachgruppe.
      */
     public Long getId() {
@@ -96,6 +99,7 @@ public class Fachgruppe {
 
     /**
      * Setzt die ID der Fachgruppe.
+     * 
      * @param id die ID der Fachgruppe.
      */
     public void setId(Long id) {
@@ -104,6 +108,7 @@ public class Fachgruppe {
 
     /**
      * Gibt den Namen der Fachgruppe zurück.
+     * 
      * @return der Name der Fachgruppe.
      */
     public String getName() {
@@ -112,6 +117,7 @@ public class Fachgruppe {
 
     /**
      * Setzt den Namen der Fachgruppe.
+     * 
      * @param name der Name der Fachgruppe.
      */
     public void setName(String name) {
@@ -120,6 +126,7 @@ public class Fachgruppe {
 
     /**
      * Gibt den Referenten der Fachgruppe zurück.
+     * 
      * @return der Referent der Fachgruppe.
      */
     public Mitarbeiter getReferent() {
@@ -128,6 +135,7 @@ public class Fachgruppe {
 
     /**
      * Setzt den Referenten der Fachgruppe.
+     * 
      * @param referent der Referent der Fachgruppe.
      */
     public void setReferent(Mitarbeiter referent) {
@@ -136,6 +144,7 @@ public class Fachgruppe {
 
     /**
      * Gibt den Stellvertreter der Fachgruppe zurück.
+     * 
      * @return der Stellvertreter der Fachgruppe.
      */
     public Mitarbeiter getStellvertreter() {
@@ -144,6 +153,7 @@ public class Fachgruppe {
 
     /**
      * Setzt den Stellvertreter der Fachgruppe.
+     * 
      * @param stellvertreter der Stellvertreter der Fachgruppe.
      */
     public void setStellvertreter(Mitarbeiter stellvertreter) {
@@ -152,6 +162,7 @@ public class Fachgruppe {
 
     /**
      * Gibt den Fachbereich der Fachgruppe zurück.
+     * 
      * @return der Fachbereich der Fachgruppe.
      */
     public Fachbereich getFachbereich() {
@@ -160,6 +171,7 @@ public class Fachgruppe {
 
     /**
      * Setzt den Fachbereich der Fachgruppe.
+     * 
      * @param fachbereich der Fachbereich der Fachgruppe.
      */
     public void setFachbereich(Fachbereich fachbereich) {
@@ -168,6 +180,7 @@ public class Fachgruppe {
 
     /**
      * Gibt die Referent-ID zurück.
+     * 
      * @return die Referent-ID.
      */
     public Long getReferentId() {
@@ -176,6 +189,7 @@ public class Fachgruppe {
 
     /**
      * Setzt die Referent-ID.
+     * 
      * @param referentId die Referent-ID.
      */
     public void setReferentId(Long referentId) {
@@ -184,6 +198,7 @@ public class Fachgruppe {
 
     /**
      * Gibt die Stellvertreter-ID zurück.
+     * 
      * @return die Stellvertreter-ID.
      */
     public Long getStellvertreterId() {
@@ -192,6 +207,7 @@ public class Fachgruppe {
 
     /**
      * Setzt die Stellvertreter-ID.
+     * 
      * @param stellvertreterId die Stellvertreter-ID.
      */
     public void setStellvertreterId(Long stellvertreterId) {
@@ -200,6 +216,7 @@ public class Fachgruppe {
 
     /**
      * Gibt die Fachbereich-ID zurück.
+     * 
      * @return die Fachbereich-ID.
      */
     public Long getFachbereichId() {
@@ -208,6 +225,7 @@ public class Fachgruppe {
 
     /**
      * Setzt die Fachbereich-ID.
+     * 
      * @param fachbereichId die Fachbereich-ID.
      */
     public void setFachbereichId(Long fachbereichId) {
@@ -216,6 +234,7 @@ public class Fachgruppe {
 
     /**
      * Gibt das Kuerzel zurück.
+     * 
      * @return das Kuerzel.
      */
     public String getKuerzel() {
@@ -224,6 +243,7 @@ public class Fachgruppe {
 
     /**
      * Setzt das Kürzel der Fachgruppe.
+     * 
      * @param kuerzel das Kürzel der Fachgruppe.
      */
     public void setKuerzel(String kuerzel) {

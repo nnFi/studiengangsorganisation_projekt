@@ -52,6 +52,8 @@ import jakarta.servlet.http.HttpServletResponse;
  * Testklasse für den ModulController.
  * Verwendet Mockito, um Abhängigkeiten zu mocken und das Verhalten der Methoden
  * zu testen.
+ * 
+ * @author Paul Rakow
  */
 public class ModulControllerTest {
 
@@ -127,14 +129,16 @@ public class ModulControllerTest {
      */
     @Test
     public void testGetOne_InvalidId_ThrowsResponseStatusException() {
-        // Mocken des Verhaltens des ModulService für das Abrufen eines Moduls mit ungültiger ID
+        // Mocken des Verhaltens des ModulService für das Abrufen eines Moduls mit
+        // ungültiger ID
         when(modulService.getModul(1L)).thenReturn(Optional.empty());
-    
+
         // Auslösen der Methode getOne und Erwartung einer ResponseStatusException
         assertThrows(ResponseStatusException.class, () -> {
             controller.getOne("1");
         });
     }
+
     /**
      * Testet die Methode getAll.
      * Erwartet, dass alle Module zurückgegeben werden.
@@ -150,26 +154,26 @@ public class ModulControllerTest {
         modul1.setModulbeauftragter(new Mitarbeiter());
         modul1.setFachgruppe(new Fachgruppe());
         modul1.setModulgruppe(new Modulgruppe());
-    
+
         Modul modul2 = new Modul();
         modul2.setId(2L);
         modul2.setName("Modul 2");
         modul2.setModulbeauftragter(new Mitarbeiter());
         modul2.setFachgruppe(new Fachgruppe());
         modul2.setModulgruppe(new Modulgruppe());
-    
+
         // Erstellen einer Liste mit den beiden Modul-Objekten
         List<Modul> module = Arrays.asList(modul1, modul2);
-    
+
         // Mocken des Verhaltens des ModulService für das Abrufen aller Module
         when(modulService.getModule()).thenReturn(module);
-    
+
         // Mocken der HttpServletResponse
         HttpServletResponse response = mock(HttpServletResponse.class);
-    
+
         // Aufrufen der Controller-Methode getAll, um die Module zu erhalten
         List<Modul> result = controller.getAll(response, null);
-    
+
         // Überprüfen, ob die zurückgegebene Liste die erwartete Größe von 2 hat
         assertEquals(2, result.size());
     }
@@ -186,11 +190,12 @@ public class ModulControllerTest {
         Nutzer admin = new Admin();
         admin.setUsername("test.admin");
         admin.setRole("ADMIN");
-    
-        // Mocken des Verhaltens der Authentication und NutzerService für den autorisierten Benutzer
+
+        // Mocken des Verhaltens der Authentication und NutzerService für den
+        // autorisierten Benutzer
         when(authentication.getName()).thenReturn("test.admin");
         when(nutzerService.getNutzerByUsername("test.admin")).thenReturn(Optional.of(admin));
-    
+
         // Erstellen eines Modul-Objekts mit gültigen Eingabewerten
         Modul modul = new Modul();
         modul.setName("Test Modul");
@@ -205,34 +210,36 @@ public class ModulControllerTest {
         modul.setFachgruppeId(1L);
         modul.setModulbeauftragterId(1L);
         modul.setModulgruppeId(1L);
-    
+
         // Erstellen einer Fachgruppe und eines Modulbeauftragten für das Modul
         Fachgruppe fachgruppe = new Fachgruppe();
         fachgruppe.setId(1L);
         Fachbereich fachbereich = new Fachbereich();
         fachbereich.setReferentId(admin.getId());
         fachgruppe.setFachbereich(fachbereich);
-    
+
         Mitarbeiter modulbeauftragter = new Mitarbeiter();
         modulbeauftragter.setId(1L);
-    
+
         Modulgruppe modulgruppe = new Modulgruppe();
         modulgruppe.setId(1L);
-    
-        // Mocken des Verhaltens der Service-Klassen für die Fachgruppe, den Modulbeauftragten und die Modulgruppe
+
+        // Mocken des Verhaltens der Service-Klassen für die Fachgruppe, den
+        // Modulbeauftragten und die Modulgruppe
         when(fachgruppeService.getFachgruppe(1L)).thenReturn(Optional.of(fachgruppe));
         when(mitarbeiterService.getMitarbeiter(1L)).thenReturn(Optional.of(modulbeauftragter));
         when(modulgruppeService.getModulgruppe(1L)).thenReturn(Optional.of(modulgruppe));
-    
-        // Mocken des Verhaltens des ModulService für das Speichern und Aktualisieren des Moduls
+
+        // Mocken des Verhaltens des ModulService für das Speichern und Aktualisieren
+        // des Moduls
         when(modulService.saveAndFlush(any(Modul.class))).thenReturn(modul);
-    
+
         // Aufrufen der Controller-Methode createModul, um ein Modul zu erstellen
         ResponseEntity<Modul> response = controller.createModul(modul);
-    
+
         // Überprüfen, ob der HTTP-Statuscode der erwarteten CREATED entspricht
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-    
+
         // Überprüfen, ob das zurückgegebene Modul dem erwarteten Modul entspricht
         assertEquals(modul, response.getBody());
     }
@@ -269,8 +276,10 @@ public class ModulControllerTest {
         modul.setModulbeauftragterId(1L);
         modul.setModulgruppeId(1L);
 
-        // Mocken des Verhaltens der Service-Methoden für Fachgruppe, Mitarbeiter und Modulgruppe
-        // Hier werden keine Mock-Daten zurückgegeben, da der Nutzer nicht autorisiert ist
+        // Mocken des Verhaltens der Service-Methoden für Fachgruppe, Mitarbeiter und
+        // Modulgruppe
+        // Hier werden keine Mock-Daten zurückgegeben, da der Nutzer nicht autorisiert
+        // ist
         when(fachgruppeService.getFachgruppe(1L)).thenReturn(Optional.empty());
         when(mitarbeiterService.getMitarbeiter(1L)).thenReturn(Optional.empty());
         when(modulgruppeService.getModulgruppe(1L)).thenReturn(Optional.empty());
@@ -297,19 +306,20 @@ public class ModulControllerTest {
         admin.setUsername("test.admin");
         admin.setRole("ADMIN");
         admin.setId(1L);
-    
-        // Mocken des Verhaltens der Authentication und NutzerService für den autorisierten Benutzer
+
+        // Mocken des Verhaltens der Authentication und NutzerService für den
+        // autorisierten Benutzer
         when(authentication.getName()).thenReturn("test.admin");
         when(nutzerService.getNutzerByUsername("test.admin")).thenReturn(Optional.of(admin));
-    
+
         // Erstellen eines Mitarbeiters für den Modulbeauftragten
         Mitarbeiter mitarbeiter1 = new Mitarbeiter();
         mitarbeiter1.setId(1L);
-    
+
         // Erstellen einer Modulgruppe
         Modulgruppe modulgruppe = new Modulgruppe();
         modulgruppe.setId(1L);
-    
+
         // Erstellen einer Fachgruppe für das Modul
         Fachgruppe fachgruppe = new Fachgruppe();
         fachgruppe.setId(1L);
@@ -319,7 +329,7 @@ public class ModulControllerTest {
         fachgruppe.setFachbereich(fachbereich);
         fachgruppe.setReferent(mitarbeiter1);
         fachgruppe.setStellvertreter(new Mitarbeiter());
-    
+
         // Erstellen des vorhandenen Modul-Objekts
         Modul existingModul = new Modul();
         existingModul.setId(1L);
@@ -336,7 +346,7 @@ public class ModulControllerTest {
         existingModul.setModulbeauftragter(mitarbeiter1);
         existingModul.setModulgruppe(modulgruppe);
         existingModul.setFreigegeben(false);
-    
+
         // Erstellen des aktualisierten Modul-Objekts
         Modul updatedModul = new Modul();
         updatedModul.setId(1L);
@@ -353,23 +363,26 @@ public class ModulControllerTest {
         updatedModul.setModulbeauftragterId(1L);
         updatedModul.setModulgruppeId(1L);
         updatedModul.setFreigegeben(true);
-    
-        // Mocken des Verhaltens der Service-Klassen für das Abrufen und Speichern des Moduls
+
+        // Mocken des Verhaltens der Service-Klassen für das Abrufen und Speichern des
+        // Moduls
         when(modulService.getModul(1L)).thenReturn(Optional.of(existingModul));
         when(fachgruppeService.getFachgruppe(1L)).thenReturn(Optional.of(fachgruppe));
         when(mitarbeiterService.getMitarbeiter(1L)).thenReturn(Optional.of(mitarbeiter1));
         when(modulgruppeService.getModulgruppe(1L)).thenReturn(Optional.of(modulgruppe));
-    
-        // Mocken des Verhaltens des ModulService für das Speichern und Aktualisieren des Moduls
+
+        // Mocken des Verhaltens des ModulService für das Speichern und Aktualisieren
+        // des Moduls
         when(modulService.saveAndFlush(any(Modul.class))).thenReturn(updatedModul);
-    
+
         // Aufrufen der Controller-Methode updateModul, um das Modul zu aktualisieren
         ResponseEntity<Modul> response = controller.updateModul("1", updatedModul);
-    
+
         // Überprüfen, ob der HTTP-Statuscode der erwarteten OK entspricht
         assertEquals(HttpStatus.OK, response.getStatusCode());
-    
-        // Überprüfen, ob das zurückgegebene Modul den erwarteten aktualisierten Werten entspricht
+
+        // Überprüfen, ob das zurückgegebene Modul den erwarteten aktualisierten Werten
+        // entspricht
         Modul resultModul = response.getBody();
         assertNotNull(resultModul);
         assertEquals(150, resultModul.getWorkload());
@@ -395,24 +408,24 @@ public class ModulControllerTest {
         Nutzer user = new Student();
         user.setUsername("test.user");
         user.setRole("STUDENT");
-    
+
         // Mocken des Verhaltens der Authentication und NutzerService
         when(authentication.getName()).thenReturn("test.user");
         when(nutzerService.getNutzerByUsername("test.user")).thenReturn(Optional.of(user));
-    
+
         // Erstellen eines vorhandenen Modul-Objekts
         Modul existingModul = new Modul();
         existingModul.setId(1L);
         existingModul.setName("Altes Modul");
-    
+
         // Mocken des Verhaltens des ModulService für das Abrufen des Moduls
         when(modulService.getModul(1L)).thenReturn(Optional.of(existingModul));
-    
+
         // Auslösen der Methode updateModul und Erwartung einer ResponseStatusException
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             controller.updateModul("1", existingModul);
         });
-    
+
         // Überprüfen, ob der HTTP-Statuscode der erwarteten UNAUTHORIZED entspricht
         assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatusCode());
     }
@@ -439,10 +452,10 @@ public class ModulControllerTest {
         modul.setFachgruppe(new Fachgruppe());
         modul.setModulbeauftragter(new Mitarbeiter());
         modul.setModulgruppe(new Modulgruppe());
-    
+
         // Validierung des Moduls und Erfassung der Validierungsfehler
         List<String> errors = controller.validateModul(modul);
-    
+
         // Überprüfen, ob keine Validierungsfehler erwartet werden
         assertTrue(errors.isEmpty(), "Es sollten keine Fehler auftreten.");
     }
@@ -451,15 +464,15 @@ public class ModulControllerTest {
      * Testet die Validierung eines Moduls mit ungültigen Eingaben.
      * Erwartet, dass Validierungsfehler auftreten.
      *
-     * @param name  der Name 
-     * @param workload die Workload
-     * @param credits die Credits
-     * @param dauer die Dauer
-     * @param art die Art
-     * @param abschluss der Abschluss
-     * @param beschreibung die Beschreibung
+     * @param name                  der Name
+     * @param workload              die Workload
+     * @param credits               die Credits
+     * @param dauer                 die Dauer
+     * @param art                   die Art
+     * @param abschluss             der Abschluss
+     * @param beschreibung          die Beschreibung
      * @param lehrveranstaltungsort der Lehrveranstaltungsort
-     * @param sprache die Sprache
+     * @param sprache               die Sprache
      */
     @ParameterizedTest
     @CsvSource({
@@ -480,14 +493,18 @@ public class ModulControllerTest {
         // Erstellen eines Modul-Objekts mit den übergebenen ungültigen Eingabewerten
         Modul modul = new Modul();
         modul.setName(name);
-        modul.setWorkload(workload != null ? workload : 0);  // Setzen der Workload, falls nicht null, sonst 0
-        modul.setCredits(credits != null ? credits : 0);  // Setzen der Credits, falls nicht null, sonst 0
-        modul.setDauer(dauer != null ? dauer : 0);  // Setzen der Dauer, falls nicht null, sonst 0
-        modul.setArt(art != null ? ModulArt.valueOf(art) : null);  // Setzen der ModulArt, falls nicht null und existiert, sonst null
-        modul.setAbschluss(abschluss != null ? Abschluss.valueOf(abschluss) : null);  // Setzen des Abschlusses, falls nicht null und existiert, sonst null
-        modul.setBeschreibung(beschreibung);  // Setzen der Beschreibung
-        modul.setLehrveranstaltungsort(lehrveranstaltungsort);  // Setzen des Lehrveranstaltungsorts
-        modul.setSprache(sprache != null ? Sprache.valueOf(sprache) : null);  // Setzen der Sprache, falls nicht null und existiert, sonst null
+        modul.setWorkload(workload != null ? workload : 0); // Setzen der Workload, falls nicht null, sonst 0
+        modul.setCredits(credits != null ? credits : 0); // Setzen der Credits, falls nicht null, sonst 0
+        modul.setDauer(dauer != null ? dauer : 0); // Setzen der Dauer, falls nicht null, sonst 0
+        modul.setArt(art != null ? ModulArt.valueOf(art) : null); // Setzen der ModulArt, falls nicht null und
+                                                                  // existiert, sonst null
+        modul.setAbschluss(abschluss != null ? Abschluss.valueOf(abschluss) : null); // Setzen des Abschlusses, falls
+                                                                                     // nicht null und existiert, sonst
+                                                                                     // null
+        modul.setBeschreibung(beschreibung); // Setzen der Beschreibung
+        modul.setLehrveranstaltungsort(lehrveranstaltungsort); // Setzen des Lehrveranstaltungsorts
+        modul.setSprache(sprache != null ? Sprache.valueOf(sprache) : null); // Setzen der Sprache, falls nicht null und
+                                                                             // existiert, sonst null
 
         // Validierung des Moduls und Erfassung der Validierungsfehler
         List<String> errors = controller.validateModul(modul);

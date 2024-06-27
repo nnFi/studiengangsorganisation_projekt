@@ -20,19 +20,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ein benutzerdefinierter Filter für die Authentifizierung über Benutzername und Passwort.
+ * Ein benutzerdefinierter Filter für die Authentifizierung über Benutzername
+ * und Passwort.
+ * 
+ * @author Paul Rakow
  */
 public class CustomUsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    //Objektmapper für die Konvertierung von JSON.
+    // Objektmapper für die Konvertierung von JSON.
     private final ObjectMapper objectMapper = new ObjectMapper();
-    // Sicherheitskontext-Repository für die Sitzungsbasierte Sicherheitskontextspeicherung.
+    // Sicherheitskontext-Repository für die Sitzungsbasierte
+    // Sicherheitskontextspeicherung.
     private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
-
 
     /**
      * Konstruktor für den benutzerdefinierten Authentifizierungsfilter.
-     * @param authenticationManager Der AuthenticationManager für die Authentifizierung.
+     * 
+     * @param authenticationManager Der AuthenticationManager für die
+     *                              Authentifizierung.
      */
     public CustomUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(new AntPathRequestMatcher("/auth/login", "POST"));
@@ -41,41 +46,46 @@ public class CustomUsernamePasswordAuthenticationFilter extends AbstractAuthenti
 
     /**
      * Versucht die Authentifizierung anhand der erhaltenen Anmeldeinformationen.
+     * 
      * @param request  Das HttpServletRequest-Objekt.
      * @param response Das HttpServletResponse-Objekt.
      * @return Die Authentifizierungsinformationen.
      * @throws AuthenticationException Falls die Authentifizierung fehlschlägt.
-     * @throws IOException              Falls ein Fehler beim Lesen der Anforderung auftritt.
+     * @throws IOException             Falls ein Fehler beim Lesen der Anforderung
+     *                                 auftritt.
      */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException, IOException {
-                // Unterdrückt Warnungen
-                @SuppressWarnings("unchecked")
-                
-                // HTTP-Request-Körper wird in ein Map-Objekt umgewandelt, das Key-Value-Paare enthält
-                Map<String, String> requestBody = objectMapper.readValue(request.getInputStream(), HashMap.class);
-                
-                // Holt den Benutzernamen
-                String username = requestBody.get("username");
-                
-                // Holt das Passwort
-                String password = requestBody.get("password");
-                
-                // Erstellt eine Authentifizierungsanfrage mit Benutzername und Passwort
-                UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
-                
-                // Authentifiziert den Benutzer und gibt das Ergebnis zurück
-                return getAuthenticationManager().authenticate(authRequest);
+        // Unterdrückt Warnungen
+        @SuppressWarnings("unchecked")
+
+        // HTTP-Request-Körper wird in ein Map-Objekt umgewandelt, das Key-Value-Paare
+        // enthält
+        Map<String, String> requestBody = objectMapper.readValue(request.getInputStream(), HashMap.class);
+
+        // Holt den Benutzernamen
+        String username = requestBody.get("username");
+
+        // Holt das Passwort
+        String password = requestBody.get("password");
+
+        // Erstellt eine Authentifizierungsanfrage mit Benutzername und Passwort
+        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
+
+        // Authentifiziert den Benutzer und gibt das Ergebnis zurück
+        return getAuthenticationManager().authenticate(authRequest);
     }
 
     /**
      * Wird aufgerufen, wenn die Authentifizierung erfolgreich ist.
+     * 
      * @param request    Das HttpServletRequest-Objekt.
      * @param response   Das HttpServletResponse-Objekt.
      * @param chain      Die Filterkette.
      * @param authResult Die Authentifizierungsergebnisse.
-     * @throws IOException      Falls ein Fehler beim Schreiben der Antwort auftritt.
+     * @throws IOException      Falls ein Fehler beim Schreiben der Antwort
+     *                          auftritt.
      * @throws ServletException Falls ein Servlet-Fehler auftritt.
      */
     @Override
@@ -93,16 +103,19 @@ public class CustomUsernamePasswordAuthenticationFilter extends AbstractAuthenti
 
     /**
      * Wird aufgerufen, wenn die Authentifizierung fehlschlägt.
-     * @param request Das HttpServletRequest-Objekt.
+     * 
+     * @param request  Das HttpServletRequest-Objekt.
      * @param response Das HttpServletResponse-Objekt.
      * @param failed   Die fehlgeschlagene Authentifizierungsausnahme.
-     * @throws IOException      Falls ein Fehler beim Schreiben der Antwort auftritt.
+     * @throws IOException      Falls ein Fehler beim Schreiben der Antwort
+     *                          auftritt.
      * @throws ServletException Falls ein Servlet-Fehler auftritt.
      */
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException failed) throws IOException, ServletException {
-        // Setzt den HTTP-Statuscode auf "UNAUTHORIZED" (401), um anzuzeigen, dass die Authentifizierung fehlgeschlagen ist
+        // Setzt den HTTP-Statuscode auf "UNAUTHORIZED" (401), um anzuzeigen, dass die
+        // Authentifizierung fehlgeschlagen ist
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
     }

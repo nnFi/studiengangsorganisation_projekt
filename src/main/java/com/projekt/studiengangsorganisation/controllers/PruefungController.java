@@ -35,6 +35,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Controller-Klasse für die Verwaltung von Pruefungen.
+ * 
+ * @author Finn Plassmeier
  */
 @RequestMapping("/api/pruefung")
 @RestController

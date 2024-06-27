@@ -26,6 +26,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Controller-Klasse für die Verwaltung von Modulgruppen.
+ * 
+ * @author Erkan Yüzer
  */
 @RequestMapping("/api/modulgruppe")
 @RestController

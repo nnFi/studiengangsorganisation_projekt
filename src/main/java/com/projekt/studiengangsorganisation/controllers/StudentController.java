@@ -29,6 +29,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Controller-Klasse für die Verwaltung von Studenten.
+ * 
+ * @author Erkan Yüzer
  */
 @RequestMapping("/api/student")
 @RestController
@@ -201,7 +203,7 @@ public class StudentController {
         }
 
         // Passwort prüfen
-        if(create) {
+        if (create) {
             if (!PasswordValidator.validate(student.getPassword())) {
                 errors.add(
                         "Passwort entspricht nicht den Anforderungen. (Groß- und Kleinbuchstaben, Sonderzeichen, Zahlen, Mindeslänge 8)");

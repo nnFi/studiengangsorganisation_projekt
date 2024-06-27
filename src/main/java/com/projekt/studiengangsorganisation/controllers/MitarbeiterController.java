@@ -27,8 +27,10 @@ import com.projekt.studiengangsorganisation.service.NutzerService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-/*
+/**
  * Controller-Klasse für die Verwaltung von Mitarbeitern.
+ * 
+ * @author Erkan Yüzer
  */
 @RequestMapping("/api/mitarbeiter")
 @RestController
@@ -214,7 +216,7 @@ public class MitarbeiterController {
         }
 
         // Passwort prüfen
-        if(create) {
+        if (create) {
             if (!PasswordValidator.validate(mitarbeiter.getPassword())) {
                 errors.add(
                         "Passwort entspricht nicht den Anforderungen. (Groß- und Kleinbuchstaben, Sonderzeichen, Zahlen, Mindeslänge 8)");

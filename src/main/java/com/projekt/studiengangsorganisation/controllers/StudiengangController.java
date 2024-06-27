@@ -31,6 +31,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 /**
  * Controller-Klasse für die Verwaltung von Studiengängen.
+ * 
+ * @author Bao Chau Kathi Doan
  */
 @RequestMapping("/api/studiengang")
 @RestController

@@ -14,6 +14,8 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Filterklasse, die die SameSite-Cookie-Einstellung für alle Cookies auf "None"
  * setzt.
+ * 
+ * @author Paul Rakow
  */
 public class SameSiteCookieFilter extends OncePerRequestFilter {
     @Override

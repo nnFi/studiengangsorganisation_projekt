@@ -37,6 +37,8 @@ import jakarta.servlet.http.HttpServletResponse;
  * Testklasse für den FachbereichController.
  * Verwendet Mockito, um Abhängigkeiten zu mocken und das Verhalten der Methoden
  * zu testen.
+ * 
+ * @author Erkan Yüzer
  */
 public class FachbereichControllerTest {
 
@@ -273,7 +275,7 @@ public class FachbereichControllerTest {
         when(fachbereichService.getFachbereich(1L)).thenReturn(Optional.of(existingFachbereich));
         when(mitarbeiterService.getMitarbeiter(2L)).thenReturn(Optional.of(referent));
         when(mitarbeiterService.getMitarbeiter(3L)).thenReturn(Optional.of(stellvertreter));
-        
+
         // Aufruf der Controller-Methode
         ResponseEntity<Fachbereich> response = controller.updateFachbereich(1L, updatedFachbereich);
 
@@ -339,8 +341,8 @@ public class FachbereichControllerTest {
      * Testet die Validierung eines Fachbereichs mit ungültigen Eingaben.
      * Erwartet, dass Validierungsfehler auftreten.
      *
-     * @param name  der Name des Fachbereichs
-     * @param referentId die Id des Referenten
+     * @param name             der Name des Fachbereichs
+     * @param referentId       die Id des Referenten
      * @param stellvertreterId die Id des Stellvertreters
      */
     @ParameterizedTest

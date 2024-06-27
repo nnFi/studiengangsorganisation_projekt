@@ -18,6 +18,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Controller für die Verwaltung von Admins.
+ * 
+ * @author Erkan Yüzer
  */
 @RequestMapping("/api/admin")
 @RestController

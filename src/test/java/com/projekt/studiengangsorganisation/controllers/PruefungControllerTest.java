@@ -37,8 +37,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Testklasse für den PruefungController.
- * Verwendet Mockito, um Abhängigkeiten zu mocken und das Verhalten der Methoden zu testen.
+ * Verwendet Mockito, um Abhängigkeiten zu mocken und das Verhalten der Methoden
+ * zu testen.
  * 
+ * @author Finn Plassmeier
  */
 public class PruefungControllerTest {
 
@@ -151,8 +153,9 @@ public class PruefungControllerTest {
         Modul modul2 = new Modul();
         modul2.setId(2L);
         pruefung2.setModul(modul2);
-        
-        // Erstelle eine Liste von Pruefung-Objekten, die pruefung1 und pruefung2 enthält
+
+        // Erstelle eine Liste von Pruefung-Objekten, die pruefung1 und pruefung2
+        // enthält
         List<Pruefung> pruefungen = Arrays.asList(pruefung1, pruefung2);
 
         // Mocken des Service-Aufrufs für getPruefungen
@@ -201,7 +204,8 @@ public class PruefungControllerTest {
         pruefung.setModul(modul);
 
         // Mocken des Service-Aufrufs für getPruefungsordnung und getModul
-        when(pruefungsordnungService.getPruefungsordnung(pruefung.getPruefungsordnungId())).thenReturn(Optional.of(pruefungsordnung));
+        when(pruefungsordnungService.getPruefungsordnung(pruefung.getPruefungsordnungId()))
+                .thenReturn(Optional.of(pruefungsordnung));
         when(modulService.getModul(pruefung.getModulId())).thenReturn(Optional.of(modul));
 
         // Mocken des Service-Aufrufs für saveAndFlush
@@ -216,7 +220,8 @@ public class PruefungControllerTest {
 
     /**
      * Testet die Methode createPruefung durch eine nicht berechtigte Person.
-     * Erwartet, dass die Pruefung nicht erstellt wird und eine Ausnahme ausgelöst wird.
+     * Erwartet, dass die Pruefung nicht erstellt wird und eine Ausnahme ausgelöst
+     * wird.
      * 
      * @return void
      */
@@ -254,7 +259,8 @@ public class PruefungControllerTest {
 
     /**
      * Testet die Methode createPruefung durch eine bereits vorhandene Prüfung.
-     * Erwartet, dass die Pruefung nicht erstellt wird und eine Ausnahme ausgelöst wird.
+     * Erwartet, dass die Pruefung nicht erstellt wird und eine Ausnahme ausgelöst
+     * wird.
      * 
      * @return void
      */
@@ -297,7 +303,8 @@ public class PruefungControllerTest {
 
     /**
      * Testet die Methode createPruefung mit einer freigegebenen Prüfungsordnung.
-     * Erwartet, dass die Pruefung nicht erstellt wird und eine Ausnahme ausgelöst wird.
+     * Erwartet, dass die Pruefung nicht erstellt wird und eine Ausnahme ausgelöst
+     * wird.
      * 
      * @return void
      */

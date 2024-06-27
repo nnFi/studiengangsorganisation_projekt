@@ -40,6 +40,8 @@ import jakarta.servlet.http.HttpServletResponse;
  * Testklasse für den StudiengangsController.
  * Verwendet Mockito, um Abhängigkeiten zu mocken und das Verhalten der Methoden
  * zu testen.
+ * 
+ * @author Finn Plassmeier
  */
 public class StudiengangControllerTest {
 
@@ -92,15 +94,16 @@ public class StudiengangControllerTest {
         // Erstellen von Mock-Mitarbeiterobjekten
         Mitarbeiter leiter = new Mitarbeiter();
         leiter.setId(1L);
-    
+
         Mitarbeiter stellvertreter = new Mitarbeiter();
         stellvertreter.setId(2L);
-    
+
         // Erstellen eines Mock-Fachbereichsobjekts
         Fachbereich fachbereich = new Fachbereich();
         fachbereich.setId(1L);
-    
-        // Erstellen eines Mock-Studiengangsobjekts mit den oben erstellten Mitarbeitern und Fachbereich
+
+        // Erstellen eines Mock-Studiengangsobjekts mit den oben erstellten Mitarbeitern
+        // und Fachbereich
         Studiengang studiengang = new Studiengang();
         studiengang.setId(1L);
         studiengang.setName("Informatik");
@@ -109,13 +112,15 @@ public class StudiengangControllerTest {
         studiengang.setLeiter(leiter);
         studiengang.setStellvertretenderLeiter(stellvertreter);
         studiengang.setFachbereich(fachbereich);
-    
-        // Mocken des Verhaltens des StudiengangService, sodass das oben erstellte Studiengangsobjekt zurückgegeben wird, wenn die ID 1 ist
+
+        // Mocken des Verhaltens des StudiengangService, sodass das oben erstellte
+        // Studiengangsobjekt zurückgegeben wird, wenn die ID 1 ist
         when(studiengangService.getStudiengang(1L)).thenReturn(Optional.of(studiengang));
-    
-        // Aufrufen der getOne Methode des Controllers mit der ID 1 und speichern des Ergebnisses
+
+        // Aufrufen der getOne Methode des Controllers mit der ID 1 und speichern des
+        // Ergebnisses
         Studiengang result = controller.getOne("1");
-    
+
         // Assertions
         assertEquals(studiengang.getId(), result.getId());
         assertEquals(studiengang.getName(), result.getName());
@@ -131,10 +136,12 @@ public class StudiengangControllerTest {
      */
     @Test
     public void testGetOne_InvalidId_ThrowsResponseStatusException() {
-        // Mocken des Verhaltens des StudiengangService, sodass ein leeres Optional zurückgegeben wird, wenn die ID 1 ist
-    when(studiengangService.getStudiengang(1L)).thenReturn(Optional.empty());
+        // Mocken des Verhaltens des StudiengangService, sodass ein leeres Optional
+        // zurückgegeben wird, wenn die ID 1 ist
+        when(studiengangService.getStudiengang(1L)).thenReturn(Optional.empty());
 
-        // Überprüfen, ob eine ResponseStatusException geworfen wird, wenn die getOne Methode des Controllers mit der ID 1 aufgerufen wird
+        // Überprüfen, ob eine ResponseStatusException geworfen wird, wenn die getOne
+        // Methode des Controllers mit der ID 1 aufgerufen wird
         assertThrows(ResponseStatusException.class, () -> {
             controller.getOne("1");
         });
@@ -177,7 +184,8 @@ public class StudiengangControllerTest {
         // Erstellen einer Liste von Studiengangsobjekten
         List<Studiengang> studiengaenge = Arrays.asList(studiengang1, studiengang2);
 
-        // Mocken des Verhaltens des StudiengangService, sodass die Liste der Studiengänge zurückgegeben wird
+        // Mocken des Verhaltens des StudiengangService, sodass die Liste der
+        // Studiengänge zurückgegeben wird
         when(studiengangService.getStudiengaenge()).thenReturn(studiengaenge);
 
         // Mocken des HttpServletResponse-Objekts
@@ -197,7 +205,7 @@ public class StudiengangControllerTest {
      * @return void
      */
     @Test
-    public void testCreateStudiengang_Administrator_SuccessfullyCreated() {        
+    public void testCreateStudiengang_Administrator_SuccessfullyCreated() {
         // Erstellen eines Mock-Administratornutzers
         Nutzer admin = new Admin();
         admin.setUsername("test.admin");
@@ -235,7 +243,8 @@ public class StudiengangControllerTest {
         when(fachbereichService.getFachbereich(1L)).thenReturn(Optional.of(fachbereich));
         when(studiengangService.saveAndFlush(any(Studiengang.class))).thenReturn(studiengang);
 
-        // Aufrufen der createStudiengang Methode des Controllers und Speichern des Ergebnisses
+        // Aufrufen der createStudiengang Methode des Controllers und Speichern des
+        // Ergebnisses
         ResponseEntity<Studiengang> response = controller.createStudiengang(studiengang);
 
         // Assertions
@@ -255,25 +264,28 @@ public class StudiengangControllerTest {
         Nutzer student = new Student();
         student.setUsername("test.student");
         student.setRole("STUDENT");
-    
+
         // Mocken des Verhaltens der Authentication und NutzerService
-        // Hier wird angenommen, dass der aktuelle authentifizierte Nutzer "test.student" ist
+        // Hier wird angenommen, dass der aktuelle authentifizierte Nutzer
+        // "test.student" ist
         when(authentication.getName()).thenReturn("test.student");
         when(nutzerService.getNutzerByUsername("test.student")).thenReturn(Optional.of(student));
-    
-        // Erstellen von Mock-Mitarbeiterobjekten für den Leiter und stellvertretenden Leiter
+
+        // Erstellen von Mock-Mitarbeiterobjekten für den Leiter und stellvertretenden
+        // Leiter
         Mitarbeiter leiter = new Mitarbeiter();
         leiter.setId(1L);
-    
+
         Mitarbeiter stellvertreter = new Mitarbeiter();
         stellvertreter.setId(2L);
-    
-        // Erstellen eines Mock-Fachbereichsobjekts und Setzen der Referenten und Stellvertreter
+
+        // Erstellen eines Mock-Fachbereichsobjekts und Setzen der Referenten und
+        // Stellvertreter
         Fachbereich fachbereich = new Fachbereich();
         fachbereich.setId(1L);
         fachbereich.setReferent(leiter);
         fachbereich.setStellvertreter(stellvertreter);
-    
+
         // Erstellen eines Mock-Studiengangsobjekts und Setzen der notwendigen Felder
         Studiengang studiengang = new Studiengang();
         studiengang.setName("Informatik");
@@ -282,20 +294,22 @@ public class StudiengangControllerTest {
         studiengang.setLeiterId(1L);
         studiengang.setStellvertreterId(2L);
         studiengang.setFachbereichId(1L);
-    
+
         // Mocken des Verhaltens der MitarbeiterService und FachbereichService
         when(mitarbeiterService.getMitarbeiter(1L)).thenReturn(Optional.of(leiter));
         when(mitarbeiterService.getMitarbeiter(2L)).thenReturn(Optional.of(stellvertreter));
         when(fachbereichService.getFachbereich(1L)).thenReturn(Optional.of(fachbereich));
-    
-        // Aufrufen der createStudiengang Methode des Controllers und Überprüfen, ob eine Ausnahme geworfen wird
+
+        // Aufrufen der createStudiengang Methode des Controllers und Überprüfen, ob
+        // eine Ausnahme geworfen wird
         ResponseStatusException response = assertThrows(ResponseStatusException.class, () -> {
             controller.createStudiengang(studiengang);
         });
-    
+
         // Assertions
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
+
     /**
      * Testet die Methode updateStudiengang durch einen Administrator.
      * Erwartet, dass der Studiengang erfolgreich aktualisiert wird.
@@ -309,24 +323,26 @@ public class StudiengangControllerTest {
         Nutzer admin = new Admin();
         admin.setUsername("test.admin");
         admin.setRole("ADMIN");
-    
+
         // Mocken des Verhaltens der Authentication und NutzerService
         when(authentication.getName()).thenReturn("test.admin");
         when(nutzerService.getNutzerByUsername("test.admin")).thenReturn(Optional.of(admin));
-    
-        // Erstellen von Mock-Mitarbeiterobjekten für den Leiter und stellvertretenden Leiter
+
+        // Erstellen von Mock-Mitarbeiterobjekten für den Leiter und stellvertretenden
+        // Leiter
         Mitarbeiter leiter = new Mitarbeiter();
         leiter.setId(1L);
-    
+
         Mitarbeiter stellvertreter = new Mitarbeiter();
         stellvertreter.setId(2L);
-    
-        // Erstellen eines Mock-Fachbereichsobjekts und Setzen der Referenten und Stellvertreter
+
+        // Erstellen eines Mock-Fachbereichsobjekts und Setzen der Referenten und
+        // Stellvertreter
         Fachbereich fachbereich = new Fachbereich();
         fachbereich.setId(1L);
         fachbereich.setReferent(leiter);
         fachbereich.setStellvertreter(stellvertreter);
-    
+
         // Erstellen eines Mock-Studiengangsobjekts für den vorhandenen Studiengang
         Studiengang existingStudiengang = new Studiengang();
         existingStudiengang.setId(1L);
@@ -336,7 +352,7 @@ public class StudiengangControllerTest {
         existingStudiengang.setLeiter(leiter);
         existingStudiengang.setStellvertretenderLeiter(stellvertreter);
         existingStudiengang.setFachbereich(fachbereich);
-    
+
         // Erstellen eines Mock-Studiengangsobjekts für den aktualisierten Studiengang
         Studiengang updatedStudiengang = new Studiengang();
         updatedStudiengang.setId(1L);
@@ -346,20 +362,22 @@ public class StudiengangControllerTest {
         updatedStudiengang.setLeiterId(2L); // Neuer Leiter
         updatedStudiengang.setStellvertreterId(1L); // Neuer stellvertretender Leiter
         updatedStudiengang.setFachbereichId(1L);
-    
-        // Mocken des Verhaltens der StudiengangService, MitarbeiterService und FachbereichService
+
+        // Mocken des Verhaltens der StudiengangService, MitarbeiterService und
+        // FachbereichService
         when(studiengangService.getStudiengang(1L)).thenReturn(Optional.of(existingStudiengang));
         when(mitarbeiterService.getMitarbeiter(1L)).thenReturn(Optional.of(leiter));
         when(mitarbeiterService.getMitarbeiter(2L)).thenReturn(Optional.of(stellvertreter));
         when(fachbereichService.getFachbereich(1L)).thenReturn(Optional.of(fachbereich));
-    
+
         // Mocken des Speicherns und Aktualisierens des Studiengangs
         when(studiengangService.saveAndFlush(any(Studiengang.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0)); // Gibt das gespeicherte Objekt zurück
-    
-        // Aufrufen der updateStudiengang Methode des Controllers und Speichern des Ergebnisses
+
+        // Aufrufen der updateStudiengang Methode des Controllers und Speichern des
+        // Ergebnisses
         ResponseEntity<Studiengang> response = controller.updateStudiengang("1", updatedStudiengang);
-    
+
         // Assertions
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(updatedStudiengang.getName(), response.getBody().getName());
@@ -379,22 +397,24 @@ public class StudiengangControllerTest {
         Nutzer user = new Student();
         user.setUsername("test.user");
         user.setRole("STUDENT");
-    
+
         // Mocken des Verhaltens der Authentication und NutzerService
-        // Hier wird angenommen, dass der aktuelle authentifizierte Nutzer "test.user" ist
+        // Hier wird angenommen, dass der aktuelle authentifizierte Nutzer "test.user"
+        // ist
         when(authentication.getName()).thenReturn("test.user");
         when(nutzerService.getNutzerByUsername("test.user")).thenReturn(Optional.of(user));
-    
+
         // Erstellen eines Mock-Studiengangsobjekts für den vorhandenen Studiengang
         Studiengang existingStudiengang = new Studiengang();
         existingStudiengang.setId(1L);
         existingStudiengang.setName("Informatik");
-    
-        // Aufrufen der updateStudiengang Methode des Controllers und Überprüfen, ob eine Ausnahme geworfen wird
+
+        // Aufrufen der updateStudiengang Methode des Controllers und Überprüfen, ob
+        // eine Ausnahme geworfen wird
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             controller.updateStudiengang("1", existingStudiengang);
         });
-    
+
         // Assertions
         assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatusCode());
     }
@@ -407,19 +427,21 @@ public class StudiengangControllerTest {
      */
     @Test
     public void testValidateStudiengang_ValidInputs() {
-        // Erstellen von Mock-Mitarbeiterobjekten für den Leiter und stellvertretenden Leiter
+        // Erstellen von Mock-Mitarbeiterobjekten für den Leiter und stellvertretenden
+        // Leiter
         Mitarbeiter leiter = new Mitarbeiter();
         leiter.setId(1L);
-    
+
         Mitarbeiter stellvertreter = new Mitarbeiter();
         stellvertreter.setId(2L);
-    
-        // Erstellen eines Mock-Fachbereichsobjekts und Setzen der Referenten und Stellvertreter
+
+        // Erstellen eines Mock-Fachbereichsobjekts und Setzen der Referenten und
+        // Stellvertreter
         Fachbereich fachbereich = new Fachbereich();
         fachbereich.setId(1L);
         fachbereich.setReferent(leiter);
         fachbereich.setStellvertreter(stellvertreter);
-    
+
         // Erstellen eines Mock-Studiengangsobjekts und Setzen der notwendigen Felder
         Studiengang studiengang = new Studiengang();
         studiengang.setName("Informatik");
@@ -428,10 +450,11 @@ public class StudiengangControllerTest {
         studiengang.setLeiter(leiter);
         studiengang.setStellvertretenderLeiter(stellvertreter);
         studiengang.setFachbereich(fachbereich);
-    
-        // Aufrufen der validateStudiengang Methode des Controllers und Speichern der Fehlerliste
+
+        // Aufrufen der validateStudiengang Methode des Controllers und Speichern der
+        // Fehlerliste
         List<String> errors = controller.validateStudiengang(studiengang);
-    
+
         // Assertions
         assertTrue(errors.isEmpty(), "Es sollten keine Fehler auftreten.");
     }
@@ -440,12 +463,12 @@ public class StudiengangControllerTest {
      * Testet die Validierung eines Fachbereichs mit ungültigen Eingaben.
      * Erwartet, dass Validierungsfehler auftreten.
      *
-     * @param name  der Name des Fachbereichs
-     * @param abschluss der Abschluss
+     * @param name             der Name des Fachbereichs
+     * @param abschluss        der Abschluss
      * @param regelstudienzeit die Regelstudienzeit
-     * @param leiterId der ID des Leiters
+     * @param leiterId         der ID des Leiters
      * @param stellvertreterId der ID des Stellvertreters
-     * @param fachbereichId der ID des Fachbereichs
+     * @param fachbereichId    der ID des Fachbereichs
      */
     @ParameterizedTest
     @CsvSource({
@@ -458,27 +481,30 @@ public class StudiengangControllerTest {
     })
     public void testValidateStudiengang_InvalidInputs(String name, Abschluss abschluss, Integer regelstudienzeit,
             Long leiterId, Long stellvertreterId, Long fachbereichId) {
-    
+
         // Initialisierung von Mitarbeitern und Fachbereich als null
         Mitarbeiter leiter = null;
         Mitarbeiter stellvertreter = null;
         Fachbereich fachbereich = null;
 
-        // Falls eine leiterId übergeben wird, wird ein Mitarbeiter-Objekt erstellt und gemockt
+        // Falls eine leiterId übergeben wird, wird ein Mitarbeiter-Objekt erstellt und
+        // gemockt
         if (leiterId != null) {
             leiter = new Mitarbeiter();
             leiter.setId(leiterId);
             when(mitarbeiterService.getMitarbeiter(leiterId)).thenReturn(Optional.of(leiter));
         }
 
-        // Falls eine stellvertreterId übergeben wird, wird ein Mitarbeiter-Objekt erstellt und gemockt
+        // Falls eine stellvertreterId übergeben wird, wird ein Mitarbeiter-Objekt
+        // erstellt und gemockt
         if (stellvertreterId != null) {
             stellvertreter = new Mitarbeiter();
             stellvertreter.setId(stellvertreterId);
             when(mitarbeiterService.getMitarbeiter(stellvertreterId)).thenReturn(Optional.of(stellvertreter));
         }
 
-        // Falls eine fachbereichId übergeben wird, wird ein Fachbereich-Objekt erstellt und gemockt
+        // Falls eine fachbereichId übergeben wird, wird ein Fachbereich-Objekt erstellt
+        // und gemockt
         if (fachbereichId != null) {
             fachbereich = new Fachbereich();
             fachbereich.setId(fachbereichId);
@@ -497,10 +523,12 @@ public class StudiengangControllerTest {
         if (fachbereich != null)
             studiengang.setFachbereich(fachbereich);
 
-        // Aufrufen der validateStudiengang Methode des Controllers und Speichern der Fehlerliste
+        // Aufrufen der validateStudiengang Methode des Controllers und Speichern der
+        // Fehlerliste
         List<String> errors = controller.validateStudiengang(studiengang);
 
-        // Überprüfen, ob die Fehlerliste nicht leer ist (es sollte mindestens ein Validierungsfehler auftreten)
+        // Überprüfen, ob die Fehlerliste nicht leer ist (es sollte mindestens ein
+        // Validierungsfehler auftreten)
         assertFalse(errors.isEmpty(), "Es sollte ein Validierungsfehler auftreten.");
     }
 }

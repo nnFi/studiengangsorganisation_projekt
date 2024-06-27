@@ -32,6 +32,8 @@ import com.projekt.studiengangsorganisation.service.NutzerService;
  * Testklasse für den MitarbeiterController.
  * Verwendet Mockito, um Abhängigkeiten zu mocken und das Verhalten der Methoden
  * zu testen.
+ * 
+ * @author Bao Chau Kathi Doan
  */
 public class MitarbeiterControllerTest {
 
@@ -284,7 +286,7 @@ public class MitarbeiterControllerTest {
         mitarbeiter.setNachname(nachname);
         mitarbeiter.setPassword(password);
 
-        List<String> errors = controller.validateMitarbeiter(mitarbeiter,true);
+        List<String> errors = controller.validateMitarbeiter(mitarbeiter, true);
 
         assertTrue(errors.isEmpty(), "Es sollte keine Validierungsfehler auftreten.");
     }

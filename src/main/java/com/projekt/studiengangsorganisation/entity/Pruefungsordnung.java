@@ -21,6 +21,8 @@ import jakarta.persistence.Transient;
 
 /**
  * Repräsentiert eine Prüfungsordnung.
+ * 
+ * @author Finn Plassmeier
  */
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -52,7 +54,7 @@ public class Pruefungsordnung {
      * Der zugehörige Studiengang der Prüfungsordnung.
      */
     @ManyToOne
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //wird in der JSON angezeigt bei Objekt Konvertierung
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // wird in der JSON angezeigt bei Objekt Konvertierung
     @JoinColumn(name = "studiengang_id")
     private Studiengang studiengang;
 
@@ -77,6 +79,7 @@ public class Pruefungsordnung {
 
     /**
      * Gibt die ID der Prüfungsordnung zurück.
+     * 
      * @return die ID der Prüfungsordnung.
      */
     public Long getId() {
@@ -85,6 +88,7 @@ public class Pruefungsordnung {
 
     /**
      * Setzt die ID der Prüfungsordnung.
+     * 
      * @param id die ID der Prüfungsordnung.
      */
     public void setId(Long id) {
@@ -93,6 +97,7 @@ public class Pruefungsordnung {
 
     /**
      * Gibt die Version der Prüfungsordnung zurück.
+     * 
      * @return die Version der Prüfungsordnung.
      */
     public String getVersion() {
@@ -101,6 +106,7 @@ public class Pruefungsordnung {
 
     /**
      * Setzt die Version der Prüfungsordnung.
+     * 
      * @param version die Version der Prüfungsordnung.
      */
     public void setVersion(String version) {
@@ -109,6 +115,7 @@ public class Pruefungsordnung {
 
     /**
      * Überprüft, ob die Prüfungsordnung freigegeben ist.
+     * 
      * @return true, wenn die Prüfungsordnung freigegeben ist, sonst false.
      */
     public boolean isFreigegeben() {
@@ -117,7 +124,9 @@ public class Pruefungsordnung {
 
     /**
      * Setzt den Freigabestatus der Prüfungsordnung.
-     * @param freigegeben true, wenn die Prüfungsordnung freigegeben ist, sonst false.
+     * 
+     * @param freigegeben true, wenn die Prüfungsordnung freigegeben ist, sonst
+     *                    false.
      */
     public void setFreigegeben(boolean freigegeben) {
         this.freigegeben = freigegeben;
@@ -125,6 +134,7 @@ public class Pruefungsordnung {
 
     /**
      * Gibt den zugehörigen Studiengang der Prüfungsordnung zurück.
+     * 
      * @return der zugehörige Studiengang der Prüfungsordnung.
      */
     public Studiengang getStudiengang() {
@@ -133,6 +143,7 @@ public class Pruefungsordnung {
 
     /**
      * Setzt den zugehörigen Studiengang der Prüfungsordnung.
+     * 
      * @param studiengang der zugehörige Studiengang der Prüfungsordnung.
      */
     public void setStudiengang(Studiengang studiengang) {
@@ -140,7 +151,9 @@ public class Pruefungsordnung {
     }
 
     /**
-     * Gibt die Liste der Prüfungen zurück, die dieser Prüfungsordnung zugeordnet sind.
+     * Gibt die Liste der Prüfungen zurück, die dieser Prüfungsordnung zugeordnet
+     * sind.
+     * 
      * @return die Liste der Prüfungen.
      */
     public List<Pruefung> getPruefungen() {
@@ -149,6 +162,7 @@ public class Pruefungsordnung {
 
     /**
      * Setzt die Liste der Prüfungen, die dieser Prüfungsordnung zugeordnet sind.
+     * 
      * @param pruefungen die Liste der Prüfungen.
      */
     public void setPruefungen(List<Pruefung> pruefungen) {
@@ -157,6 +171,7 @@ public class Pruefungsordnung {
 
     /**
      * Überprüft, ob die Prüfungsordnung auslaufend ist.
+     * 
      * @return true, wenn die Prüfungsordnung auslaufend ist, sonst false.
      */
     public boolean isAuslaufend() {
@@ -165,6 +180,7 @@ public class Pruefungsordnung {
 
     /**
      * Setzt den Auslaufstatus der Prüfungsordnung.
+     * 
      * @param auslaufend true, wenn die Prüfungsordnung auslaufend ist, sonst false.
      */
     public void setAuslaufend(boolean auslaufend) {
@@ -173,6 +189,7 @@ public class Pruefungsordnung {
 
     /**
      * Gibt die ID des zugehörigen Studiengangs zurück.
+     * 
      * @return die ID des zugehörigen Studiengangs.
      */
     public Long getStudiengangId() {
@@ -181,6 +198,7 @@ public class Pruefungsordnung {
 
     /**
      * Setzt die ID des zugehörigen Studiengangs.
+     * 
      * @param studiengangId die ID des zugehörigen Studiengangs.
      */
     public void setStudiengangId(Long studiengangId) {

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 /**
  * Ein Repository für die Entität Fachbereich.
+ * 
+ * @author Erkan Yüzer
  */
 @Repository
 public interface FachbereichRepository

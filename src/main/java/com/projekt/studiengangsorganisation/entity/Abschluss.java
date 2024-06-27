@@ -2,6 +2,8 @@ package com.projekt.studiengangsorganisation.entity;
 
 /**
  * Enumerationsklasse, die verschiedene Abschlussarten repräsentiert.
+ * 
+ * @author Bao Chau Kathi Doan
  */
 public enum Abschluss {
     // Bachelorabschlüsse
@@ -57,6 +59,7 @@ public enum Abschluss {
 
     /**
      * Konstruktor für Abschluss.
+     * 
      * @param bezeichnung Die Bezeichnung des Abschlusses.
      */
     Abschluss(String bezeichnung) {
@@ -65,6 +68,7 @@ public enum Abschluss {
 
     /**
      * Gibt die Bezeichnung des Abschlusses zurück.
+     * 
      * @return Die Bezeichnung des Abschlusses.
      */
     public String getBezeichnung() {

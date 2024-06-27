@@ -20,6 +20,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Konfigurationsklasse für die Sicherheitseinstellungen der Webanwendung.
+ * 
+ * @author Paul Rakow
  */
 @SuppressWarnings("deprecation")
 @Configuration

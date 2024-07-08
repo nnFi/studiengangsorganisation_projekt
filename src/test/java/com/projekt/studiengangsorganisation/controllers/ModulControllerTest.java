@@ -187,14 +187,14 @@ public class ModulControllerTest {
     @Test
     public void testCreateModul_AuthorizedUser_SuccessfullyCreated() {
         // Erstellen eines Admin-Nutzerobjekts für den autorisierten Benutzer
-        Nutzer admin = new Admin();
-        admin.setUsername("test.admin");
-        admin.setRole("ADMIN");
+        Mitarbeiter mitarbeiter = new Mitarbeiter();
+        mitarbeiter.setUsername("test.mitabeiter");
+        mitarbeiter.setRole("MITARBEITER");
 
         // Mocken des Verhaltens der Authentication und NutzerService für den
         // autorisierten Benutzer
         when(authentication.getName()).thenReturn("test.admin");
-        when(nutzerService.getNutzerByUsername("test.admin")).thenReturn(Optional.of(admin));
+        when(nutzerService.getNutzerByUsername("test.admin")).thenReturn(Optional.of(mitarbeiter));
 
         // Erstellen eines Modul-Objekts mit gültigen Eingabewerten
         Modul modul = new Modul();
@@ -215,7 +215,8 @@ public class ModulControllerTest {
         Fachgruppe fachgruppe = new Fachgruppe();
         fachgruppe.setId(1L);
         Fachbereich fachbereich = new Fachbereich();
-        fachbereich.setReferentId(admin.getId());
+        fachbereich.setReferentId(mitarbeiter.getId());
+        fachbereich.setReferent(mitarbeiter);
         fachgruppe.setFachbereich(fachbereich);
 
         Mitarbeiter modulbeauftragter = new Mitarbeiter();

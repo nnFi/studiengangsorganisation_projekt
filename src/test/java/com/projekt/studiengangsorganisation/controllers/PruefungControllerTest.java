@@ -240,10 +240,13 @@ public class PruefungControllerTest {
         Pruefung pruefung = new Pruefung();
         Pruefungsordnung pruefungsordnung = new Pruefungsordnung();
         pruefungsordnung.setId(1L);
-        pruefung.setPruefungsordnung(pruefungsordnung);
+        pruefung.setPruefungsordnungId(1L);
         Modul modul = new Modul();
         modul.setId(1L);
         pruefung.setModul(modul);
+
+        when(pruefungsordnungService.getPruefungsordnung(1L)).thenReturn(Optional.of(pruefungsordnung));
+        when(modulService.getModul(1L)).thenReturn(Optional.of(modul));
 
         // Prüfen, ob eine ResponseStatusException geworfen wird
         assertThrows(ResponseStatusException.class, () -> {

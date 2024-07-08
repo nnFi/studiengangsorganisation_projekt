@@ -11,6 +11,8 @@ import com.projekt.studiengangsorganisation.repository.NutzerRepository;
 
 /**
  * Service-Klasse für die Verwaltung von Nutzern.
+ * 
+ * @author Erkan Yüzer
  */
 @Service
 public class NutzerService {

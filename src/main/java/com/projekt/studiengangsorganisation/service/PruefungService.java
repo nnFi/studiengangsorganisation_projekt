@@ -11,6 +11,8 @@ import com.projekt.studiengangsorganisation.repository.PruefungRepository;
 
 /**
  * Service-Klasse für die Verwaltung von Prüfungen.
+ * 
+ * @author Finn Plassmeier
  */
 @Service
 public class PruefungService {

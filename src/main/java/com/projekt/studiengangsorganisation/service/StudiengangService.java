@@ -12,6 +12,8 @@ import com.projekt.studiengangsorganisation.repository.StudiengangRepository;
 
 /**
  * Service-Klasse für die Verwaltung von Studiengängen.
+ * 
+ * @author Bao Chau Kathi Doan
  */
 @Service
 public class StudiengangService {

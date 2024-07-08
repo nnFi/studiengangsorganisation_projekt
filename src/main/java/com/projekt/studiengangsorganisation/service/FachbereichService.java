@@ -68,6 +68,8 @@ public class FachbereichService {
 
     /**
      * Löscht alle Einträge in der Datenbank.
+     * 
+     * @author Erkan Yüzer
      */
     public void deleteAll() {
         fachbereichRepository.deleteAll();

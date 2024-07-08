@@ -11,6 +11,8 @@ import com.projekt.studiengangsorganisation.repository.ModulgruppeRepository;
 
 /**
  * Service-Klasse für die Verwaltung von Modulgruppen.
+ * 
+ * @author Erkan Yüzer
  */
 @Service
 public class ModulgruppeService {

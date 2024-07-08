@@ -163,6 +163,15 @@ public class PruefungController {
         Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert"));
 
+        // Die Prüfungsordnung für die zu erstellende Prüfung abrufen und sicherstellen,
+        // dass sie existiert
+        Pruefungsordnung pruefungsordnung = pruefungsordnungService
+                .getPruefungsordnung(pruefung.getPruefungsordnungId())
+                .orElseThrow(
+                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pruefungsordnung nicht gefunden"));
+
+        pruefung.setPruefungsordnung(pruefungsordnung);
+
         // Überprüft ob der Benutzer eine Prüfung erstellen darf und gibt im Fehlerfall
         // 401 zurück
         if (!(nutzer.getRole().equals("ADMIN")
@@ -177,13 +186,6 @@ public class PruefungController {
                                         .getStellvertreter().getId() == nutzer.getId()))) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
         }
-
-        // Die Prüfungsordnung für die zu erstellende Prüfung abrufen und sicherstellen,
-        // dass sie existiert
-        Pruefungsordnung pruefungsordnung = pruefungsordnungService
-                .getPruefungsordnung(pruefung.getPruefungsordnungId())
-                .orElseThrow(
-                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pruefungsordnung nicht gefunden"));
 
         // Überprüfen, ob eine Prüfung für dasselbe Modul bereits in der Prüfungsordnung
         // existiert

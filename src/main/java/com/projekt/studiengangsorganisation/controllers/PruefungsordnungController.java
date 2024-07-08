@@ -172,6 +172,14 @@ public class PruefungsordnungController {
         Nutzer nutzer = nutzerService.getNutzerByUsername(authentication.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert"));
 
+        // Den Studiengang anhand der ID aus der Prüfungsordnungsinformationen abrufen
+        Studiengang studiengang = studiengangService
+                .getStudiengang(pruefungsordnung.getStudiengangId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Studiengang nicht gefunden"));
+
+        // Den abgerufenen Studiengang der Prüfungsordnung zuweisen
+        pruefungsordnung.setStudiengang(studiengang);
+
         // Überprüft ob der Benutzer eine Prüfung erstellen darf und gibt im Fehlerfall
         // 401 zurück
         if (!(nutzer.getRole().equals("ADMIN")
@@ -185,14 +193,6 @@ public class PruefungsordnungController {
                                         .getId() == nutzer.getId()))) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
         }
-
-        // Den Studiengang anhand der ID aus der Prüfungsordnungsinformationen abrufen
-        Studiengang studiengang = studiengangService
-                .getStudiengang(pruefungsordnung.getStudiengangId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Studiengang nicht gefunden"));
-
-        // Den abgerufenen Studiengang der Prüfungsordnung zuweisen
-        pruefungsordnung.setStudiengang(studiengang);
 
         // Überprüfen, ob es bereits eine Prüfungsordnung mit dem gleichen Studiengang
         // und

@@ -196,8 +196,8 @@ public class ModulController {
         // erstellen. Nur der Fachbereichsreferent/stellvertreter oder der Admin sind
         // berechtigt,
         // Module zu erstellen.
-        if (fachgruppe.getFachbereich().getReferentId() != nutzer.getId()
-                && fachgruppe.getFachbereich().getStellvertreterId() != nutzer.getId()
+        if (fachgruppe.getFachbereich().getReferent().getId() != nutzer.getId()
+                && fachgruppe.getFachbereich().getStellvertreter().getId() != nutzer.getId()
                 && !nutzer.getRole().equals("ADMIN")) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Benutzer nicht autorisiert");
         }
